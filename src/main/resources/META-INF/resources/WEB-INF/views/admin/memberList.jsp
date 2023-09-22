@@ -191,6 +191,7 @@
 	<!-- END Footer -->
 	
 	<script>
+	
 		function retainSelectedParams() {
 			const currentUrl = window.location.search;
 			const searchParams = new URLSearchParams(currentUrl);
@@ -242,6 +243,17 @@
 		$(document).ready(function() {
 			retainSelectedParams()
 		
+			$("a.page-link").filter(function() {
+				const pageNum = new URLSearchParams(window.location.search).get("pageNum");
+				debugger;
+				if (!pageNum) {
+					return $(this).text() == 1
+				} else {
+					return $(this).text() == pageNum;
+				}
+			}).parent("li").addClass("active");
+			
+			
 			$("#memberTbody tr").hover(function() {
 				$(this).css({ "color" : "red", "text-decoration-line" : "underline" })
 					   .click(function() {
@@ -258,7 +270,6 @@
 			}, function() {
 				$(this).css({ "color" : "black", "text-decoration-line" : "none"  });
 			});
-
 
 
 			$("#rowAmountPerPage").change(function() {

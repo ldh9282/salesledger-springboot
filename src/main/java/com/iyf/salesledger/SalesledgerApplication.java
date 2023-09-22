@@ -11,10 +11,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication 
-@MapperScan("com.iyf.salesledger.dao")
-@MapperScan("com.iyf.salesledger.common.batch.dao")
+@MapperScan("com.iyf.salesledger.dao") // auto create mybatis dao class
+@MapperScan("com.iyf.salesledger.common.batch.dao") // auto create mybatis dao class
+@EnableScheduling // enable batch scheduler
 public class SalesledgerApplication {
 
 	public static void main(String[] args) {
