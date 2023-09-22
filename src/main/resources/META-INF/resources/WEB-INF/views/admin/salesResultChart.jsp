@@ -92,6 +92,7 @@
                                                 url: "${pageContext.request.contextPath}/admin/salesThisYearResultByCompanyAndDepartment.ajax/company/IYCNC/department/ITO",
                                                 method: "GET",
                                                 dataType: "json",
+                                                async: false,
                                                 success: function (response) {
                                                 	const labelList = [];
                                                 	const totalSalesList = [];
