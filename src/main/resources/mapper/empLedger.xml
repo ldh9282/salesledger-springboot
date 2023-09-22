@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.EmpLedgerDao">
+	<resultMap type="com.iyf.salesledger.model.EmpLedger" id="empLedgerMap">
+		<result property="emp_id" column="EMP_ID"/>
+		<result property="emp_pool_id" column="EMP_POOL_ID"/>
+		<result property="company" column="COMPANY"/>
+		<result property="department" column="DEPARTMENT"/>
+		<result property="assign_date" column="ASSIGN_DATE"/>
+		<result property="end_date" column="END_DATE"/>
+		<result property="sales_mm" column="SALES_MM"/>
+		<result property="purchase_mm" column="PURCHASE_MM"/>
+		<result property="sales_unit" column="SALES_UNIT"/>
+		<result property="purchase_unit" column="PURCHASE_UNIT"/>
+		<result property="comments" column="COMMENTS"/>
+		<result property="resume_submit_date" column="RESUME_SUBMIT_DATE"/>
+		<result property="resign_date" column="RESIGN_DATE"/>
+		<result property="i_contract_date" column="I_CONTRACT_DATE"/>
+		<result property="c_contract_date" column="C_CONTRACT_DATE"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="progress_reason" column="PROGRESS_REASON"/>
+		<result property="del" column="DEL"/>
+		<result property="site" column="SITE"/>
+		<result property="client" column="CLIENT"/>
+		<result property="project_name" column="PROJECT_NAME"/>
+		<result property="brief" column="BRIEF"/>
+	</resultMap>
+	
+	
+	<resultMap type="map" id="t1t2map">
+		<!-- emp ledger  -->
+		<result property="emp_id" column="EMP_ID"/>
+		<result property="company" column="COMPANY"/>
+		<result property="department" column="DEPARTMENT"/>
+		<result property="assign_date" column="ASSIGN_DATE" javaType="java.util.Date"/>
+		<result property="end_date" column="END_DATE" javaType="java.util.Date"/>
+		<result property="sales_mm" column="SALES_MM"/>
+		<result property="purchase_mm" column="PURCHASE_MM"/>
+		<result property="sales_unit" column="SALES_UNIT"/>
+		<result property="purchase_unit" column="PURCHASE_UNIT"/>
+		<result property="comments" column="COMMENTS"/>
+		<result property="resume_submit_date" column="RESUME_SUBMIT_DATE" javaType="java.util.Date"/>
+		<result property="resign_date" column="RESIGN_DATE" javaType="java.util.Date"/>
+		<result property="i_contract_date" column="I_CONTRACT_DATE" javaType="java.util.Date"/>
+		<result property="c_contract_date" column="C_CONTRACT_DATE" javaType="java.util.Date"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="progress_reason" column="PROGRESS_REASON"/>
+		<result property="issues" column="ISSUES"/>
+		<result property="site" column="SITE"/>
+		<result property="client" column="CLIENT"/>
+		<result property="project_name" column="PROJECT_NAME"/>
+		<result property="brief" column="BRIEF"/>
+		<!-- emp pool  -->
+		<result property="emp_pool_id" column="EMP_POOL_ID"/>
+		<result property="sourcing_manager" column="SOURCING_MANAGER"/>
+		<result property="name" column="NAME"/>
+		<result property="phonenumber" column="PHONENUMBER"/>
+		<result property="birthdate" column="BIRTHDATE" javaType="java.util.Date"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="education" column="EDUCATION"/>
+		<result property="school_name" column="SCHOOL_NAME"/>
+		<result property="major" column="MAJOR"/>
+		<result property="career_years" column="CAREER_YEARS"/>
+		<result property="career_field" column="CAREER_FIELD"/>
+		<result property="career_level" column="CAREER_LEVEL"/>
+		<result property="project_assign" column="PROJECT_ASSIGN"/>
+		
+	</resultMap>
+	
+	
+	<select id="list" resultMap="empLedgerMap">
+		SELECT 
+			*
+		FROM t_emp_ledger
+	</select>
+	<select id="listByCompanyAndDepartment" resultMap="t1t2map">
+		SELECT 
+			*
+		FROM t_emp_ledger t1
+		INNER JOIN t_emp_pool t2
+		ON t1.emp_pool_id = t2.emp_pool_id
+		WHERE t1.company = #{company} and t1.department = #{department} and (t1.del != 'Y' or t1.del is null)
+		ORDER BY 1 desc
+	</select>
+	<select id="selectOne" resultMap="empLedgerMap">
+		SELECT 
+			*
+		FROM t_emp_ledger
+		WHERE emp_id = #{emp_id}
+	</select>
+	
+	<insert id="insert">
+		INSERT INTO t_emp_ledger
+		(
+			emp_id,
+			emp_pool_id,
+			company,
+			department,
+			assign_date,
+			end_date,
+			sales_mm,
+			purchase_mm,
+			sales_unit,
+			purchase_unit,
+			comments,
+			resume_submit_date,
+			resign_date,
+			i_contract_date,
+			c_contract_date,
+			progress,
+			progress_reason,
+			issues,
+			del,
+			site,
+			client,
+			project_name,
+			brief
+		)
+			VALUES 
+		(
+			DEFAULT,
+			#{emp_pool_id},
+			#{company}, 
+			#{department}, 
+			#{assign_date}, 
+			#{end_date}, 
+			#{sales_mm}, 
+			#{purchase_mm}, 
+			#{sales_unit}, 
+			#{purchase_unit}, 
+			#{comments}, 
+			#{resume_submit_date}, 
+			#{resign_date}, 
+			#{i_contract_date}, 
+			#{c_contract_date}, 
+			#{progress}, 
+			#{progress_reason}, 
+			#{issues},
+			'N',
+			#{site},
+			#{client},
+			#{project_name},
+			#{brief}
+			
+		)
+		<selectKey keyProperty="emp_id" keyColumn="emp_id" order="AFTER" resultType="long">
+			SELECT currval('t_emp_ledger_emp_id_seq')
+		</selectKey>
+	</insert>
+	
+	<update id="update">
+	UPDATE t_emp_ledger SET 
+		emp_pool_id = #{emp_pool_id}, 
+		company = #{company}, 
+		department = #{department}, 
+		assign_date = #{assign_date}, 
+		end_date = #{end_date}, 
+		sales_mm = #{sales_mm},
+		purchase_mm = #{purchase_mm},
+		sales_unit = #{sales_unit}, 
+		purchase_unit = #{purchase_unit}, 
+		comments = #{comments}, 
+		resume_submit_date = #{resume_submit_date}, 
+		resign_date = #{resign_date}, 
+		i_contract_date = #{i_contract_date}, 
+		c_contract_date = #{c_contract_date}, 
+		progress = #{progress}, 
+		progress_reason = #{progress_reason}, 
+		issues = #{issues},
+		del = #{del},
+		site = #{site},
+		client = #{client},
+		project_name = #{project_name},
+		brief = #{brief}
+	WHERE emp_id = #{emp_id}
+	</update>
+</mapper>

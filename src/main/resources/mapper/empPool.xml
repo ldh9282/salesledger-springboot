@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.EmpPoolDao">
+	<resultMap type="com.iyf.salesledger.model.EmpPool" id="empPoolMap">
+		<result property="emp_pool_id" column="EMP_POOL_ID"/>
+		<result property="sourcing_manager" column="SOURCING_MANAGER"/>
+		<result property="name" column="NAME"/>
+		<result property="phonenumber" column="PHONENUMBER"/>
+		<result property="birthdate" column="BIRTHDATE"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="education" column="EDUCATION"/>
+		<result property="school_name" column="SCHOOL_NAME"/>
+		<result property="major" column="MAJOR"/>
+		<result property="career_years" column="CAREER_YEARS"/>
+		<result property="career_field" column="CAREER_FIELD"/>
+		<result property="career_level" column="CAREER_LEVEL"/>
+		<result property="project_assign" column="PROJECT_ASSIGN"/>
+		<result property="hope_purchase_unit" column="HOPE_PURCHASE_UNIT"/>
+	</resultMap>
+	
+	<select id="selectOne" resultMap="empPoolMap">
+		SELECT
+		    emp_pool_id, 
+		    sourcing_manager, 
+		    name, 
+		    phonenumber, 
+		    birthdate, 
+		    email, 
+		    address, 
+		    education, 
+		    school_name, 
+		    major, 
+		    career_years, 
+		    career_field, 
+		    career_level, 
+		    project_assign,
+		    del,
+		    hope_purchase_unit 
+		FROM t_emp_pool
+		WHERE emp_pool_id = #{emp_pool_id}
+	</select>
+	<select id="findByNameAndPhoneNumber" resultMap="empPoolMap">
+		SELECT
+		    emp_pool_id, 
+		    sourcing_manager, 
+		    name, 
+		    phonenumber, 
+		    birthdate, 
+		    email, 
+		    address, 
+		    education, 
+		    school_name, 
+		    major, 
+		    career_years, 
+		    career_field, 
+		    career_level, 
+		    project_assign,
+		    del,
+		    hope_purchase_unit 
+		FROM t_emp_pool
+		WHERE name = #{name} and phonenumber = #{phonenumber} and del != 'Y'
+	</select>
+	<select id="list" resultMap="empPoolMap">
+		SELECT
+		    *
+		FROM t_emp_pool
+		ORDER BY 1 DESC
+	</select>
+	<update id="update">
+		UPDATE t_emp_pool 
+		SET
+			emp_pool_id = #{emp_pool_id},
+			sourcing_manager = #{sourcing_manager},
+			name = #{name},
+			phonenumber = #{phonenumber},
+			birthdate = #{birthdate},
+			email = #{email},
+			address = #{address},
+			education = #{education},
+			school_name = #{school_name},
+			major = #{major},
+			career_years = #{career_years},
+			career_field = #{career_field},
+			career_level = #{career_level},
+			project_assign = #{project_assign},
+			del = #{del},
+			hope_purchase_unit = #{hope_purchase_unit}
+		WHERE emp_pool_id = #{emp_pool_id}
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM t_emp_pool
+		WHERE emp_pool_id = #{emp_pool_id}
+	</delete>
+	
+	<insert id="insert">
+		INSERT INTO t_emp_pool
+		(
+			emp_pool_id,
+			sourcing_manager,
+			name,
+			phonenumber,
+			birthdate,
+			email,
+			address,
+			education,
+			school_name,
+			major,
+			career_years,
+			career_field,
+			career_level,
+			project_assign,
+			del,
+			hope_purchase_unit
+		)
+			VALUES 
+		(
+			DEFAULT,
+			#{sourcing_manager},
+			#{name},
+			#{phonenumber},
+			#{birthdate},
+			#{email},
+			#{address},
+			#{education},
+			#{school_name},
+			#{major},
+			#{career_years},
+			#{career_field},
+			#{career_level},
+			0,
+			'N',
+			#{hope_purchase_unit}
+		)
+	</insert>
+	
+	<select id="selectCntProjectAssign" resultType="int">
+		select count(*)
+		from t_emp_pool t1
+		inner join t_emp_ledger t2
+		on t1.emp_pool_id = t2.emp_pool_id
+		where t1.emp_pool_id = #{emp_pool_id} and t2.progress in ('투입예정', '투입')
+		and (t2.del = 'N' or t2.del is null)
+	</select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.SalesEstimationDao">
+	<resultMap type="map" id="salesEstimationMap">
+		<result property="sales_estimation_id" column="SALES_ESTIMATION_ID"/>
+		<result property="total_sales_amount" column="total_sales_amount"/>
+		<result property="total_purchase_amount" column="total_purchase_amount"/>
+		<result property="sales_source" column="sales_source"/>
+		<result property="client" column="client"/>
+		<result property="subcontract" column="subcontract"/>
+		<result property="project_name" column="project_name"/>
+		<result property="batch_month" column="batch_month"/>
+		<result property="company" column="company"/>
+		<result property="department" column="department"/>
+		<result property="handwrite" column="handwrite"/>
+	</resultMap>
+	<select id="listByCompanyAndDepartmentAndBatchMonth" resultMap="salesEstimationMap">
+		select * from t_sales_estimation where company = #{company} and department = #{department} and batch_month = #{batch_month} ORDER BY 1 DESC;
+	</select>
+	
+</mapper>

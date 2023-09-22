@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.common.batch.dao.SalesEstimationBatchDao">
+	<delete id="delete">
+		delete from t_sales_estimation 
+		where batch_month = to_char(date_trunc('month', now() + interval '1 month'), 'yyyymm')
+		and company = #{company} and department = #{department}
+		and (handwrite is null or handwrite = 'N')
+	</delete>
+	
+	<insert id="insert">
+		insert into t_sales_estimation 
+		(
+			sales_estimation_id, company, department, site, client, brief, project_name,
+			total_sales_amount, total_purchase_amount, batch_month, handwrite
+		)
+		(
+			select
+				nextval('t_sales_estimation_sales_estimation_id_seq') sales_estimation_id,
+				t2.company, t2.department,
+				t2.site, t2.client, t2.brief, t2.project_name,
+				sum(t2.sales_mm * t2.sales_unit) total_sales_amount,
+				sum(t2.purchase_mm * t2.purchase_unit) total_purchase_amount,
+				to_char(date_trunc('month', now() + interval '1 month'), 'yyyymm') batch_month,
+				'N' handwrite
+				
+			from t_sales_ledger t1
+			inner join t_emp_ledger t2
+			on t1.emp_id = t2.emp_id
+			inner join t_emp_pool t3
+			on t2.emp_pool_id = t3.emp_pool_id
+			WHERE t2.company = #{company} and t2.department = #{department} and (t1.del != 'Y' or t1.del is null)
+			and t1.include = 'Y'
+			and (t2.assign_date <![CDATA[ <= ]]> date_trunc('month', now()) + interval '2 month - 1 day'  or t2.assign_date is null)
+			and (t2.resign_date >= date_trunc('month', now() + interval '1 month') or t2.resign_date is null)
+			group by t2.company, t2.department, t2.site, t2.client, t2.brief, t2.project_name
+		)
+	</insert>
+</mapper>

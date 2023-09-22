@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.MemberDao">
+	
+	<resultMap type="com.iyf.salesledger.common.security.MemberAuthority" id="memberAuthorityMap">
+		<result property="username" column="username"/>
+		<result property="authority" column="authority"/>
+	</resultMap>
+	
+	
+	<resultMap type="com.iyf.salesledger.common.security.Member" id="memberMap">
+		<result property="username" column="username"/>
+		<result property="password" column="password"/>
+		<result property="name" column="name"/>
+		<result property="company" column="company"/>
+		<result property="enabled" column="enabled"/>
+		<collection property="authorities" resultMap="memberAuthorityMap"/>
+	</resultMap>
+	
+	<select id="selectOne" resultMap="memberMap">
+		select 
+			*
+		from t_member m
+		inner join t_member_authorities a
+		on m.username = a.username
+		where m.username = #{username} 
+	</select>
+	<!-- enabled: 1(가입승인) 0(가입승인 전)  -->
+	<insert id="insertMember">
+		insert into t_member (username, password, name, company, enabled) 
+		values (#{username}, #{password}, #{name}, #{company}, '0');	
+	</insert>
+	<update id="updateMember">
+		update t_member set
+			username = #{username}, 
+			password = #{password}, 
+			name = #{name}, 
+			company = #{company}, 
+			enabled = #{enabled}
+		where username = #{username}
+	</update>
+	<!-- authority: 'ROLE_ADMIN', 'ROLE_IYCNC' ...  -->
+	<insert id="insertAuthority">
+		insert into t_member_authorities (username, authority) values (#{username}, #{authority})
+	</insert>
+	
+	<update id="updateAuthority">
+		update t_member_authorities set
+			username = #{username},
+			authority = #{authority}
+		where username = #{username}
+	</update>
+	
+	<select id="selectTotalCount" resultType="long">
+		select count(*)
+		from t_member m 
+		inner join t_member_authorities a 
+		on m.username = a.username
+		<choose>
+			<when test="scope == 'I'.toString()">where m.username LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'N'.toString()">where m.name LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'C'.toString()">where m.company LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'E'.toString()">
+				<choose>
+					<when test="keyword == '승인완료'.toString()">
+						where m.enabled = '1'
+					</when>
+					<when test="keyword == '미승인'.toString()">
+						where m.enabled = '0'
+					</when>
+				</choose>
+			</when>
+		</choose>
+	</select>
+	
+	<select id="selectMemberListPagingByKeyword" resultMap="memberMap">
+		select *
+		from t_member m 
+		inner join t_member_authorities a 
+		on m.username = a.username
+		<choose>
+			<when test="scope == 'I'.toString()">where m.username LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'N'.toString()">where m.name LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'C'.toString()">where m.company LIKE '%'||#{keyword}||'%'</when>
+			<when test="scope == 'E'.toString()">
+				<choose>
+					<when test="keyword == '승인완료'.toString()">
+						where m.enabled = '1'
+					</when>
+					<when test="keyword == '미승인'.toString()">
+						where m.enabled = '0'
+					</when>
+				</choose>
+			</when>
+		</choose>
+		order by m.username
+		offset (#{pageNum}-1) * #{rowAmountPerPage}   
+		limit #{rowAmountPerPage}	 
+	</select>
+	
+	<delete id="deleteMember">
+		delete from t_member where username = #{username}
+	</delete>
+	<delete id="deleteAuthority">
+		delete from t_member_authorities where username = #{username}
+	</delete>
+</mapper>

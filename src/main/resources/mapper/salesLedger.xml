@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.SalesLedgerDao">
+	<resultMap type="com.iyf.salesledger.model.SalesLedger" id="salesLedgerMap">
+		<result property="sales_id" column="SALES_ID"/>
+		<result property="emp_id" column="EMP_ID"/>
+		<result property="tech_support" column="TECH_SUPPORT"/>
+		<result property="extra_expense" column="extra_expense"/>
+		<result property="extra_expense_amount" column="EXTRA_EXPENSE_AMOUNT"/>
+		<result property="emp_type" column="EMP_TYPE"/>
+		<result property="individual_business" column="INDIVIDUAL_BUSINESS"/>
+		<result property="modifier" column="MODIFIER"/>
+		<result property="payday" column="PAYDAY"/>
+		<result property="include" column="INCLUDE"/>
+	</resultMap>
+	
+	<resultMap type="map" id="t1t2t3map">
+		<!-- sales ledger -->
+		<result property="sales_id" column="SALES_ID"/>
+		<result property="tech_support" column="TECH_SUPPORT"/>
+		<result property="extra_expense" column="extra_expense"/>
+		<result property="extra_expense_amount" column="EXTRA_EXPENSE_AMOUNT"/>
+		<result property="emp_type" column="EMP_TYPE"/>
+		<result property="individual_business" column="INDIVIDUAL_BUSINESS"/>
+		<result property="modifier" column="MODIFIER"/>
+		<result property="payday" column="PAYDAY"/>
+		<result property="include" column="INCLUDE"/>
+		<!-- emp ledger  -->
+		<result property="emp_id" column="EMP_ID"/>
+		<result property="company" column="COMPANY"/>
+		<result property="deparment" column="DEPARMENT"/>
+		<result property="assign_date" column="ASSIGN_DATE" javaType="java.util.Date"/>
+		<result property="end_date" column="END_DATE" javaType="java.util.Date"/>
+		<result property="sales_mm" column="SALES_MM"/>
+		<result property="purchase_mm" column="PURCHASE_MM"/>
+		<result property="sales_unit" column="SALES_UNIT"/>
+		<result property="purchase_unit" column="PURCHASE_UNIT"/>
+		<result property="comments" column="COMMENTS"/>
+		<result property="resume_submit_date" column="RESUME_SUBMIT_DATE" javaType="java.util.Date"/>
+		<result property="resign_date" column="RESIGN_DATE" javaType="java.util.Date"/>
+		<result property="i_contract_date" column="I_CONTRACT_DATE" javaType="java.util.Date"/>
+		<result property="c_contract_date" column="C_CONTRACT_DATE" javaType="java.util.Date"/>
+		<result property="progress" column="PROGRESS"/>
+		<result property="progress_reason" column="PROGRESS_REASON"/>
+		<result property="result" column="RESULT"/>
+		<result property="result_reason" column="RESULT_REASON"/>
+		<result property="issues" column="ISSUES"/>
+		<result property="site" column="SITE"/>
+		<result property="client" column="CLIENT"/>
+		<result property="project_name" column="PROJECT_NAME"/>
+		<result property="brief" column="BRIEF"/>
+		<!-- emp pool  -->
+		<result property="emp_pool_id" column="EMP_POOL_ID"/>
+		<result property="sourcing_manager" column="SOURCING_MANAGER"/>
+		<result property="name" column="NAME"/>
+		<result property="phonenumber" column="PHONENUMBER"/>
+		<result property="birthdate" column="BIRTHDATE" javaType="java.util.Date"/>
+		<result property="email" column="EMAIL"/>
+		<result property="address" column="ADDRESS"/>
+		<result property="education" column="EDUCATION"/>
+		<result property="school_name" column="SCHOOL_NAME"/>
+		<result property="major" column="MAJOR"/>
+		<result property="career_years" column="CAREER_YEARS"/>
+		<result property="career_field" column="CAREER_FIELD"/>
+		<result property="career_level" column="CAREER_LEVEL"/>
+		<result property="project_assign" column="PROJECT_ASSIGN"/>
+	</resultMap>
+	
+	<select id="listByCompanyAndDepartment" resultMap="t1t2t3map">
+		select
+			*
+		from t_sales_ledger t1
+		inner join t_emp_ledger t2
+		on t1.emp_id = t2.emp_id
+		inner join t_emp_pool t3
+		on t2.emp_pool_id = t3.emp_pool_id
+		WHERE t2.company = #{company} and t2.department = #{department} and (t1.del != 'Y' or t1.del is null)
+		order by 1 desc
+	</select>
+	
+	
+	<select id="list" resultMap="salesLedgerMap">
+		select
+			*
+		from t_sales_ledger
+	</select>
+	
+	<select id="selectOne" resultMap="salesLedgerMap">
+		select
+			* 
+	 	from t_sales_ledger
+	 	where sales_id = #{sales_id} 
+	</select>
+	
+	<select id="findByEmpId" resultMap="salesLedgerMap">
+		select
+			*
+		from t_sales_ledger
+		where emp_id = #{emp_id}
+	</select>
+	
+	<insert id="insert">
+		insert into t_sales_ledger
+		(
+			sales_id, emp_id, tech_support, 
+			extra_expense, extra_expense_amount, 
+			emp_type, individual_business, 
+			modifier, payday, del, include
+		)
+		values 
+		(
+			default, #{emp_id}, #{tech_support}, 
+			#{extra_expense}, #{extra_expense_amount}, 
+			#{emp_type}, #{individual_business}, 
+			#{modifier}, #{payday}, 'N', 'Y'
+		)
+		<selectKey keyProperty="sales_id" keyColumn="sales_id" order="AFTER" resultType="long">
+			SELECT currval('t_sales_ledger_sales_id_seq')
+		</selectKey>
+	</insert>
+
+	<update id="update">
+		update t_sales_ledger set
+			sales_id = #{sales_id},
+			emp_id = #{emp_id},
+			tech_support = #{tech_support},
+			extra_expense = #{extra_expense},
+			extra_expense_amount = #{extra_expense_amount},
+			emp_type = #{emp_type},
+			individual_business = #{individual_business},
+			modifier = #{modifier},
+			payday = #{payday},
+			del = #{del},
+			include = #{include}
+		where sales_id = #{sales_id}
+	</update>
+	
+	<delete id="delete">
+		delete t_sales_ledger
+		where sales_id = #{sales_id}
+	</delete>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.ChartDao">
+	<resultMap type="map" id="salesResultMap">
+		<result property="회사" column="회사"/>
+		<result property="해당년월" column="해당년월"/>
+		<result property="총매출가" column="총매출가"/>
+		<result property="총매입가" column="총매입가"/>
+	</resultMap>
+	<select id="salesThisYearResultListByCompanyAndDepartment" resultMap="salesResultMap">
+		select 
+			company 회사, batch_month 해당년월,
+			sum(total_sales_amount) 총매출가,
+			sum(total_purchase_amount) 총매입가
+		from t_sales_result
+		group by company, department, batch_month
+		having company = #{company} and department = #{department} and batch_month between to_char(now(), 'yyyy01') and to_char(now(), 'yyyy12')
+		order by batch_month
+	</select>
+</mapper>

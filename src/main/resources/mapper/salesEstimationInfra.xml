@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.SalesEstimationInfraDao">
+	<resultMap type="map" id="salesEstimationInfraMap">
+		<result property="sales_estimation_infra_id" column="sales_estimation_infra_id"/>
+		<result property="total_sales_amount" column="total_sales_amount"/>
+		<result property="total_purchase_amount" column="total_purchase_amount"/>
+		<result property="client" column="client"/>
+		<result property="brief" column="brief"/>
+		<result property="batch_month" column="batch_month"/>
+		<result property="company" column="company"/>
+		<result property="department" column="department"/>
+		<result property="date" column="date"/>
+		<result property="email" column="email"/>
+		<result property="business_reg_num" column="business_reg_num"/>
+		<result property="note" column="note"/>
+		<result property="category" column="category"/>
+		<result property="handwrite" column="handwrite"/>
+	</resultMap>
+	<select id="listByCompanyAndDepartmentAndCategoryAndBatchMonth" resultMap="salesEstimationInfraMap">
+		select * from t_sales_estimation_infra where company = #{company} and department = #{department} and category = #{category} and batch_month = #{batch_month} ORDER BY 1 DESC;
+	</select>
+	
+	<insert id="insert">
+		insert into
+		    t_sales_estimation_infra
+		    (
+		        sales_estimation_infra_id,
+		        total_sales_amount,
+		        total_purchase_amount,
+		        client,
+		        brief,
+		        batch_month,
+		        company,
+		        department,
+		        date,
+		        business_reg_num,
+		        email,
+		        handwrite,
+		        note,
+		        category
+		    )
+		values
+		    (
+			    default, #{total_sales_amount}, #{total_purchase_amount}, 
+			    #{client}, #{brief}, #{batch_month}, 
+			    #{company}, #{department}, #{date}, 
+			    #{business_reg_num}, #{email}, #{handwrite}, 
+			    #{note}, #{category}
+		    )
+	</insert>
+	
+	<select id="selectOne" resultMap="salesEstimationInfraMap">
+		select * from t_sales_estimation_infra where sales_estimation_infra_id = #{sales_estimation_infra_id}
+	</select>
+	
+	<delete id="delete">
+		delete from t_sales_estimation_infra where sales_estimation_infra_id = #{sales_estimation_infra_id}
+	</delete>
+	
+	<update id="update">
+		update
+		    t_sales_estimation_infra
+		set
+		    total_sales_amount = #{total_sales_amount},
+		    total_purchase_amount = #{total_purchase_amount},
+		    client = #{client},
+		    brief = #{brief},
+		    batch_month = #{batch_month},
+		    company = #{company},
+		    department = #{department},
+		    date = #{date},
+		    business_reg_num = #{business_reg_num},
+		    email = #{email},
+		    handwrite = #{handwrite},
+		    note = #{note},
+		    category = #{category}
+		where
+		   sales_estimation_infra_id = #{sales_estimation_infra_id}
+	</update>
+</mapper>
