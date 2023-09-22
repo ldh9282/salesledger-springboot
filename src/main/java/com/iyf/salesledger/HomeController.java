@@ -1,5 +1,7 @@
 package com.iyf.salesledger;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,16 +23,19 @@ public class HomeController {
 	
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/")	
-	public String showHomePage() {
+	public String showHomePage(HttpServletRequest request) {
 		if (log.isInfoEnabled()) {log.info("Start HomeController.showHomePage");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote user ::: " + request.getRemoteUser());}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "home");}
 		if (log.isInfoEnabled()) {log.info("End HomeController.showHomePage");}
 		return "home";
 	}
 	
 	@GetMapping("/login")
-	public String showLoginPage() {
+	public String showLoginPage(HttpServletRequest request) {
+		
 		if (log.isInfoEnabled()) {log.info("Start HomeController.showLoginPage");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote ip ::: " + request.getRemoteAddr());}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "login");}
 		if (log.isInfoEnabled()) {log.info("End HomeController.showLoginPage");}
 		return "login";
