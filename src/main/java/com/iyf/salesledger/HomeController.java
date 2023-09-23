@@ -42,16 +42,18 @@ public class HomeController {
 	}
 	
 	@GetMapping("/register")
-	public String showRegisterPage() {
+	public String showRegisterPage(HttpServletRequest request) {
 		if (log.isInfoEnabled()) {log.info("Start HomeController.showRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote ip ::: " + request.getRemoteAddr());}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "register");}
 		if (log.isInfoEnabled()) {log.info("End HomeController.showRegisterPage");}
 		return "register";
 	}
 	
 	@PostMapping("/register")
-	public String register(Member member) {
+	public String register(HttpServletRequest request, Member member) {
 		if (log.isInfoEnabled()) {log.info("Start HomeController.register");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote ip ::: " + request.getRemoteAddr());}
 		if (log.isInfoEnabled()) {log.info("param ::: member ::: " + member);}
 		if (log.isInfoEnabled()) {log.info("do service ::: memberService.insert");}
 		memberService.insert(member);
