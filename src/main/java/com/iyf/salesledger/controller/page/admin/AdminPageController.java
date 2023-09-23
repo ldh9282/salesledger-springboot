@@ -21,6 +21,9 @@ public class AdminPageController {
 	@Autowired
 	private MemberService memberService;
 	
+	/***
+	 * @기능 memberList.jsp 페이지 호출
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
 	@GetMapping("/admin/memberList")
 	public String showMemberListPage(PagingDTO pagingDTO, Model model) {
@@ -43,6 +46,9 @@ public class AdminPageController {
 		return "admin/memberList";
 	}
 	
+	/***
+	 * @기능 memberDetail.jsp 페이지 호출
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
 	@GetMapping("/admin/memberDetail")
 	public String showMemberDetailPage(String username, Model model) {
@@ -57,6 +63,9 @@ public class AdminPageController {
 		return "admin/memberDetail";
 	}
 	
+	/***
+	 * @기능 salesResultChart.jsp 페이지 호출
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
 	@GetMapping("/admin/salesResultChart")
 	public String showSalesResultChartPage() {

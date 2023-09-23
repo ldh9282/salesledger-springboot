@@ -8,48 +8,64 @@ import org.springframework.web.bind.annotation.PathVariable;
 @Controller
 public class IYCNCINFRAPageController {
 
-	// IYCNC INFRA CATEGORY salesResultList.jsp 매출실적 목록페이지 (메인페이지)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesResultInfraList.jsp 매출실적 목록페이지 (기본이 금월 데이터조회, 검색으로 해당년월 데이터조회가능)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesResultInfraList")
 	public String showSalesResultListPage(@PathVariable String category) {
 		return "iycnc/infra/" + category + "/salesResultInfraList";
 	}
 	
-	// IYCNC INFRA CATEGORY salesResultList.jsp 매출실적 수기데이터 등록페이지 (수기 데이터는 매출원장에도 없으며 배치에 의해 추가/삭제 반영되지 않고 실적과 차트에만 반영되기 위한 데이터)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesResultInfraRegister.jsp 매출실적 수기데이터 등록팝업페이지 (수기데이터 등록버튼 클릭시) <br>
+	 *     (수기 데이터: 인프라는 매출원장이 따로 없으며 배치스케줄러가 실행되지 않고, 수기데이터만 등록함)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesResultInfraRegister")
 	public String showSalesResultRegisterPage(@PathVariable String category) {
 		return "iycnc/infra/" + category + "/salesResultInfraRegister";
 	}
 	
-	// IYCNC INFRA CATEGORY salesResultDetail.jsp 매출실적 수기데이터 상세페이지 (팝업페이지; 수기 데이터만 상세페이지에서 수정 및 삭제할 수 있음)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesResultInfraDetail.jsp 매출실적 수기데이터 상세팝업페이지 (행데이터 더블클릭시) <br>
+	 *     (수기 데이터: 인프라는 매출원장이 따로 없으며 배치스케줄러가 실행되지 않고, 수기데이터만 등록함)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesResultInfraDetail")
 	public String showSalesResultDetailPage(@PathVariable String category) {
 		return "iycnc/infra/" + category + "/salesResultInfraDetail";
 	}
 	
-	// IYCNC INFRA CATEGORY salesEstimationList.jsp 매출실적 목록페이지 (메인페이지)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesEstimationInfraList.jsp 매출추정 목록페이지 (기본이 다음달 데이터조회, 검색으로 해당년월 데이터조회가능)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesEstimationInfraList")
 	public String showSalesEstimationListPage(@PathVariable String category) {
 		return "iycnc/infra/" + category + "/salesEstimationInfraList";
 	}
 	
-	// IYCNC INFRA CATEGORY salesEstimationList.jsp 매출실적 수기데이터 등록페이지 (수기 데이터는 매출원장에도 없으며 배치에 의해 추가/삭제 반영되지 않고 실적과 차트에만 반영되기 위한 데이터)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesEstimationInfraRegister.jsp 매출추정 수기데이터 등록팝업페이지 (수기데이터 등록버튼 클릭시) <br>
+	 *     (수기 데이터: 인프라는 매출원장이 따로 없으며 배치스케줄러가 실행되지 않고, 수기데이터만 등록함)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesEstimationInfraRegister")
 	public String showSalesEstimationRegisterPage(@PathVariable String category) {
 		return "iycnc/infra/" + category + "/salesEstimationInfraRegister";
 	}
 	
-	// IYCNC INFRA CATEGORY salesEstimationDetail.jsp 매출실적 수기데이터 상세페이지 (팝업페이지; 수기 데이터만 상세페이지에서 수정 및 삭제할 수 있음)
-	// CATEGORY : maintenance, merchandise, support
+	/***
+	 * @기능 iycnc/infra/{category}/salesEstimationInfraDetail.jsp 매출추정 수기데이터 상세팝업페이지 (행데이터 더블클릭시) <br>
+	 *     (수기 데이터: 인프라는 매출원장이 따로 없으며 배치스케줄러가 실행되지 않고, 수기데이터만 등록함)
+	 * @카테고리 maintenance, merchandise, support
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/infra/{category}/salesEstimationInfraDetail")
 	public String showSalesEstimationDetailPage(@PathVariable String category) {
