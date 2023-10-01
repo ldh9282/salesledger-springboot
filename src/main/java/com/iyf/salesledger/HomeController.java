@@ -61,4 +61,13 @@ public class HomeController {
 		if (log.isInfoEnabled()) {log.info("redirect ::: " + "redirect:/login");}
 		return "redirect:/login";
 	}
+	
+	@GetMapping("/accessForbiddenError")
+	public String showAccessForbiddenErrorPage(HttpServletRequest request) {
+		if (log.isInfoEnabled()) {log.info("Start HomeController.showAccessForbiddenErrorPage");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote ip ::: " + request.getRemoteAddr());}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "accessForbiddenError");}
+		if (log.isInfoEnabled()) {log.info("End HomeController.showAccessForbiddenErrorPage");}
+		return "accessForbiddenError";
+	}
 }

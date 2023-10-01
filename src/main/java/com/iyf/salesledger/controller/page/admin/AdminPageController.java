@@ -33,7 +33,7 @@ public class AdminPageController {
 		List<Member> memberList = memberService.selectMemberListPagingByKeyword(pagingDTO);
 		if (log.isInfoEnabled()) {log.info("do service ::: memberService.selectTotalCount");}
 		long count = memberService.selectTotalCount(pagingDTO);
-		if (log.isInfoEnabled()) {log.info("build PagingCreatorDTO ::: field ::: count ::: " + count);}
+		if (log.isInfoEnabled()) {log.info("build PagingCreatorDTO ::: field ::: rowAmountTotal ::: " + count);}
 		if (log.isInfoEnabled()) {log.info("build PagingCreatorDTO ::: field ::: pagingDTO ::: " + pagingDTO);}
 		PagingCreatorDTO pagingCreatorDTO = new PagingCreatorDTO(count, pagingDTO);
 		if (log.isInfoEnabled()) {log.info("build PagingCreatorDTO ::: instance ::: " + pagingCreatorDTO);}

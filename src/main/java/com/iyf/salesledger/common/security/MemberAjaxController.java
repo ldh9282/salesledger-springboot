@@ -18,7 +18,8 @@ public class MemberAjaxController {
 	private MemberService memberService;
 	
 	/***
-	 * @기능 회원 조회
+	 * @기능 register.jsp 에서 회원 조회
+	 * @기능 header.jsp 에서 회원 조회
 	 * @param username 회원 아이디
 	 * @return member 회원 단건
 	 */
