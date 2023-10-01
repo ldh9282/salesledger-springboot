@@ -4,7 +4,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import lombok.extern.log4j.Log4j2;
+
+@Controller @Log4j2
 public class IBTSITOPageController {
 
 	/***
@@ -12,7 +14,10 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerList")
-	public String showEmpListPage() {
+	public String showEmpLedgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerListPage");}
 		return "ibts/ito/empLedgerList";
 	}
 
@@ -22,6 +27,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerRegister")
 	public String showEmpLedgerRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerRegister");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerRegisterPage");}
 		return "ibts/ito/empLedgerRegister";
 	}
 
@@ -31,6 +39,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerDetail")
 	public String showEmpLedgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerDetailPage");}
 		return "ibts/ito/empLedgerDetail";
 	}
 
@@ -40,6 +51,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesLedgerList")
 	public String showSalesledgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesledgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesledgerListPage");}
 		return "ibts/ito/salesLedgerList";
 	}
 	
@@ -49,6 +63,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesLedgerDetail")
 	public String showSalesledgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesledgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesledgerDetailPage");}
 		return "ibts/ito/salesLedgerDetail";
 	}
 	
@@ -58,6 +75,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultList")
 	public String showSalesResultListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultListPage");}
 		return "ibts/ito/salesResultList";
 	}
 	
@@ -68,6 +88,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultRegister")
 	public String showSalesResultRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultRegister");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultRegisterPage");}
 		return "ibts/ito/salesResultRegister";
 	}
 	
@@ -79,6 +102,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultDetail")
 	public String showSalesResultDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultDetail");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultDetailPage");}
 		return "ibts/ito/salesResultDetail";
 	}
 	
@@ -88,6 +114,9 @@ public class IBTSITOPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesEstimationList")
 	public String showSalesEstimationListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesEstimationListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesEstimationList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesEstimationListPage");}
 		return "ibts/ito/salesEstimationList";
 	}
 

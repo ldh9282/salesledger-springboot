@@ -4,7 +4,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import lombok.extern.log4j.Log4j2;
+
+@Controller @Log4j2
 public class IBTSCONVERSIONPageController {
 
 	/***
@@ -12,7 +14,10 @@ public class IBTSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerList")
-	public String showEmpListPage() {
+	public String showEmpLedgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerListPage");}
 		return "ibts/conversion/empLedgerList";
 	}
 
@@ -22,6 +27,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerRegister")
 	public String showEmpLedgerRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerRegister");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerRegisterPage");}
 		return "ibts/conversion/empLedgerRegister";
 	}
 
@@ -31,6 +39,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerDetail")
 	public String showEmpLedgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerDetailPage");}
 		return "ibts/conversion/empLedgerDetail";
 	}
 
@@ -40,6 +51,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/salesLedgerList")
 	public String showSalesledgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showSalesledgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/salesLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showSalesledgerListPage");}
 		return "ibts/conversion/salesLedgerList";
 	}
 	
@@ -49,6 +63,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/salesLedgerDetail")
 	public String showSalesledgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showSalesledgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/salesLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showSalesledgerDetailPage");}
 		return "ibts/conversion/salesLedgerDetail";
 	}
 	
@@ -58,6 +75,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/salesResultList")
 	public String showSalesResultListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showSalesResultListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/salesResultList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showSalesResultListPage");}
 		return "ibts/conversion/salesResultList";
 	}
 	
@@ -68,6 +88,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/salesResultRegister")
 	public String showSalesResultRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showSalesResultRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/salesResultRegister");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showSalesResultRegisterPage");}
 		return "ibts/conversion/salesResultRegister";
 	}
 	
@@ -88,6 +111,9 @@ public class IBTSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/salesEstimationList")
 	public String showSalesEstimationListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showSalesEstimationListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/salesEstimationList");}
+		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showSalesEstimationListPage");}
 		return "ibts/conversion/salesEstimationList";
 	}
 

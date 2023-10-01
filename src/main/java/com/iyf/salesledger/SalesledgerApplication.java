@@ -46,7 +46,7 @@ public class SalesledgerApplication {
 			System.out.println("=======================================================================================================");
 			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " spring.main.banner-mode=" + springMainBannerMode);
 			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " logging.level.root=" + loggingLevelRoot);
-			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " logging.level.root=" + loggingLevelSalesLedger);
+			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " logging.level.com.iyf.salesledger=" + loggingLevelSalesLedger);
 			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " " + getServerIP() +  ":" + serverPort + contextPath);
 			System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd a hh:mm:ss")) + " 서버구동이 완료되었습니다");
 			System.out.println("=======================================================================================================");
@@ -54,6 +54,9 @@ public class SalesledgerApplication {
 		};
 	}
 	
+	/***
+	 * @기능 localhost 대신 서버 ip 직접 확인용도
+	 */
 	private static String getServerIP() {
 		String serverIP = null;
 		

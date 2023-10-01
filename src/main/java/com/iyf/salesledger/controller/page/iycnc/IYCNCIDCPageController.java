@@ -4,7 +4,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import lombok.extern.log4j.Log4j2;
+
+@Controller @Log4j2
 public class IYCNCIDCPageController {
 
 	/***
@@ -12,7 +14,10 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerList")
-	public String showEmpListPage() {
+	public String showEmpLedgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerListPage");}
 		return "iycnc/idc/empLedgerList";
 	}
 
@@ -22,6 +27,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerRegister")
 	public String showEmpLedgerRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerRegister");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerRegisterPage");}
 		return "iycnc/idc/empLedgerRegister";
 	}
 
@@ -31,6 +39,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerDetail")
 	public String showEmpLedgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerDetailPage");}
 		return "iycnc/idc/empLedgerDetail";
 	}
 
@@ -40,6 +51,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesLedgerList")
 	public String showSalesledgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesledgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesledgerListPage");}
 		return "iycnc/idc/salesLedgerList";
 	}
 	
@@ -49,6 +63,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesLedgerDetail")
 	public String showSalesledgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesledgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesledgerDetailPage");}
 		return "iycnc/idc/salesLedgerDetail";
 	}
 	
@@ -58,6 +75,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultList")
 	public String showSalesResultListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultList");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultListPage");}
 		return "iycnc/idc/salesResultList";
 	}
 	
@@ -68,6 +88,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultRegister")
 	public String showSalesResultRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultRegister");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultRegisterPage");}
 		return "iycnc/idc/salesResultRegister";
 	}
 	
@@ -79,6 +102,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultDetail")
 	public String showSalesResultDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultDetailPage");}
 		return "iycnc/idc/salesResultDetail";
 	}
 	
@@ -88,6 +114,9 @@ public class IYCNCIDCPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesEstimationList")
 	public String showSalesEstimationListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesEstimationListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesEstimationList");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesEstimationListPage");}
 		return "iycnc/idc/salesEstimationList";
 	}
 

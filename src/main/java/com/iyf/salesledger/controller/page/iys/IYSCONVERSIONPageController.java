@@ -4,7 +4,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller
+import lombok.extern.log4j.Log4j2;
+
+@Controller @Log4j2
 public class IYSCONVERSIONPageController {
 
 	/***
@@ -12,7 +14,10 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerList")
-	public String showEmpListPage() {
+	public String showEmpLedgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerListPage");}
 		return "iys/conversion/empLedgerList";
 	}
 
@@ -22,6 +27,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerRegister")
 	public String showEmpLedgerRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerRegister");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerRegisterPage");}
 		return "iys/conversion/empLedgerRegister";
 	}
 
@@ -31,6 +39,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerDetail")
 	public String showEmpLedgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerDetailPage");}
 		return "iys/conversion/empLedgerDetail";
 	}
 
@@ -40,6 +51,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesLedgerList")
 	public String showSalesledgerListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesledgerListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesLedgerList");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesledgerListPage");}
 		return "iys/conversion/salesLedgerList";
 	}
 	
@@ -49,6 +63,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesLedgerDetail")
 	public String showSalesledgerDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesledgerDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesLedgerDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesledgerDetailPage");}
 		return "iys/conversion/salesLedgerDetail";
 	}
 	
@@ -58,6 +75,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesResultList")
 	public String showSalesResultListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesResultListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesResultList");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesResultListPage");}
 		return "iys/conversion/salesResultList";
 	}
 	
@@ -68,6 +88,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesResultRegister")
 	public String showSalesResultRegisterPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesResultRegisterPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesResultRegister");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesResultRegisterPage");}
 		return "iys/conversion/salesResultRegister";
 	}
 	
@@ -79,6 +102,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesResultDetail")
 	public String showSalesResultDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesResultDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesResultDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesResultDetailPage");}
 		return "iys/conversion/salesResultDetail";
 	}
 	
@@ -88,6 +114,9 @@ public class IYSCONVERSIONPageController {
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesEstimationList")
 	public String showSalesEstimationListPage() {
+		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesEstimationListPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesEstimationList");}
+		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesEstimationListPage");}
 		return "iys/conversion/salesEstimationList";
 	}
 
