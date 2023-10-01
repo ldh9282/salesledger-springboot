@@ -22,6 +22,14 @@ public class AdminMemberAjaxController {
 	@Autowired
 	private MemberService memberService;
 	
+	/***
+	 * @기능 memberDetail.jsp 페이지에서 회원정보 수정
+	 * @param memberMap 
+	 * @param username 회원 아이디
+	 * @param enabled 회원 활성상태
+	 * @param auth 회원 권한
+	 * @return 
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
 	@PutMapping("/member.ajax")
 	public void updateMember(@RequestBody Map<String, String> memberMap) {
@@ -40,6 +48,11 @@ public class AdminMemberAjaxController {
 		if (log.isInfoEnabled()) {log.info("End AdminMemberAjaxController.updateMember");}
 	}
 	
+	/***
+	 * @기능 memberDetail.jsp 페이지에서 회원정보 삭제
+	 * @param username 회원 아이디
+	 * @return 
+	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
 	@DeleteMapping("/member.ajax/username/{username}")
 	public void deleteMember(@PathVariable String username) {

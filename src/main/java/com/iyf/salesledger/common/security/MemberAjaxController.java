@@ -1,14 +1,10 @@
 package com.iyf.salesledger.common.security;
 
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iyf.salesledger.service.MemberService;
@@ -21,9 +17,15 @@ public class MemberAjaxController {
 	@Autowired
 	private MemberService memberService;
 	
+	/***
+	 * @기능 회원 조회
+	 * @param username 회원 아이디
+	 * @return member 회원 단건
+	 */
 	@GetMapping("/member.ajax/username/{username}")
-	public Member retrieveMemberByUsername(@PathVariable String username) {
+	public Member retrieveMemberByUsername(@PathVariable String username, HttpServletRequest request) {
 		if (log.isInfoEnabled()) {log.info("Start MemberAjaxController.retrieveMemberByUsername");}
+		if (log.isInfoEnabled()) {log.info("request ::: remote ip ::: " + request.getRemoteAddr());}
 		if (log.isInfoEnabled()) {log.info("param ::: username ::: " + username);}
 		if (log.isInfoEnabled()) {log.info("do service ::: memberService.selectOne");}
 		Member member = memberService.selectOne(username);

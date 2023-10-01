@@ -18,8 +18,14 @@ public class AdminChartAjaxController {
 	@Autowired
 	private ChartService chartService;
 	
+	/***
+	 * @기능 salesResultChart.jsp 페이지에서 매출실적 올해 차트 조회
+	 * @param company 회사 (IYCNC, IBTS, IYS)
+	 * @param department 부서 (ITO, CONVERSION, IDC)
+	 * @return salesThistYearResult 매출실적 올해 차트
+	 */
 	@GetMapping("/admin/salesThisYearResultByCompanyAndDepartment.ajax/company/{company}/department/{department}")
-	public List<Map<String, Object>> retrieveSalesThisYearResultByCompany(@PathVariable String company, @PathVariable String department) {
+	public List<Map<String, Object>> retrieveSalesThisYearResultByCompanyAndDepartment(@PathVariable String company, @PathVariable String department) {
 		if (log.isInfoEnabled()) {log.info("Start AdminChartAjaxController.retrieveSalesThisYearResultByCompany");}
 		if (log.isInfoEnabled()) {log.info("param ::: company ::: " + company);}
 		if (log.isInfoEnabled()) {log.info("param ::: department ::: " + department);}
