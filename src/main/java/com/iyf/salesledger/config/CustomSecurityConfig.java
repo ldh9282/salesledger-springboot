@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true) // enable @PreAuthorize
-public class CustomSecurityConfig extends WebSecurityConfigurerAdapter { // spring boot 2 can use WebSecurityConfigurerAdapter, but cannot used in spring boot 3
+public class CustomSecurityConfig extends WebSecurityConfigurerAdapter { // spring boot 2 can use WebSecurityConfigurerAdapter, but cannot be used in spring boot 3
 
 	@Autowired
 	private UserDetailsService userDetailsService;
