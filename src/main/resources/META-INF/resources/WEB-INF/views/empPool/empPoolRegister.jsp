@@ -57,11 +57,11 @@
                     <input type="text" class="form-control" id="sourcing_manager" name="sourcing_manager">
                 </div>
                 <div class="form-group mb-3">
-                    <label for="name">이름:</label>
+                    <label for="name">이름 <span class="text-danger">*</span> :</label>
                     <input type="text" class="form-control" id="name" name="name">
                 </div>
                 <div class="form-group mb-3">
-                    <label for="phoneNumber">전화번호:</label>
+                    <label for="phoneNumber">전화번호 <span class="text-danger">*</span> :</label>
                     <input type="text" class="form-control" id="phonenumber" name="phonenumber">
                 </div>
                 <div class="form-group mb-3">

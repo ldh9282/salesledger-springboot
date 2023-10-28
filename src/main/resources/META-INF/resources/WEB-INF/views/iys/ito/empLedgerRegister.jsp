@@ -55,23 +55,23 @@
                         <hr>
                         <form id="empLedgerForm">
                             <div class="form-group mb-3">
-                                <label for="company">소속:</label>
+                                <label for="company">소속 <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="company" name="company" value="IYS" readonly>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="department">사업부서:</label>
+                                <label for="department">사업부서 <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="department" name="department" value="ITO" readonly>
                             </div>
                             <div class="form-group mb-3">
-                                <label for="site">사이트명:</label>
+                                <label for="site">사이트명 <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="site" name="site">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="client">진행업체:</label>
+                                <label for="client">진행업체 <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="client" name="client">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="project_name">프로젝트명:</label>
+                                <label for="project_name">프로젝트명 <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="project_name" name="project_name">
                             </div>
                             <div class="form-group mb-3">
@@ -79,31 +79,31 @@
                                 <input type="text" class="form-control" id="brief" name="brief">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="assign_date">투입일:</label>
+                                <label for="assign_date">투입일 <span class="text-danger">*</span> :</label>
                                 <input type="date" class="form-control" id="assign_date" name="assign_date">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="end_date">종료일:</label>
+                                <label for="end_date">종료일 <span class="text-danger">*</span> :</label>
                                 <input type="date" class="form-control" id="end_date" name="end_date">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="resign_date">철수날짜:</label>
+                                <label for="resign_date">철수날짜 <span class="text-danger">*</span> :</label>
                                 <input type="date" class="form-control" id="resign_date" name="resign_date">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="sales_mm">매출MM:</label>
+                                <label for="sales_mm">매출MM <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="sales_mm" name="sales_mm">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="purchase_mm">매입MM:</label>
+                                <label for="purchase_mm">매입MM <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="purchase_mm" name="purchase_mm">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="sales_unit">매출단가(원):</label>
+                                <label for="sales_unit">매출단가(원) <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="sales_unit" name="sales_unit" data-type="money">
                             </div>
                             <div class="form-group mb-3">
-                                <label for="purchase_unit">매입단가(원):</label>
+                                <label for="purchase_unit">매입단가(원) <span class="text-danger">*</span> :</label>
                                 <input type="text" class="form-control" id="purchase_unit" name="purchase_unit" data-type="money">
                             </div>
                             <div class="form-group mb-3">
