@@ -128,6 +128,16 @@
 
             // 인력 등록 버튼 클릭 이벤트
             $('#btnRegister').click(function () {
+            	// 필수값 체크
+            	if (!$('#name').val()) {
+            		$('#name').focus();
+            		alert('등록하려는 인력의 이름을 입력하셔야합니다');
+            		return;
+            	} else if (!$('#phonenumber').val()) {
+            		$('#phonenumber').focus();
+            		alert('등록하려는 인력의 전화번호를 입력하셔야합니다');
+            		return;
+            	}
                 const empPool = {
                     sourcing_manager: $('#sourcing_manager').val(),
                     name: $('#name').val(),

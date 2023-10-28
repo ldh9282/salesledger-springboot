@@ -204,6 +204,57 @@
         $(document).ready(function () {
             // 인력 투입예정 버튼 클릭 이벤트
             $('#btnExpectedInsert').click(function () {
+            	// 필수값 체크
+            	if (!$('#company').val()) {
+            		$('#company').focus();
+            		alert('투입예정하려는 인력의 소속을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#department').val()) {
+            		$('#department').focus();
+            		alert('투입예정하려는 인력의 사업부서를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#site').val()) {
+            		$('#site').focus();
+            		alert('투입예정하려는 인력의 사이트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#client').val()) {
+            		$('#client').focus();
+            		alert('투입예정하려는 인력의 진행업체(고객사)를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#project_name').val()) {
+            		$('#project_name').focus();
+            		alert('투입예정하려는 인력의 프로젝트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#assign_date').val()) {
+            		$('#assign_date').focus();
+            		alert('투입예정하려는 인력의 투입일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#end_date').val()) {
+            		$('#end_date').focus();
+            		alert('투입예정하려는 인력의 종료일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#resign_date').val()) {
+            		$('#resign_date').focus();
+            		alert('투입예정하려는 인력의 철수날짜를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_mm').val()) {
+            		$('#sales_mm').focus();
+            		alert('투입예정하려는 인력의 매출MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_mm').val()) {
+            		$('#purchase_mm').focus();
+            		alert('투입예정하려는 인력의 매입MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_unit').val()) {
+            		$('#sales_unit').focus();
+            		alert('투입예정하려는 인력의 매출단가 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_unit').val()) {
+            		$('#purchase_unit').focus();
+            		alert('투입예정하려는 인력의 매입단가을 입력해주셔야합니다');
+            		return;
+            	}
+            	
                 $.ajax({
                     type: "POST",
                     url: "${pageContext.request.contextPath}/empLedger.ajax",
