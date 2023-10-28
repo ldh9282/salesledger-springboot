@@ -117,7 +117,7 @@
                 
                 $.ajax({
                     type: 'PUT',
-                    url: '${pageContext.request.contextPath}/member.ajax/',
+                    url: '${pageContext.request.contextPath}/admin/member.ajax/',
                     data: JSON.stringify(member),
                     contentType: 'application/json',
                     success: function() {
@@ -141,7 +141,7 @@
                 } else {
                     $.ajax({
                         type: 'DELETE',
-                        url: '${pageContext.request.contextPath}/member.ajax/username/' + $('#username').val(),
+                        url: '${pageContext.request.contextPath}/admin/member.ajax/username/' + $('#username').val(),
                         success: function () {
                             opener.parent.location.reload();
                             window.close();

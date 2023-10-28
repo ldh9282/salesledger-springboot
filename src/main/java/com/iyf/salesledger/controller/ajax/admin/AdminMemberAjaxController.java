@@ -31,7 +31,7 @@ public class AdminMemberAjaxController {
 	 * @return 
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
-	@PutMapping("/member.ajax")
+	@PutMapping("/admin/member.ajax")
 	public void updateMember(@RequestBody Map<String, String> memberMap) {
 		if (log.isInfoEnabled()) {log.info("Start AdminMemberAjaxController.updateMember");}
 		if (log.isInfoEnabled()) {log.info("param ::: username ::: " + memberMap.get("username"));}
@@ -54,7 +54,7 @@ public class AdminMemberAjaxController {
 	 * @return 
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자')")
-	@DeleteMapping("/member.ajax/username/{username}")
+	@DeleteMapping("/admin/member.ajax/username/{username}")
 	public void deleteMember(@PathVariable String username) {
 		if (log.isInfoEnabled()) {log.info("Start AdminMemberAjaxController.deleteMember");}
 		if (log.isInfoEnabled()) {log.info("param ::: username ::: " + username);}
