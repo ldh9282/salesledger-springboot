@@ -205,21 +205,27 @@
                         name: 'project_assign',
                         width: 'auto',
                         align: 'center',
-                        filter: 'number'
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '소싱담당자',
                         name: 'sourcing_manager',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '이름',
                         name: 'name',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '전화번호',
@@ -227,70 +233,90 @@
                         width: 'auto',
                         align: 'center',
                         filter: 'select',
-                        
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '생년월일',
                         name: 'birthdate',
                         width: 'auto',
                         align: 'center',
-                        
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '이메일',
                         name: 'email',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                       	sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '주소',
                         name: 'address',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                    	sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학력',
                         name: 'education',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                    	sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학교명',
                         name: 'school_name',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                    	sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학과',
                         name: 'major',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
+                        
                     },
                     {
                         header: '경력',
                         name: 'career_years',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '분야',
                         name: 'career_field',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '등급',
                         name: 'career_level',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '희망단가',
@@ -300,7 +326,9 @@
                         filter: 'number',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        sortable: true,
+                        sortingType: 'desc'
                     },
 
                 ],
