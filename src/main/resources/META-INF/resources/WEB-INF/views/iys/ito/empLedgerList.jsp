@@ -475,18 +475,21 @@
                         name: 'assign_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
                     },
                     {
                         header: '종료일',
                         name: 'end_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
                     },
                     {
                         header: '철수날짜',
                         name: 'resign_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
                     },
                     {
                         header: '매출MM',
@@ -527,18 +530,22 @@
                         name: 'resume_submit_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
+                        
                     },
                     {
                         header: '개인계약일',
                         name: 'i_contract_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
                     },
                     {
                         header: '업체계약일',
                         name: 'c_contract_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select'
                     },
                     {
                         header: '특이사항',
@@ -546,6 +553,7 @@
                         width: 'auto',
                         align: 'center',
                         filter: 'select'
+                        
                     },
 
                 ],
