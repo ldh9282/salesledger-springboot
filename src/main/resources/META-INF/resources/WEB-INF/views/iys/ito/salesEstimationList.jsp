@@ -148,6 +148,9 @@
                     <!-- End 그리드에서 보여줄 필드 체크리스트-->
                 </div>
 
+                <div class="d-flex mt-5">
+                    <button type="button" class="btn btn-primary ms-2" id="btnManualBatch">매출추정 수동배치</button>
+                </div>
           
                 <div id="batchmonth-search" class="form-group mt-5" style="width: 80vw;">
 <!--                     <button type="button" id="btnShowRegisterPage" class="btn btn-primary">수기데이터 추가</button> -->
@@ -175,7 +178,9 @@
 
         $(document).ready(function () {
         	
-            
+        	const company = 'IYS';
+   			const department = 'ITO';
+   			
         	const currentDate = new Date();
 
         	// 년도와 월을 가져옵니다.
@@ -456,6 +461,30 @@
                 
 			});
 
+       		// 수동배치 클릭이벤트
+       		$('#btnManualBatch').click(function() {
+       			const batch_month = $('#year').text() + $('#month').text();
+       			console.log("company ::: " + company + " ::: " + "department ::: " + department + " ::: " + "batch_month ::: " + batch_month);
+       			
+       			if (!confirm(company + ' ' + department + ' 매출추정의 ' + $('#year').text() + '년 ' + $('#month').text() + '월' + ' 수동배치를 실행하시겠습니까?')) {
+       				return;	
+       			}
+       			
+       			$.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/salesEstimation.ajax/company/" + company + "/department/" + department + "/batch_month/" + batch_month,
+                    success: function() {
+                    	alert('배치실행이 정상적으로 수행되었습니다');
+                    	$('#keyword').val(batch_month);
+                    	$('#btnKeywordSearch').trigger('click');
+                    },
+                    error: function() {
+                        alert('배치실행이 실패하였습니다');
+                        $('#keyword').val(batch_month);
+                    	$('#btnKeywordSearch').trigger('click');
+                    }
+                });
+       		})
        		
        		// 사이드바 접을 때 그리드 리사이징
             $('i.toggle-sidebar-btn').click(function() {

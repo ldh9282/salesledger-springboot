@@ -18,4 +18,10 @@ public class SalesEstimationBatchServiceImpl implements SalesEstimationBatchServ
 		salesEstimationBatchDao.insert(company, department);
 	}
 
+	@Override @Transactional
+	public void manualSalesBatchByCompanyAndDepartment(String company, String department, String batch_month) {
+		salesEstimationBatchDao.deleteManual(company, department, batch_month);
+		salesEstimationBatchDao.insertManual(company, department, batch_month);
+	}
+
 }
