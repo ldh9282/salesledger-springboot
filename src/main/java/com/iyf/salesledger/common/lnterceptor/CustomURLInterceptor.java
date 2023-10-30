@@ -3,6 +3,7 @@ package com.iyf.salesledger.common.lnterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import lombok.extern.log4j.Log4j2;
@@ -10,13 +11,13 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CustomURLInterceptor implements HandlerInterceptor {
 
-	private static long startTime;
-	private static long endTime;
+	private ThreadLocal<Long> startTime = new NamedThreadLocal<>("startTime");
+	private ThreadLocal<Long> endTime = new NamedThreadLocal<>("endTime");
 	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-		startTime = System.currentTimeMillis();
+		startTime.set(System.currentTimeMillis());
 		
 		String url = request.getRequestURL().toString();
 		String queryString = request.getQueryString() == null ? "" : "?" + request.getQueryString();
@@ -43,14 +44,14 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 		String ip = request.getRemoteAddr().toString();
 		String session = request.getSession().getId();
 		
-		endTime = System.currentTimeMillis();
+		endTime.set(System.currentTimeMillis());
 		if (log.isInfoEnabled()
 				&& url.indexOf(request.getContextPath() + "/resources") == -1
 				&& url.indexOf(request.getContextPath() + "/error") == -1
 				) {
 			log.info("Start URLInterceptor.afterCompletion");
 			log.info("handler ::: " + handler + " ::: " + "remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session);
-			log.info("execution time  ::: " + (endTime - startTime) + "ms");
+			log.info("execution time  ::: " + (endTime.get() - startTime.get()) + "ms");
 			log.info("End URLInterceptor.afterCompletion");
 		}
 	}
