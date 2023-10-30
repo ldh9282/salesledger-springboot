@@ -61,11 +61,11 @@
                         >
                     </div>
                     <div class="form-group mb-3">
-                        <label for="name">이름:</label>
+                        <label for="name">이름 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="name" name="name">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="phonenumber">전화번호:</label>
+                        <label for="phonenumber">전화번호 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="phonenumber" name="phonenumber">
                     </div>
                     <div class="form-group mb-3">
@@ -148,7 +148,10 @@
                     // 생년월일 Formatting
                     const birthdate = new Date(empPool.birthdate);
                     empPool.birthdate = birthdate.getFullYear() + '-' + String(Number(birthdate.getMonth() + 1)).padStart(2, '0') + '-' + String(birthdate.getDate()).padStart(2, '0');
-
+					
+                    // 전화번호 Formatting
+                    empPool.phonenumber = empPool.phonenumber.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+                    
                     $('#emp_pool_id').val(empPool.emp_pool_id);
                     $('#sourcing_manager').val(empPool.sourcing_manager);
                     $('#name').val(empPool.name);
@@ -173,11 +176,23 @@
 
             // 수정 버튼 클릭 시 이벤트
             $('#btnUpdate').click(function() {
+            	
+            	// 필수값 체크
+            	if (!$('#name').val()) {
+            		$('#name').focus();
+            		alert('등록하려는 인력의 이름을 입력하셔야합니다');
+            		return;
+            	} else if (!$('#phonenumber').val()) {
+            		$('#phonenumber').focus();
+            		alert('등록하려는 인력의 전화번호를 입력하셔야합니다');
+            		return;
+            	}
+            	
                 const empPool = {
                     emp_pool_id: $('#emp_pool_id').val(),
                     sourcing_manager: $('#sourcing_manager').val(),
                     name: $('#name').val(),
-                    phonenumber: $('#phonenumber').val(),
+                    phonenumber: $('#phonenumber').val().replaceAll('-', ''),
                     email: $('#email').val(),
                     address: $('#address').val(),
                     education: $('#education').val(),
@@ -191,21 +206,35 @@
                     del: $('#del').val(),
                     hope_purchase_unit: $('input[name=hope_purchase_unit]').val().replaceAll(',', '') ? $('input[name=hope_purchase_unit]').val().replaceAll(',', '') : 0,
                 }
+                
                 $.ajax({
-                    type: 'PUT',
-                    url: '${pageContext.request.contextPath}/empPool.ajax/',
-                    data: JSON.stringify(empPool),
-                    contentType: 'application/json',
-                    success: function() {
-                        opener.parent.location.reload();
-                       	window.location.reload(); 
-                        
+                    type: 'GET',
+                    url: '${pageContext.request.contextPath}/empPool.ajax/name/' + empPool.name + '/phonenumber/' + empPool.phonenumber,
+                    success: function(theEmpPool) {
+                    	if (theEmpPool.emp_pool_id == empPool.emp_pool_id || !theEmpPool) {
+                            $.ajax({
+                                type: 'PUT',
+                                url: '${pageContext.request.contextPath}/empPool.ajax/',
+                                data: JSON.stringify(empPool),
+                                contentType: 'application/json',
+                                success: function() {
+                                	alert('인력 정보가 수정되었습니다')
+                                    opener.parent.location.reload();
+                                	window.close();
+                                    
+                                },
+                                error: function() {
+                                    opener.parent.location.reload();
+                                    window.close();
+                                }
+                            })            
+                        } else {
+                        	$('#phonenumber').focus();
+                            alert('성명과 전화번호가 같은 인력이 있습니다.');
+                        }                    	
                     },
-                    error: function() {
-                        opener.parent.location.reload();
-                        window.close();
-                    }
                 })
+                
             });
 
             
@@ -245,6 +274,24 @@
                 let formattedValue = value.toLocaleString('ko-KR');
                 e.target.value = formattedValue;
                 
+            });
+            
+            // 전화번호 010-xxxx-xxxx 디스플레이
+            $('#phonenumber').keyup(function(e) {
+				const input = $(this);
+				let value = input.val().replace(/\D/g, ''); // 숫자만 추출
+				
+				if (value.length > 10) {
+				  // 입력된 번호가 11자리 이상이라면 11자리까지만 유효한 값으로 간주
+				  value = value.substring(0, 11);
+				}
+				
+				if (value.length >= 3 && value.length <= 11) {
+				  // 전화번호 형식에 따라 포맷팅
+				  value = value.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+				}
+				
+				input.val(value);
             });
             
             $('#btnDelete').tooltip();

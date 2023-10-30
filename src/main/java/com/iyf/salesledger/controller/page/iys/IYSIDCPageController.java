@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.iys;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IYSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/idc/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSIDCPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/idc/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYSIDCPageController.showEmpLedgerListPage");}
 		return "iys/idc/empLedgerList";
@@ -26,8 +33,14 @@ public class IYSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/idc/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSIDCPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/idc/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYSIDCPageController.showEmpLedgerRegisterPage");}
 		return "iys/idc/empLedgerRegister";
@@ -39,8 +52,12 @@ public class IYSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/idc/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSIDCPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/idc/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYSIDCPageController.showEmpLedgerDetailPage");}
 		return "iys/idc/empLedgerDetail";

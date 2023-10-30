@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.ibts;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerListPage");}
 		return "ibts/ito/empLedgerList";
@@ -26,8 +33,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerRegisterPage");}
 		return "ibts/ito/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showEmpLedgerDetailPage");}
 		return "ibts/ito/empLedgerDetail";

@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.iycnc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showEmpLedgerListPage");}
 		return "iycnc/conversion/empLedgerList";
@@ -26,8 +33,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showEmpLedgerRegisterPage");}
 		return "iycnc/conversion/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showEmpLedgerDetailPage");}
 		return "iycnc/conversion/empLedgerDetail";

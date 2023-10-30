@@ -141,7 +141,7 @@
                 const empPool = {
                     sourcing_manager: $('#sourcing_manager').val(),
                     name: $('#name').val(),
-                    phonenumber: $('#phonenumber').val(),
+                    phonenumber: $('#phonenumber').val().replaceAll('-', ''),
                     birthdate: new Date($('#birthdate').val()),
                     email: $('#email').val(),
                     address: $('#address').val(),
@@ -174,7 +174,7 @@
                                 }
                             });            
                         } else {
-
+                            $('#phonenumber').focus();
                             alert('성명과 전화번호가 같은 인력이 있습니다.');
                         }
                     }
@@ -194,6 +194,24 @@
                 let formattedValue = value.toLocaleString('ko-KR');
                 e.target.value = formattedValue;
                 
+            });
+       		
+            // 전화번호 010-xxxx-xxxx 디스플레이
+            $('#phonenumber').keyup(function(e) {
+				const input = $(this);
+				let value = input.val().replace(/\D/g, ''); // 숫자만 추출
+				
+				if (value.length > 10) {
+				  // 입력된 번호가 11자리 이상이라면 11자리까지만 유효한 값으로 간주
+				  value = value.substring(0, 11);
+				}
+				
+				if (value.length >= 3 && value.length <= 11) {
+				  // 전화번호 형식에 따라 포맷팅
+				  value = value.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+				}
+				
+				input.val(value);
             });
         });
 

@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.iys;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IYSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/ito/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSITOPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/ito/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYSITOPageController.showEmpLedgerListPage");}
 		return "iys/ito/empLedgerList";
@@ -26,8 +33,14 @@ public class IYSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/ito/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSITOPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/ito/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYSITOPageController.showEmpLedgerRegisterPage");}
 		return "iys/ito/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IYSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/ito/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSITOPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/ito/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYSITOPageController.showEmpLedgerDetailPage");}
 		return "iys/ito/empLedgerDetail";

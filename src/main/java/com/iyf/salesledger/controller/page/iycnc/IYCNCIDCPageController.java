@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.iycnc;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerListPage");}
 		return "iycnc/idc/empLedgerList";
@@ -26,8 +33,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerRegisterPage");}
 		return "iycnc/idc/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showEmpLedgerDetailPage");}
 		return "iycnc/idc/empLedgerDetail";

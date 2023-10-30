@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.ibts;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IBTSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerListPage");}
 		return "ibts/conversion/empLedgerList";
@@ -26,8 +33,14 @@ public class IBTSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerRegisterPage");}
 		return "ibts/conversion/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IBTSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/conversion/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSCONVERSIONPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/conversion/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IBTSCONVERSIONPageController.showEmpLedgerDetailPage");}
 		return "ibts/conversion/empLedgerDetail";

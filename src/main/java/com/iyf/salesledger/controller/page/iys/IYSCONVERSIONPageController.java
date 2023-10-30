@@ -2,6 +2,8 @@ package com.iyf.salesledger.controller.page.iys;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +16,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerListPage");}
 		return "iys/conversion/empLedgerList";
@@ -26,8 +34,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerRegisterPage");}
 		return "iys/conversion/empLedgerRegister";
@@ -38,8 +52,12 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showEmpLedgerDetailPage");}
 		return "iys/conversion/empLedgerDetail";

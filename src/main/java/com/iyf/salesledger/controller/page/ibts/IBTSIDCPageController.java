@@ -2,6 +2,7 @@ package com.iyf.salesledger.controller.page.ibts;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import lombok.extern.log4j.Log4j2;
@@ -14,8 +15,14 @@ public class IBTSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/idc/empLedgerList")
-	public String showEmpLedgerListPage() {
+	public String showEmpLedgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSIDCPageController.showEmpLedgerListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/idc/empLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSIDCPageController.showEmpLedgerListPage");}
 		return "ibts/idc/empLedgerList";
@@ -26,8 +33,14 @@ public class IBTSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/idc/empLedgerRegister")
-	public String showEmpLedgerRegisterPage() {
+	public String showEmpLedgerRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSIDCPageController.showEmpLedgerRegisterPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/idc/empLedgerRegister");}
 		if (log.isInfoEnabled()) {log.info("End IBTSIDCPageController.showEmpLedgerRegisterPage");}
 		return "ibts/idc/empLedgerRegister";
@@ -38,8 +51,12 @@ public class IBTSIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/idc/empLedgerDetail")
-	public String showEmpLedgerDetailPage() {
+	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSIDCPageController.showEmpLedgerDetailPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/idc/empLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IBTSIDCPageController.showEmpLedgerDetailPage");}
 		return "ibts/idc/empLedgerDetail";
