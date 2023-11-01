@@ -54,7 +54,9 @@ public class IBTSITOPageController {
 	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showEmpLedgerDetailPage");}
 		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
 		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
 		modelMap.addAttribute("department_kr", "ITO");
 		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/empLedgerDetail");}
@@ -67,8 +69,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesLedgerList")
-	public String showSalesledgerListPage() {
+	public String showSalesledgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesledgerListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesledgerListPage");}
 		return "ibts/ito/salesLedgerList";
@@ -79,8 +87,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesLedgerDetail")
-	public String showSalesledgerDetailPage() {
+	public String showSalesledgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesledgerDetailPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesledgerDetailPage");}
 		return "ibts/ito/salesLedgerDetail";
@@ -91,8 +105,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultList")
-	public String showSalesResultListPage() {
+	public String showSalesResultListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultListPage");}
 		return "ibts/ito/salesResultList";
@@ -104,8 +124,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultRegister")
-	public String showSalesResultRegisterPage() {
+	public String showSalesResultRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultRegisterPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultRegister");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultRegisterPage");}
 		return "ibts/ito/salesResultRegister";
@@ -118,8 +144,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesResultDetail")
-	public String showSalesResultDetailPage() {
+	public String showSalesResultDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesResultDetailPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesResultDetail");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesResultDetailPage");}
 		return "ibts/ito/salesResultDetail";
@@ -130,8 +162,14 @@ public class IBTSITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IBTS 관리자')")
 	@GetMapping("/ibts/ito/salesEstimationList")
-	public String showSalesEstimationListPage() {
+	public String showSalesEstimationListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IBTSITOPageController.showSalesEstimationListPage");}
+		modelMap.addAttribute("company", "IBTS");
+		modelMap.addAttribute("company_lower", "ibts");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "ibts/ito/salesEstimationList");}
 		if (log.isInfoEnabled()) {log.info("End IBTSITOPageController.showSalesEstimationListPage");}
 		return "ibts/ito/salesEstimationList";

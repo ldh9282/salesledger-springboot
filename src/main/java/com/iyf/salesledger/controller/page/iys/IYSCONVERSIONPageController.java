@@ -55,7 +55,9 @@ public class IYSCONVERSIONPageController {
 	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showEmpLedgerDetailPage");}
 		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
 		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
 		modelMap.addAttribute("department_kr", "컨버전스");
 		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/empLedgerDetail");}
@@ -68,8 +70,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesLedgerList")
-	public String showSalesledgerListPage() {
+	public String showSalesledgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesledgerListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesledgerListPage");}
 		return "iys/conversion/salesLedgerList";
@@ -80,8 +88,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesLedgerDetail")
-	public String showSalesledgerDetailPage() {
+	public String showSalesledgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesledgerDetailPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesledgerDetailPage");}
 		return "iys/conversion/salesLedgerDetail";
@@ -92,8 +106,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesResultList")
-	public String showSalesResultListPage() {
+	public String showSalesResultListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesResultListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesResultList");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesResultListPage");}
 		return "iys/conversion/salesResultList";
@@ -105,8 +125,14 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesResultRegister")
-	public String showSalesResultRegisterPage() {
+	public String showSalesResultRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesResultRegisterPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesResultRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesResultRegisterPage");}
 		return "iys/conversion/salesResultRegister";
@@ -131,8 +157,13 @@ public class IYSCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYS 관리자')")
 	@GetMapping("/iys/conversion/salesEstimationList")
-	public String showSalesEstimationListPage() {
+	public String showSalesEstimationListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYSCONVERSIONPageController.showSalesEstimationListPage");}
+		modelMap.addAttribute("company", "IYS");
+		modelMap.addAttribute("company_lower", "iys");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iys/conversion/salesEstimationList");}
 		if (log.isInfoEnabled()) {log.info("End IYSCONVERSIONPageController.showSalesEstimationListPage");}
 		return "iys/conversion/salesEstimationList";

@@ -54,7 +54,9 @@ public class IYCNCIDCPageController {
 	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showEmpLedgerDetailPage");}
 		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
 		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
 		modelMap.addAttribute("department_kr", "IDC");
 		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/empLedgerDetail");}
@@ -67,8 +69,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesLedgerList")
-	public String showSalesledgerListPage() {
+	public String showSalesledgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesledgerListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesledgerListPage");}
 		return "iycnc/idc/salesLedgerList";
@@ -79,8 +87,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesLedgerDetail")
-	public String showSalesledgerDetailPage() {
+	public String showSalesledgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesledgerDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesledgerDetailPage");}
 		return "iycnc/idc/salesLedgerDetail";
@@ -91,8 +105,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultList")
-	public String showSalesResultListPage() {
+	public String showSalesResultListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultListPage");}
 		return "iycnc/idc/salesResultList";
@@ -104,8 +124,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultRegister")
-	public String showSalesResultRegisterPage() {
+	public String showSalesResultRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultRegisterPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultRegisterPage");}
 		return "iycnc/idc/salesResultRegister";
@@ -118,8 +144,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesResultDetail")
-	public String showSalesResultDetailPage() {
+	public String showSalesResultDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesResultDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesResultDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesResultDetailPage");}
 		return "iycnc/idc/salesResultDetail";
@@ -130,8 +162,14 @@ public class IYCNCIDCPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/idc/salesEstimationList")
-	public String showSalesEstimationListPage() {
+	public String showSalesEstimationListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCIDCPageController.showSalesEstimationListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "IDC");
+		modelMap.addAttribute("department_lower", "idc");
+		modelMap.addAttribute("department_kr", "IDC");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/idc/salesEstimationList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCIDCPageController.showSalesEstimationListPage");}
 		return "iycnc/idc/salesEstimationList";

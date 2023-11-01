@@ -54,7 +54,9 @@ public class IYCNCCONVERSIONPageController {
 	public String showEmpLedgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showEmpLedgerDetailPage");}
 		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
 		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
 		modelMap.addAttribute("department_kr", "컨버전스");
 		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/empLedgerDetail");}
@@ -67,8 +69,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesLedgerList")
-	public String showSalesledgerListPage() {
+	public String showSalesledgerListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesledgerListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesLedgerList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesledgerListPage");}
 		return "iycnc/conversion/salesLedgerList";
@@ -79,8 +87,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesLedgerDetail")
-	public String showSalesledgerDetailPage() {
+	public String showSalesledgerDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesledgerDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesLedgerDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesledgerDetailPage");}
 		return "iycnc/conversion/salesLedgerDetail";
@@ -91,8 +105,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesResultList")
-	public String showSalesResultListPage() {
+	public String showSalesResultListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesResultListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesResultList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesResultListPage");}
 		return "iycnc/conversion/salesResultList";
@@ -104,8 +124,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesResultRegister")
-	public String showSalesResultRegisterPage() {
+	public String showSalesResultRegisterPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesResultRegisterPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesResultRegister");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesResultRegisterPage");}
 		return "iycnc/conversion/salesResultRegister";
@@ -118,8 +144,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesResultDetail")
-	public String showSalesResultDetailPage() {
+	public String showSalesResultDetailPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesResultDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesResultDetail");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesResultDetailPage");}
 		return "iycnc/conversion/salesResultDetail";
@@ -130,8 +162,14 @@ public class IYCNCCONVERSIONPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/conversion/salesEstimationList")
-	public String showSalesEstimationListPage() {
+	public String showSalesEstimationListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCCONVERSIONPageController.showSalesEstimationListPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "CONVERSION");
+		modelMap.addAttribute("department_lower", "conversion");
+		modelMap.addAttribute("department_kr", "컨버전스");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/conversion/salesEstimationList");}
 		if (log.isInfoEnabled()) {log.info("End IYCNCCONVERSIONPageController.showSalesEstimationListPage");}
 		return "iycnc/conversion/salesEstimationList";

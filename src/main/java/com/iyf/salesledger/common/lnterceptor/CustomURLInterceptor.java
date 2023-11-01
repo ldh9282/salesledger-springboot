@@ -27,11 +27,11 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 				&& url.indexOf(request.getContextPath() + "/resources") == -1
 				&& url.indexOf(request.getContextPath() + "/error") == -1
 				) {
-			log.info("Start URLInterceptor.preHandle");
+			log.info("Start CustomURLInterceptor.preHandle");
 			log.info("request ::: url ::: " + url + queryString);
 			log.info("request ::: method ::: " + method);
 			log.info("response ::: status ::: " + response.getStatus());
-			log.info("End URLInterceptor.preHandle");
+			log.info("End CustomURLInterceptor.preHandle");
 		}
 		
 		return true;
@@ -49,10 +49,10 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 				&& url.indexOf(request.getContextPath() + "/resources") == -1
 				&& url.indexOf(request.getContextPath() + "/error") == -1
 				) {
-			log.info("Start URLInterceptor.afterCompletion");
+			log.info("Start CustomURLInterceptor.afterCompletion");
 			log.info("handler ::: " + handler + " ::: " + "remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session);
 			log.info("execution time  ::: " + (endTime.get() - startTime.get()) + "ms");
-			log.info("End URLInterceptor.afterCompletion");
+			log.info("End CustomURLInterceptor.afterCompletion");
 		}
 	}
 
