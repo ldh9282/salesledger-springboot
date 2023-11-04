@@ -238,6 +238,7 @@
                         }
                     }),
                     success: function() {
+                    	alert('해당 인력의 투입예정되었습니다. 투입을 확정시키면 매출원장에 등록이 됩니다')
                         opener.parent.location.reload();
                         window.close();
                     },

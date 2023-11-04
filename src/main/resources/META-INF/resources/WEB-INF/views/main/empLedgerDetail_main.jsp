@@ -13,7 +13,7 @@
                 <h1>${company} ${department_kr} 인력기초원장 상세 페이지</h1>
                 <form id="empLedgerForm">
                     <div class="form-group mb-3">
-                        <label for="progress">진행:</label>
+                        <label for="progress">진행 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="progress" name="progress" readonly>
                     </div>
                     
@@ -22,24 +22,24 @@
                         <input type="text" class="form-control" id="progress_reason" name="progress_reason">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="company">소속:</label>
+                        <label for="company">소속 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="company" name="company" value="${company}" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="department">사업부서:</label>
+                        <label for="department">사업부서 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="display-department" name="display-department" value="${department_kr}" readonly>
                         <input type="hidden" class="form-control" id="department" name="department" value="${department}">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="site">사이트명:</label>
+                        <label for="site">사이트명: <span class="text-danger">*</span> </label>
                         <input type="text" class="form-control" id="site" name="site">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="client">진행업체:</label>
+                        <label for="client">진행업체 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="client" name="client">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="project_name">프로젝트명:</label>
+                        <label for="project_name">프로젝트명 <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="project_name" name="project_name">
                     </div>
                     <div class="form-group mb-3">
@@ -52,12 +52,12 @@
                         <input type="text" class="form-control" id="sourcing_manager" name="sourcing_manager">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="name">이름:</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <label for="name">이름 <span class="text-danger">*</span> :</label>
+                        <input type="text" class="form-control" id="name" name="name" readonly>
                     </div>
                     <div class="form-group mb-3">
-                        <label for="phoneNumber">전화번호:</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber">
+                        <label for="phoneNumber">전화번호 <span class="text-danger">*</span> :</label>
+                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="birthdate">생년월일:</label>
@@ -110,31 +110,31 @@
                     </div>
                		<hr>
                     <div class="form-group mb-3">
-                        <label for="assign_date">투입일:</label>
+                        <label for="assign_date">투입일 <span class="text-danger">*</span> :</label>
                         <input type="date" class="form-control" id="assign_date" name="assign_date">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="end_date">종료일:</label>
+                        <label for="end_date">종료일 <span class="text-danger">*</span> :</label>
                         <input type="date" class="form-control" id="end_date" name="end_date">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="resign_date">철수날짜:</label>
+                        <label for="resign_date">철수날짜 <span class="text-danger">*</span> :</label>
                         <input type="date" class="form-control" id="resign_date" name="resign_date">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="sales_mm">매출MM:</label>
+                        <label for="sales_mm">매출MM <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="sales_mm" name="sales_mm">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="purchase_mm">매입MM:</label>
+                        <label for="purchase_mm">매입MM <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="purchase_mm" name="purchase_mm">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="sales_unit">매출단가(원):</label>
+                        <label for="sales_unit">매출단가(원) <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="sales_unit" name="sales_unit" data-type="money">
                     </div>
                     <div class="form-group mb-3">
-                        <label for="purchase_unit">매입단가(원):</label>
+                        <label for="purchase_unit">매입단가(원) <span class="text-danger">*</span> :</label>
                         <input type="text" class="form-control" id="purchase_unit" name="purchase_unit" data-type="money">
                     </div>
                     <div class="form-group mb-3">
@@ -290,94 +290,147 @@
                 const emp_id = $('#emp_id').val();
                 const progress = '투입'
                	const progress_reason = $('#progress_reason').val();
+				
+            	// 필수값 체크
+            	if (!$('#company').val()) {
+            		$('#company').focus();
+            		alert('인력의 소속을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#department').val()) {
+            		$('#department').focus();
+            		alert('인력의 사업부서를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#site').val()) {
+            		$('#site').focus();
+            		alert('인력의 사이트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#client').val()) {
+            		$('#client').focus();
+            		alert('인력의 진행업체(고객사)를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#project_name').val()) {
+            		$('#project_name').focus();
+            		alert('인력의 프로젝트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#assign_date').val()) {
+            		$('#assign_date').focus();
+            		alert('인력의 투입일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#end_date').val()) {
+            		$('#end_date').focus();
+            		alert('인력의 종료일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#resign_date').val()) {
+            		$('#resign_date').focus();
+            		alert('인력의 철수날짜를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_mm').val()) {
+            		$('#sales_mm').focus();
+            		alert('인력의 매출MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_mm').val()) {
+            		$('#purchase_mm').focus();
+            		alert('인력의 매입MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_unit').val()) {
+            		$('#sales_unit').focus();
+            		alert('인력의 매출단가 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_unit').val()) {
+            		$('#purchase_unit').focus();
+            		alert('인력의 매입단가을 입력해주셔야합니다');
+            		return;
+            	}
+               	const jsonObject = {
+                       "empLedger": {
+                           "emp_id": $('input[name=emp_id]').val(),
+                           "emp_pool_id": $('input[name=emp_pool_id]').val(),
+                           "client_id": $('input[name=client_id]').val(),
+                           "company": $('input[name=company]').val(),
+                           "department": $('input[name=department]').val(),
+                           "assign_date": new Date($('input[name=assign_date]').val()),
+                           "end_date": new Date($('input[name=end_date]').val()),
+                           "sales_mm": $('input[name=sales_mm]').val() ? $('input[name=sales_mm]').val() : 0,
+                           "purchase_mm": $('input[name=purchase_mm]').val() ? $('input[name=purchase_mm]').val() : 0,
+                           "sales_unit": $('input[name=sales_unit]').val().replaceAll(',', '') ? $('input[name=sales_unit]').val().replaceAll(',', '') : 0,
+                           "purchase_unit": $('input[name=purchase_unit]').val().replaceAll(',', '') ? $('input[name=purchase_unit]').val().replaceAll(',', '') : 0,
+                           "comments": $('input[name=comments]').val(),
+                           "resume_submit_date": new Date($('input[name=resume_submit_date]').val()),
+                           "resign_date": new Date($('input[name=resign_date]').val()),
+                           "i_contract_date": new Date($('input[name=i_contract_date]').val()),
+                           "c_contract_date": new Date($('input[name=c_contract_date]').val()),
+                           "progress": $('input[name=progress]').val(),
+                           "progress_reason": $('input[name=progress_reason]').val(),
+                           "issues": $('input[name=issues]').val(),
+                           "include": $('input[name=include]').val(),
+                           "site": $('input[name=site]').val(),
+                           "client": $('input[name=client]').val(),
+                           "project_name": $('input[name=project_name]').val(),
+                           "brief": $('input[name=brief]').val(),
+                       },
+                       "empPool": {
+                           "sourcing_manager": $('input[name=sourcing_manager]').val(),
+                           "name": $('input[name=name]').val(),
+                           "phonenumber": $('input[name=phonenumber]').val(),
+                           "birthdate": new Date($('input[name=birthdate]').val()),
+                           "email": $('input[name=email]').val(),
+                           "address": $('input[name=address]').val(),
+                           "education": $('select[name=education]').val(),
+                           "school_name": $('input[name=school_name]').val(),
+                           "major": $('input[name=major]').val(),
+                           "career_years": $('input[name=career_years]').val(),
+                           "career_field": $('input[name=career_field]').val(),
+                           "career_level": $('select[name=career_level]').val(),
+                           "project_assign": $('input[name=project_assign]').val(),
+                           "del": $('input[name=del]').val(),
+                           "hope_purchase_unit": $('input[name=hope_purchase_unit]').val(),
+                       }
+                   }
+                	
+                $.ajax({
+                    type: "PUT",
+                    url: "${pageContext.request.contextPath}/empLedger.ajax",
+                    contentType: "application/json",
+                    data: JSON.stringify(jsonObject),
+                    success: function () {
 
-                	const jsonObject = {
-                        "empLedger": {
-                            "emp_id": $('input[name=emp_id]').val(),
-                            "emp_pool_id": $('input[name=emp_pool_id]').val(),
-                            "client_id": $('input[name=client_id]').val(),
-                            "company": $('input[name=company]').val(),
-                            "department": $('input[name=department]').val(),
-                            "assign_date": new Date($('input[name=assign_date]').val()),
-                            "end_date": new Date($('input[name=end_date]').val()),
-                            "sales_mm": $('input[name=sales_mm]').val() ? $('input[name=sales_mm]').val() : 0,
-                            "purchase_mm": $('input[name=purchase_mm]').val() ? $('input[name=purchase_mm]').val() : 0,
-                            "sales_unit": $('input[name=sales_unit]').val().replaceAll(',', '') ? $('input[name=sales_unit]').val().replaceAll(',', '') : 0,
-                            "purchase_unit": $('input[name=purchase_unit]').val().replaceAll(',', '') ? $('input[name=purchase_unit]').val().replaceAll(',', '') : 0,
-                            "comments": $('input[name=comments]').val(),
-                            "resume_submit_date": new Date($('input[name=resume_submit_date]').val()),
-                            "resign_date": new Date($('input[name=resign_date]').val()),
-                            "i_contract_date": new Date($('input[name=i_contract_date]').val()),
-                            "c_contract_date": new Date($('input[name=c_contract_date]').val()),
-                            "progress": $('input[name=progress]').val(),
-                            "progress_reason": $('input[name=progress_reason]').val(),
-                            "issues": $('input[name=issues]').val(),
-                            "include": $('input[name=include]').val(),
-                            "site": $('input[name=site]').val(),
-                            "client": $('input[name=client]').val(),
-                            "project_name": $('input[name=project_name]').val(),
-                            "brief": $('input[name=brief]').val(),
-                        },
-                        "empPool": {
-                            "sourcing_manager": $('input[name=sourcing_manager]').val(),
-                            "name": $('input[name=name]').val(),
-                            "phonenumber": $('input[name=phonenumber]').val(),
-                            "birthdate": new Date($('input[name=birthdate]').val()),
-                            "email": $('input[name=email]').val(),
-                            "address": $('input[name=address]').val(),
-                            "education": $('select[name=education]').val(),
-                            "school_name": $('input[name=school_name]').val(),
-                            "major": $('input[name=major]').val(),
-                            "career_years": $('input[name=career_years]').val(),
-                            "career_field": $('input[name=career_field]').val(),
-                            "career_level": $('select[name=career_level]').val(),
-                            "project_assign": $('input[name=project_assign]').val(),
-                            "del": $('input[name=del]').val(),
-                            "hope_purchase_unit": $('input[name=hope_purchase_unit]').val(),
-                        }
+                        $.ajax({
+                            type: 'PATCH',
+                            url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
+                            success: function () {
+                                alert('해당 인력의 투입이 확정이 되어 매출원장에 등록되었습니다')
+                                if (progress_reason) {
+                                    $.ajax({
+                                        type: 'PATCH',
+                                        url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
+                                        success: function () {
+
+                                            opener.parent.location.reload()
+                                            window.location.reload()
+                                        },
+                                        error: function () {
+                                            opener.parent.location.reload()
+                                            window.close()
+                                        }
+                                    })
+                                } else {
+                                    opener.parent.location.reload()
+                                    window.close()
+                                }
+
+                            },
+                            error: function () {
+
+                            }
+                        })
+                    },
+                    error: function () {
+                        opener.parent.location.reload()
+                        window.close()
                     }
-                 	
-                    $.ajax({
-                        type: "PUT",
-                        url: "${pageContext.request.contextPath}/empLedger.ajax",
-                        contentType: "application/json",
-                        data: JSON.stringify(jsonObject),
-                        success: function() {
-     	            	   $.ajax({
-     	                       type: 'PATCH',
-     	                       url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
-     	                       success: function() {
-	     	                       	if (progress_reason) {
-		     	                       	$.ajax({
-		   	                               type: 'PATCH',
-		   	                               url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
-		   	                               success: function() {
-		   	                                   opener.parent.location.reload();
-		   	                                   window.location.reload();
-		   	                               },
-		   	                               error: function() {
-		   	                                   opener.parent.location.reload();
-		   	                                   window.close();
-		   	                               }
-		   	                           });
-									} else {
-										opener.parent.location.reload();
-	                                    window.close();
-									}
-     	                       	
-     	                       },
-     	                       error: function() {
-     	                           
-     	                       }
-     	                   });
-                        },
-                        error: function() {
-                            opener.parent.location.reload();
-                            window.close();
-                        }
-                    });
+                })
 
-                
+
             })
 
             $('#btnDrop').click(function() {
@@ -389,6 +442,7 @@
                     type: 'PATCH',
                     url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
                     success: function() {
+                       	alert('해당 인력의 투입을 드랍하였습니다')
 	                    if (progress_reason) {
 	                        $.ajax({
 	                            type: 'PATCH',
@@ -420,7 +474,57 @@
 
 
             $('#btnUpdate').click(function(){
-                
+            	// 필수값 체크
+            	if (!$('#company').val()) {
+            		$('#company').focus();
+            		alert('인력의 소속을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#department').val()) {
+            		$('#department').focus();
+            		alert('인력의 사업부서를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#site').val()) {
+            		$('#site').focus();
+            		alert('인력의 사이트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#client').val()) {
+            		$('#client').focus();
+            		alert('인력의 진행업체(고객사)를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#project_name').val()) {
+            		$('#project_name').focus();
+            		alert('인력의 프로젝트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#assign_date').val()) {
+            		$('#assign_date').focus();
+            		alert('인력의 투입일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#end_date').val()) {
+            		$('#end_date').focus();
+            		alert('인력의 종료일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#resign_date').val()) {
+            		$('#resign_date').focus();
+            		alert('인력의 철수날짜를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_mm').val()) {
+            		$('#sales_mm').focus();
+            		alert('인력의 매출MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_mm').val()) {
+            		$('#purchase_mm').focus();
+            		alert('인력의 매입MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_unit').val()) {
+            		$('#sales_unit').focus();
+            		alert('인력의 매출단가 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_unit').val()) {
+            		$('#purchase_unit').focus();
+            		alert('인력의 매입단가을 입력해주셔야합니다');
+            		return;
+            	}
+            	
                 const jsonObject = {
                     "empLedger": {
                         "emp_id": $('input[name=emp_id]').val(),
@@ -472,6 +576,7 @@
                     contentType: "application/json",
                     data: JSON.stringify(jsonObject),
                     success: function() {
+                    	alert('해당 인력원장 정보를 수정하였습니다')
                         opener.parent.location.reload();
                         window.location.reload();
                     },
@@ -491,6 +596,7 @@
                         type: 'PATCH',
                         url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/del/' + del,
                         success: function () {
+                        	alert('해당 인력원장 정보를 삭제하였습니다')
                             opener.parent.location.reload();
                             window.close();
                         },
@@ -507,11 +613,12 @@
             $('#btnForceDelete').click(function () {
             	const emp_id = $('#emp_id').val();
                 const del = 'Y';
-                if (confirm("강제삭제 시 인력기초원장 뿐만 아니라 연관된 매출원장의 데이터도 함께 삭제됩니다. 정말로 강제삭제하겠습니까?")) {
+                if (confirm("강제삭제 시 인력원장 뿐만 아니라 연관된 매출원장의 데이터도 함께 삭제됩니다. 정말로 강제삭제하겠습니까?")) {
                 	$.ajax({
     					type: 'PATCH',
     					url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/ForceDel/' + del,
     					success: function () {
+    						alert('해당 인력의 인력원장 및 매출원장 데이터를 강제삭제하였습니다')
                             opener.parent.location.reload();
                             window.close();
                         },
@@ -532,12 +639,58 @@
             	const progress = '철수';
             	const progress_reason = $('#progress_reason').val();
             	
-            	if (!$('input[name=resign_date]').val()) {
-            		alert('철수 날짜를 입력해주세요');
-					return;
-				}
+            	// 필수값 체크
+            	if (!$('#company').val()) {
+            		$('#company').focus();
+            		alert('인력의 소속을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#department').val()) {
+            		$('#department').focus();
+            		alert('인력의 사업부서를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#site').val()) {
+            		$('#site').focus();
+            		alert('인력의 사이트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#client').val()) {
+            		$('#client').focus();
+            		alert('인력의 진행업체(고객사)를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#project_name').val()) {
+            		$('#project_name').focus();
+            		alert('인력의 프로젝트명을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#assign_date').val()) {
+            		$('#assign_date').focus();
+            		alert('인력의 투입일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#end_date').val()) {
+            		$('#end_date').focus();
+            		alert('인력의 종료일을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#resign_date').val()) {
+            		$('#resign_date').focus();
+            		alert('인력의 철수날짜를 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_mm').val()) {
+            		$('#sales_mm').focus();
+            		alert('인력의 매출MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_mm').val()) {
+            		$('#purchase_mm').focus();
+            		alert('인력의 매입MM을 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#sales_unit').val()) {
+            		$('#sales_unit').focus();
+            		alert('인력의 매출단가 입력해주셔야합니다');
+            		return;
+            	} else if (!$('#purchase_unit').val()) {
+            		$('#purchase_unit').focus();
+            		alert('인력의 매입단가을 입력해주셔야합니다');
+            		return;
+            	}
             	
-            	if (!confirm('해당인력의 철수 날짜가 ' + $('input[name=resign_date]').val() + '이 맞습니까?')) {
+            	if (!confirm('해당 인력의 철수 날짜가 ' + $('input[name=resign_date]').val() + '이 맞습니까?')) {
             		alert('철수 날짜를 수정해주세요');
             		return;
 				}
@@ -598,11 +751,13 @@
 	                       type: 'PATCH',
 	                       url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
 	                       success: function() {
+	                    	   alert('해당 인력을 철수하였습니다')
 	                    	   if (progress_reason) {
 	     	                       	$.ajax({
 	   	                               type: 'PATCH',
 	   	                               url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
 	   	                               success: function() {
+	   	                            	   
 	   	                                   opener.parent.location.reload();
 	   	                                   window.location.reload();
 	   	                               },

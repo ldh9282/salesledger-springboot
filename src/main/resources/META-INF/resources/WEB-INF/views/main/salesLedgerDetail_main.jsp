@@ -56,11 +56,11 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="name">이름:</label>
-                        <input type="text" class="form-control" id="name" name="name">
+                        <input type="text" class="form-control" id="name" name="name" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="phonenumber">전화번호:</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber">
+                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" readonly>
                     </div>
                     <div class="form-group mb-3">
                         <label for="birthdate">생년월일:</label>
@@ -386,6 +386,7 @@
 	                contentType: "application/json",
 	                data: JSON.stringify(jsonObject),
 	                success: function() {
+	                	alert('해당 인력의 매출원장을 수정하였습니다')
 	                    opener.parent.location.reload();
 	                    window.location.reload();
 	                },
