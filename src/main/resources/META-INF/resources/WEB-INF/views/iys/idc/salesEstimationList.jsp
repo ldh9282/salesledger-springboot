@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/icon/favicon.ico">
-    <title>IYS 컨버전스 용역 매출 현황 [매출추정]: IYF 영업관리시스템</title>
+    <title>${company} ${department_kr} 용역 매출 현황 [매출추정]: IYF 영업관리시스템</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -59,7 +59,7 @@
     <!-- End Sidebar-->
 
     <!-- ======= Main ======= -->
-	<jsp:include page="/WEB-INF/views/main/salesEstimation_main.jsp"></jsp:include>
+	<jsp:include page="/WEB-INF/views/main/salesEstimationList_main.jsp"></jsp:include>
     <!-- End Main-->
     
     <!-- ======= Footer ======= -->

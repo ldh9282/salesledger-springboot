@@ -365,160 +365,234 @@
                         name: 'include',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '진행',
                         name: 'progress',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '진행사유',
                         name: 'progress_reason',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '소속',
                         name: 'company',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '사업부서',
                         name: 'department',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '사이트',
                         name: 'site',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '진행업체',
                         name: 'client',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '프로젝트명',
                         name: 'project_name',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '적요란',
                         name: 'brief',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '소싱담당자',
                         name: 'sourcing_manager',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '이름',
                         name: 'name',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '전화번호',
                         name: 'phonenumber',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '생년월일',
                         name: 'birthdate',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '이메일',
                         name: 'email',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '주소',
                         name: 'address',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학력',
                         name: 'education',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학교명',
                         name: 'school_name',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '학과',
                         name: 'major',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '경력',
                         name: 'career_years',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '분야',
                         name: 'career_field',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '등급',
                         name: 'career_level',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '투입일',
                         name: 'assign_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '종료일',
                         name: 'end_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '철수날짜',
                         name: 'resign_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매출MM',
                         name: 'sales_mm',
                         width: 'auto',
                         align: 'center',
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매입MM',
                         name: 'purchase_mm',
                         width: 'auto',
                         align: 'center',
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매출단가',
@@ -527,7 +601,10 @@
                         align: 'right',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매입단가',
@@ -536,79 +613,118 @@
                         align: 'right',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '비고',
                         name: 'comments',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
-                        header: '이력서제출일자',
+                        header: '이력서제출',
                         name: 'resume_submit_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '개인계약일',
                         name: 'i_contract_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '업체계약일',
                         name: 'c_contract_date',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '특이사항',
                         name: 'issues',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '기술지원여부',
                         name: 'tech_support',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '부대비용항목',
                         name: 'extra_expense',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '부대비용금액',
                         name: 'extra_expense_amount',
                         width: 'auto',
                         align: 'center',
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '고용형태',
                         name: 'emp_type',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '개인사업자',
                         name: 'individual_business',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '급여지급날',
                         name: 'payday',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '수정자',
                         name: 'modifier',
                         width: 'auto',
                         align: 'center',
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                 ],
                 rowHeaders: ['rowNum'],

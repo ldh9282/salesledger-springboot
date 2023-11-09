@@ -165,6 +165,7 @@
                                 data: JSON.stringify(empPool),
                                 contentType: 'application/json',
                                 success: function () {
+                                	alert('인력이 등록되었습니다')
                                     opener.parent.location.reload();
                                     window.close();
                                 },

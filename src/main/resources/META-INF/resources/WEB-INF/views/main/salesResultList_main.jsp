@@ -141,86 +141,108 @@
                         name: 'batch_month',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '소속',
                         name: 'company',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '사업부서',
                         name: 'department',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '사이트명',
                         name: 'site',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '진행업체',
                         name: 'client',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '프로젝트명',
                         name: 'project_name',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '적요란',
                         name: 'brief',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매출가',
                         name: 'total_sales_amount',
                         width: 'auto',
                         align: 'center',
-                        filter: 'number',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '매입가',
                         name: 'total_purchase_amount',
                         width: 'auto',
                         align: 'center',
-                        filter: 'number',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '이익',
                         name: 'total_margin_amount',
                         width: 'auto',
                         align: 'center',
-                        filter: 'number',
                         formatter({value}) {
                         	return value.toLocaleString('ko-KR');
-                        }
+                        },
+                        filter: 'number',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                     {
                         header: '수기작성여부',
                         name: 'handwrite',
                         width: 'auto',
                         align: 'center',
-                        filter: 'select'
+                        filter: 'select',
+                        sortable: true,
+                        sortingType: 'desc'
                     },
                 ],
                 rowHeaders: ['rowNum'],

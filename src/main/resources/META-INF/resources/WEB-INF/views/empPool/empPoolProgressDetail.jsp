@@ -49,86 +49,46 @@
 	
     <main id="main" class="main">
         <section>
-            <div class="container">
-                <h1>인력 상세 페이지<button type="button" class="btn btn-primary float-end" id="btnProgressDetail">진행 보기</button></h1>
-		        
-                <form id="employeeForm">
-                    <input type="hidden" id="emp_pool_id" name="emp_pool_id">
-                    <input type="hidden" id="project_assign" name="project_assign">
-                    <input type="hidden" id="del" name="del">
-                    <div class="form-group mb-3">
-                        <label for="sourcing_manager">소싱담당자:</label>
-                        <input type="text" class="form-control" id="sourcing_manager" name="sourcing_manager"
-                        >
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="name">이름 <span class="text-danger">*</span> :</label>
-                        <input type="text" class="form-control" id="name" name="name">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="phonenumber">전화번호 <span class="text-danger">*</span> :</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="birthdate">생년월일:</label>
-                        <input type="date" class="form-control" id="birthdate" name="birthdate">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="email">이메일:</label>
-                        <input type="email" class="form-control" id="email" name="email">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="address">주소:</label>
-                        <input type="text" class="form-control" id="address" name="address">
-                    </div>
-                    
-                    <div class="form-group mb-3">
-                        <label for="education">학력:</label>
-                        <select class="form-control" id="education" name="education">
-                            <option value="미기입">미기입</option>
-                            <option value="고졸">고졸</option>
-                            <option value="전문졸">전문졸</option>
-                            <option value="대졸">대졸</option>
-                            <option value="석사">석사</option>
-                            <option value="박사">박사</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="school_name">학교명:</label>
-                        <input type="text" class="form-control" id="school_name" name="school_name">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="major">학과:</label>
-                        <input type="text" class="form-control" id="major" name="major">
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="career_years">경력:</label>
-                        <input type="text" class="form-control" id="career_years" name="career_years"
-                        >
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="career_field">분야:</label>
-                        <input type="text" class="form-control" id="career_field" name="career_field"
-                        >
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="careerLevel">등급:</label>
-                        <select class="form-control" id="career_level" name="career_level">
-                            <option value="미기입">미기입</option>
-                            <option value="초급">초급</option>
-                            <option value="중급">중급</option>
-                            <option value="고급">고급</option>
-                            <option value="특급">특급</option>
-                        </select>
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="hope_purchase_unit">희망단가:</label>
-                        <input type="text" class="form-control" id="hope_purchase_unit" name="hope_purchase_unit" data-type="money">
-                    </div>
-                    <button type="button" class="btn btn-primary" id="btnUpdate">수정</button>
-                    <button type="button" class="btn btn-danger float-end" id="btnDelete" title="진행중인 프로젝트 수가 0인 인력만 삭제할 수 있습니다">삭제</button>
-                </form>
-            </div>
+			<div class="container">
+				<h1>진행 프로젝트</h1>
+				<br><br>
+				<table class="table">
+					<thead>
+					<tr>
+						<th>진행</th>
+						<th>소속</th>
+						<th>사업부서</th>
+						<th>사이트명</th>
+						<th>진행업체</th>
+						<th>프로젝트명</th>
+						<th>투입일</th>
+						<th>종료일</th>
+						<th>철수날짜</th>
+						<th>매출<br>MM</th>
+						<th>매입<br>MM</th>
+						<th>매출<br>단가</th>
+						<th>매입<br>단가</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>투입</td>
+							<td>IYCNC</td>
+							<td>ITO</td>
+							<td>12345</td>
+							<td>12345</td>
+							<td>12345</td>
+							<td>2023-11-06</td>
+							<td>2023-11-06</td>
+							<td>2023-11-06</td>
+							<td>1</td>
+							<td>1</td>
+							<td>10,000,000</td>
+							<td>5,000,000</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
         </section>
 
     </main><!-- End #main -->
@@ -265,13 +225,13 @@
                 }
             })
             
-            $('#btnProgressDetail').click(function() {
-				const popupUrl = '${pageContext.request.contextPath}/empPoolProgressDetail?emp_pool_id=' + empPoolId;
-				const popupName = 'empPoolProgressDetail-popup';
-				const popupWidth = screen.width;
-				const popupHeight = screen.height;
-				const left = 0;
-				const top = 0;
+            $('#btnDetail').click(function() {
+				const popupUrl = '${pageContext.request.contextPath}/empPoolDetail?emp_pool_id=' + 38;
+				const popupName = 'empPoolDetail-popup2';
+				const popupWidth = 600;
+				const popupHeight = 400;
+				const left = (screen.width - popupWidth) / 2;
+				const top = (screen.height - popupHeight) / 2;
 				
 				window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
             })
@@ -309,8 +269,9 @@
             });
             
             $('#btnDelete').tooltip();
-
+			
         });
+        
 
     </script>
 

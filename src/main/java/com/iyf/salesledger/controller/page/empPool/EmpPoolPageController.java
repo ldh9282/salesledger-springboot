@@ -45,4 +45,16 @@ public class EmpPoolPageController {
 		return "empPool/empPoolDetail";
 	}
 	
+	/***
+	 * @기능 empPoolDetail.jsp 페이지 호출
+	 */
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/empPoolProgressDetail")
+	public String showEmpPoolProgressDetailPage() {
+		if (log.isInfoEnabled()) {log.info("Start EmpPoolPageController.showEmpPoolProgressDetailPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "empPool/empPoolProgressDetail");}
+		if (log.isInfoEnabled()) {log.info("End EmpPoolPageController.showEmpPoolProgressDetailPage");}
+		return "empPool/empPoolProgressDetail";
+	}
+	
 }
