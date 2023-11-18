@@ -1,6 +1,7 @@
 package com.iyf.salesledger.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.iyf.salesledger.model.EmpPool;
 
@@ -22,5 +23,7 @@ public interface EmpPoolService {
 
 	void patchProjectAssign(long emp_pool_id, int project_assign);
 	
+	List<Map<String, Object>> selectEmpPoolProgressDetail1(long emp_pool_id);
 	
+	List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id);
 }

@@ -1,6 +1,7 @@
 package com.iyf.salesledger.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,6 +64,18 @@ public class EmpPoolServiceImpl implements EmpPoolService {
 		empPool.setProject_assign(project_assign);
 		
 		empPoolDao.update(empPool);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectEmpPoolProgressDetail1(long emp_pool_id) {
+		List<Map<String, Object>> empPoolProgressDetail1 = empPoolDao.selectEmpPoolProgressDetail1(emp_pool_id);
+		return empPoolProgressDetail1;
+	}
+
+	@Override
+	public List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id) {
+		List<Map<String, Object>> empPoolProgressDetail2 = empPoolDao.selectEmpPoolProgressDetail2(emp_pool_id);
+		return empPoolProgressDetail2;
 	}
 
 

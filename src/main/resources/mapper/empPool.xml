@@ -144,4 +144,31 @@
 		where t1.emp_pool_id = #{emp_pool_id} and t2.progress in ('투입예정', '투입')
 		and (t2.del = 'N' or t2.del is null)
 	</select>
+	
+	<select id="selectEmpPoolProgressDetail1" resultType="map">
+		select
+			*
+		from t_emp_ledger t1
+		inner join t_emp_pool t2
+		on t1.emp_pool_id = t2.emp_pool_id
+		where (t1.del != 'Y' or t1.del is null)
+		and progress = '투입예정'
+		and t2.emp_pool_id = #{emp_pool_id}
+	</select>
+	
+	<select id="selectEmpPoolProgressDetail2" resultType="map">
+		select
+			*
+		from t_sales_ledger t1
+		inner join t_emp_ledger t2
+		on t1.emp_id = t2.emp_id
+		inner join t_emp_pool t3
+		on t2.emp_pool_id = t3.emp_pool_id
+		where (t1.del != 'Y' or t1.del is null)
+		and progress = '투입'
+		and t3.emp_pool_id = #{emp_pool_id}
+	</select>
+	
+
+	
 </mapper>

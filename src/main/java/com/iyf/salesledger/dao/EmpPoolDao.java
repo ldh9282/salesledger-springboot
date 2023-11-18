@@ -1,6 +1,7 @@
 package com.iyf.salesledger.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -21,4 +22,8 @@ public interface EmpPoolDao {
 	void insert(EmpPool empPool);
 
 	int selectCntProjectAssign(long emp_pool_id);
+	
+	List<Map<String, Object>> selectEmpPoolProgressDetail1(long emp_pool_id);
+	
+	List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id);
 }
