@@ -71,6 +71,8 @@
     <!-- NiceAdmin: Template Main JS File -->
     <script src="${pageContext.request.contextPath}/resources/NiceAdmin/assets/js/main.js"></script>
 
+    <!-- common utils : formatting or unformatting -->
+    <script src="${pageContext.request.contextPath}/resources/common/utils.js"></script>
 </body>
 
 </html>

@@ -89,7 +89,7 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="phoneNumber">전화번호:</label>
-                                <input type="text" class="form-control" id="phoneNumber" name="phonenumber">
+                                <input type="text" class="form-control" id="phoneNumber" name="phoneNumber">
                             </div>
                             <div id="search-error" class="alert alert-danger d-none">조회 결과 없는 인력입니다.</div>
                             <button type="button" class="btn btn-primary mb-3" id="btnSearch" title="인력풀에 있는 인력의 이름과 전화번호를 모두 기입해주세요. 검색 후 인력투입예정을 할 수 있습니다.">검색</button>
@@ -106,7 +106,8 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="phonenumber">전화번호:</label>
-                                <input type="text" class="form-control" id="phonenumber" name="phonenumber" readonly>
+                                <input type="text" class="form-control" id="display-phonenumber" name="display-phonenumber" readonly>
+                                <input type="hidden" class="form-control" id="phonenumber" name="phonenumber">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="birthdate">생년월일:</label>
@@ -252,7 +253,7 @@
 
             $('#btnSearch').click(function() {
                 const name = $('input[name=name]').val();
-                const phonenumber = $('input[name=phonenumber]').val();
+                const phonenumber = $('input[name=phoneNumber]').val().replaceAll('-', '');
 
                 if (name && phonenumber) {
                     $.ajax({
@@ -266,6 +267,8 @@
                                 $('input[name=emp_pool_id]').val('');
                                 $('input[name=sourcing_manager]').val('');
                                 $('input[name=name]').val('');
+                                $('input[name=phoneNumber]').val('');
+                                $('input[name=display-phonenumber]').val('');
                                 $('input[name=phonenumber]').val('');
                                 $('input[name=birthdate]').val('');
                                 $('input[name=email]').val('');
@@ -294,6 +297,8 @@
                             $('input[name=emp_pool_id]').val(empPool.emp_pool_id);
                             $('input[name=sourcing_manager]').val(empPool.sourcing_manager);
                             $('input[name=name]').val(empPool.name);
+                            $('input[name=phoneNumber]').val(phoneUtils.formatPhoneNumber(empPool.phonenumber));
+                            $('input[name=display-phonenumber]').val(phoneUtils.formatPhoneNumber(empPool.phonenumber));
                             $('input[name=phonenumber]').val(empPool.phonenumber);
                             $('input[name=birthdate]').val(empPool.birthdate);
                             $('input[name=email]').val(empPool.email);
@@ -327,6 +332,24 @@
                 let formattedValue = value.toLocaleString('ko-KR');
                 e.target.value = formattedValue;
                 
+            });
+            
+            // 전화번호 010-xxxx-xxxx 디스플레이
+            $('#phoneNumber').keyup(function(e) {
+				const input = $(this);
+				let value = input.val().replace(/\D/g, ''); // 숫자만 추출
+				
+				if (value.length > 10) {
+				  // 입력된 번호가 11자리 이상이라면 11자리까지만 유효한 값으로 간주
+				  value = value.substring(0, 11);
+				}
+				
+				if (value.length >= 3 && value.length <= 11) {
+				  // 전화번호 형식에 따라 포맷팅
+				  value = value.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+				}
+				
+				input.val(value);
             });
             
             $('#btnSearch').tooltip();

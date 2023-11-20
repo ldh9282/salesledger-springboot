@@ -60,7 +60,8 @@
                     </div>
                     <div class="form-group mb-3">
                         <label for="phonenumber">전화번호:</label>
-                        <input type="text" class="form-control" id="phonenumber" name="phonenumber" readonly>
+                        <input type="text" class="form-control" id="display-phonenumber" name="display-phonenumber" readonly>
+                        <input type="hidden" class="form-control" id="phonenumber" name="phonenumber">
                     </div>
                     <div class="form-group mb-3">
                         <label for="birthdate">생년월일:</label>
@@ -297,6 +298,7 @@
                                     $('#emp_pool_id').val(empPool.emp_pool_id);
                                     $('#sourcing_manager').val(empPool.sourcing_manager);
                                     $('#name').val(empPool.name);
+                                    $('#display-phonenumber').val(phoneUtils.formatPhoneNumber(empPool.phonenumber));
                                     $('#phonenumber').val(empPool.phonenumber);
                                     $('#birthdate').val(empPool.birthdate);
                                     $('#email').val(empPool.email);
