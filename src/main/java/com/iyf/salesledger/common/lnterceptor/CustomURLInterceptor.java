@@ -81,6 +81,11 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 			log.info("handler ::: " + className + "." + methodName); 
 			log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session);
 			log.info("execution time  ::: " + (endTime.get() - startTime.get()) + "ms");
+			
+		    // ThreadLocal 변수 정리 ::: 메모리 누수를 방지
+		    startTime.remove();
+		    endTime.remove();
+		    
 			log.info("End CustomURLInterceptor.afterCompletion");
 		}
 	}
