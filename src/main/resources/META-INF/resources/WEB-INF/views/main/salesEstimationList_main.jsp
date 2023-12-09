@@ -119,10 +119,11 @@
    			const department = '${department}';
             
         	const currentDate = new Date();
+        	currentDate.setMonth(currentDate.getMonth() + 1);
 
         	// 년도와 월을 가져옵니다.
         	const year = currentDate.getFullYear();
-        	const month = currentDate.getMonth() + 2;
+        	const month = currentDate.getMonth() + 1;
 
         	// 월이 10월 이전인 경우, 숫자 앞에 0을 추가합니다.
         	const monthString = month < 10 ? "0" + month : month.toString();
