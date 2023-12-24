@@ -77,4 +77,16 @@ public class EmpPoolPageController {
 		return "empPool/empPoolProgressDetail";
 	}
 	
+	/***
+	 * @기능 empPoolExcelUploadPage.jsp 페이지 호출
+	 */
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/empPoolExcelUpload")
+	public String showEmpPoolExcelUploadPage() {
+		if (log.isInfoEnabled()) {log.info("Start EmpPoolPageController.showEmpPoolExcelUploadPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "empPool/empPoolExcelUpload");}
+		if (log.isInfoEnabled()) {log.info("End EmpPoolPageController.showEmpPoolExcelUploadPage");}
+		return "empPool/empPoolExcelUpload";
+	}
+	
 }

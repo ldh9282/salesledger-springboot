@@ -177,6 +177,7 @@
 
                 <div class="d-flex mt-5">
                     <button type="button" class="btn btn-primary ms-2" id="btnShowRegisterPage">인력등록페이지</button>
+                    <button type="button" class="btn btn-primary ms-2" id="btnShowExcelUploadPage">엑셀업로드페이지</button>
                 </div>
 
                 <div id="grid" class="mt-5" style="width: 80vw;"></div>
@@ -479,6 +480,17 @@
                 const popupUrl = '${pageContext.request.contextPath}/empPoolRegister';
                 const popupName = 'empPoolRegister-popup';
                 const popupWidth = 800;
+                const popupHeight = 600;
+                const left = (screen.width - popupWidth) / 2;
+                const top = (screen.height - popupHeight) / 2;
+
+                window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
+            });
+            // 엑셀페이지 버튼 클릭 이벤트: 인력등록페이지 팝업
+            $('#btnShowExcelUploadPage').click(function () {
+                const popupUrl = '${pageContext.request.contextPath}/empPoolExcelUpload';
+                const popupName = 'empPoolRegister-popup';
+                const popupWidth = 1000;
                 const popupHeight = 600;
                 const left = (screen.width - popupWidth) / 2;
                 const top = (screen.height - popupHeight) / 2;

@@ -1,0 +1,6 @@
+C:\Temp\salesledger\upload
+
+application.properties 에서 변경가능
+
+#set the upload directory
+upload-dir=C:/Temp/salesledger/upload/
