@@ -71,12 +71,12 @@
 	
 	
 	<select id="list" resultMap="empLedgerMap">
-		SELECT 
+		SELECT /* EmpLedgerDao.list */
 			*
 		FROM t_emp_ledger
 	</select>
 	<select id="listByCompanyAndDepartment" resultMap="t1t2map">
-		SELECT 
+		SELECT /* EmpLedgerDao.listByCompanyAndDepartment */
 			*
 		FROM t_emp_ledger t1
 		INNER JOIN t_emp_pool t2
@@ -85,14 +85,14 @@
 		ORDER BY 1 desc
 	</select>
 	<select id="selectOne" resultMap="empLedgerMap">
-		SELECT 
+		SELECT /* EmpLedgerDao.selectOne */
 			*
 		FROM t_emp_ledger
 		WHERE emp_id = #{emp_id}
 	</select>
 	
 	<insert id="insert">
-		INSERT INTO t_emp_ledger
+		INSERT INTO t_emp_ledger /* EmpLedgerDao.insert */
 		(
 			emp_id,
 			emp_pool_id,
@@ -151,7 +151,7 @@
 	</insert>
 	
 	<update id="update">
-	UPDATE t_emp_ledger SET 
+	UPDATE t_emp_ledger SET /* EmpLedgerDao.update */
 		emp_pool_id = #{emp_pool_id}, 
 		company = #{company}, 
 		department = #{department}, 

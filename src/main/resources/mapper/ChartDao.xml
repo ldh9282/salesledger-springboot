@@ -9,7 +9,7 @@
 		<result property="총매입가" column="총매입가"/>
 	</resultMap>
 	<select id="salesThisYearResultListByCompanyAndDepartment" resultMap="salesResultMap">
-		select 
+		select /* ChartDao.salesThisYearResultListByCompanyAndDepartment */
 			company 회사, batch_month 해당년월,
 			sum(total_sales_amount) 총매출가,
 			sum(total_purchase_amount) 총매입가

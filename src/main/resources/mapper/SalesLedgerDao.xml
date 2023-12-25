@@ -68,7 +68,7 @@
 	</resultMap>
 	
 	<select id="listByCompanyAndDepartment" resultMap="t1t2t3map">
-		select
+		select /* SalesLedgerDao.listByCompanyAndDepartment */
 			*
 		from t_sales_ledger t1
 		inner join t_emp_ledger t2
@@ -81,27 +81,27 @@
 	
 	
 	<select id="list" resultMap="salesLedgerMap">
-		select
+		select /* SalesLedgerDao.list */
 			*
 		from t_sales_ledger
 	</select>
 	
 	<select id="selectOne" resultMap="salesLedgerMap">
-		select
+		select /* SalesLedgerDao.selectOne */
 			* 
 	 	from t_sales_ledger
 	 	where sales_id = #{sales_id} 
 	</select>
 	
 	<select id="findByEmpId" resultMap="salesLedgerMap">
-		select
+		select /* SalesLedgerDao.findByEmpId */
 			*
 		from t_sales_ledger
 		where emp_id = #{emp_id}
 	</select>
 	
 	<insert id="insert">
-		insert into t_sales_ledger
+		insert into t_sales_ledger /* SalesLedgerDao.insert */
 		(
 			sales_id, emp_id, tech_support, 
 			extra_expense, extra_expense_amount, 
@@ -121,7 +121,7 @@
 	</insert>
 
 	<update id="update">
-		update t_sales_ledger set
+		update t_sales_ledger set /* SalesLedgerDao.update */
 			sales_id = #{sales_id},
 			emp_id = #{emp_id},
 			tech_support = #{tech_support},
@@ -137,7 +137,7 @@
 	</update>
 	
 	<delete id="delete">
-		delete t_sales_ledger
+		delete t_sales_ledger /* SalesLedgerDao.delete */
 		where sales_id = #{sales_id}
 	</delete>
 </mapper>

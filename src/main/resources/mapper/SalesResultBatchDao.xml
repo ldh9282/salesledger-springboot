@@ -10,7 +10,7 @@
 	</delete>
 	
 	<insert id="insert">
-		insert into t_sales_result 
+		insert into t_sales_result /* SalesResultBatchDao.insert */
 		(
 			sales_result_id, company, department, site, client, brief, project_name,
 			total_sales_amount, total_purchase_amount, batch_month, handwrite

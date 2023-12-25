@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.iyf.salesledger.dao.SalesEstimationInfraDao">
-	<resultMap type="map" id="salesEstimationInfraMap">
-		<result property="sales_estimation_infra_id" column="sales_estimation_infra_id"/>
+<mapper namespace="com.iyf.salesledger.dao.SalesResultInfraDao">
+	<resultMap type="map" id="salesResultInfraMap">
+		<result property="sales_result_infra_id" column="sales_result_infra_id"/>
 		<result property="total_sales_amount" column="total_sales_amount"/>
 		<result property="total_purchase_amount" column="total_purchase_amount"/>
 		<result property="client" column="client"/>
@@ -18,15 +18,15 @@
 		<result property="category" column="category"/>
 		<result property="handwrite" column="handwrite"/>
 	</resultMap>
-	<select id="listByCompanyAndDepartmentAndCategoryAndBatchMonth" resultMap="salesEstimationInfraMap">
-		select * from t_sales_estimation_infra where company = #{company} and department = #{department} and category = #{category} and batch_month = #{batch_month} ORDER BY 1 DESC;
+	<select id="listByCompanyAndDepartmentAndCategoryAndBatchMonth" resultMap="salesResultInfraMap">
+		select * from t_sales_result_infra where company = #{company} and department = #{department} and category = #{category} and batch_month = #{batch_month} ORDER BY 1 DESC;
 	</select>
 	
 	<insert id="insert">
-		insert into
-		    t_sales_estimation_infra
+		insert into /* SalesResultInfraDao.insert */
+		    t_sales_result_infra
 		    (
-		        sales_estimation_infra_id,
+		        sales_result_infra_id,
 		        total_sales_amount,
 		        total_purchase_amount,
 		        client,
@@ -51,17 +51,19 @@
 		    )
 	</insert>
 	
-	<select id="selectOne" resultMap="salesEstimationInfraMap">
-		select * from t_sales_estimation_infra where sales_estimation_infra_id = #{sales_estimation_infra_id}
+	<select id="selectOne" resultMap="salesResultInfraMap">
+		/* SalesResultInfraDao.selectOne */
+		select * from t_sales_result_infra where sales_result_infra_id = #{sales_result_infra_id}
 	</select>
 	
 	<delete id="delete">
-		delete from t_sales_estimation_infra where sales_estimation_infra_id = #{sales_estimation_infra_id}
+		/* SalesResultInfraDao.delete */
+		delete from t_sales_result_infra where sales_result_infra_id = #{sales_result_infra_id}
 	</delete>
 	
 	<update id="update">
-		update
-		    t_sales_estimation_infra
+		update /* SalesResultInfraDao.update */
+		    t_sales_result_infra
 		set
 		    total_sales_amount = #{total_sales_amount},
 		    total_purchase_amount = #{total_purchase_amount},
@@ -77,6 +79,6 @@
 		    note = #{note},
 		    category = #{category}
 		where
-		   sales_estimation_infra_id = #{sales_estimation_infra_id}
+		   sales_result_infra_id = #{sales_result_infra_id}
 	</update>
 </mapper>

@@ -21,7 +21,7 @@
 	</resultMap>
 	
 	<select id="selectOne" resultMap="empPoolMap">
-		SELECT
+		SELECT /* EmpPoolDao.selectOne */
 		    emp_pool_id, 
 		    sourcing_manager, 
 		    name, 
@@ -42,7 +42,7 @@
 		WHERE emp_pool_id = #{emp_pool_id}
 	</select>
 	<select id="findByNameAndPhoneNumber" resultMap="empPoolMap">
-		SELECT
+		SELECT /* EmpPoolDao.findByNameAndPhoneNumber */
 		    emp_pool_id, 
 		    sourcing_manager, 
 		    name, 
@@ -63,13 +63,13 @@
 		WHERE name = #{name} and phonenumber = #{phonenumber} and del != 'Y'
 	</select>
 	<select id="list" resultMap="empPoolMap">
-		SELECT
+		SELECT /* EmpPoolDao.list */
 		    *
 		FROM t_emp_pool
 		ORDER BY 1 DESC
 	</select>
 	<update id="update">
-		UPDATE t_emp_pool 
+		UPDATE t_emp_pool /* EmpPoolDao.update */
 		SET
 			emp_pool_id = #{emp_pool_id},
 			sourcing_manager = #{sourcing_manager},
@@ -91,12 +91,12 @@
 	</update>
 	
 	<delete id="delete">
-		DELETE FROM t_emp_pool
+		DELETE FROM t_emp_pool /* EmpPoolDao.delete */
 		WHERE emp_pool_id = #{emp_pool_id}
 	</delete>
 	
 	<insert id="insert">
-		INSERT INTO t_emp_pool
+		INSERT INTO t_emp_pool /* EmpPoolDao.insert */
 		(
 			emp_pool_id,
 			sourcing_manager,
@@ -137,7 +137,7 @@
 	</insert>
 	
 	<select id="selectCntProjectAssign" resultType="int">
-		select count(*)
+		select count(*) /* EmpPoolDao.selectCntProjectAssign */
 		from t_emp_pool t1
 		inner join t_emp_ledger t2
 		on t1.emp_pool_id = t2.emp_pool_id
@@ -146,7 +146,7 @@
 	</select>
 	
 	<select id="selectEmpPoolProgressDetail1" resultType="map">
-		select
+		select /* EmpPoolDao.selectEmpPoolProgressDetail1 */
 			*
 		from t_emp_ledger t1
 		inner join t_emp_pool t2
@@ -157,7 +157,7 @@
 	</select>
 	
 	<select id="selectEmpPoolProgressDetail2" resultType="map">
-		select
+		select /* EmpPoolDao.selectEmpPoolProgressDetail2 */
 			*
 		from t_sales_ledger t1
 		inner join t_emp_ledger t2

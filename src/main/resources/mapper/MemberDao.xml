@@ -19,7 +19,7 @@
 	</resultMap>
 	
 	<select id="selectOne" resultMap="memberMap">
-		select 
+		select /* MemberDao.selectOne */
 			*
 		from t_member m
 		inner join t_member_authorities a
@@ -28,11 +28,12 @@
 	</select>
 	<!-- enabled: 1(가입승인) 0(가입승인 전)  -->
 	<insert id="insertMember">
+		/* MemberDao.insertMember */
 		insert into t_member (username, password, name, company, enabled) 
 		values (#{username}, #{password}, #{name}, #{company}, '0');	
 	</insert>
 	<update id="updateMember">
-		update t_member set
+		update t_member set /* MemberDao.updateMember */
 			username = #{username}, 
 			password = #{password}, 
 			name = #{name}, 
@@ -42,18 +43,19 @@
 	</update>
 	<!-- authority: 'ROLE_ADMIN', 'ROLE_IYCNC' ...  -->
 	<insert id="insertAuthority">
+		/* MemberDao.insertAuthority */
 		insert into t_member_authorities (username, authority) values (#{username}, #{authority})
 	</insert>
 	
 	<update id="updateAuthority">
-		update t_member_authorities set
+		update t_member_authorities set /* MemberDao.updateAuthority */
 			username = #{username},
 			authority = #{authority}
 		where username = #{username}
 	</update>
 	
 	<select id="selectTotalCount" resultType="long">
-		select count(*)
+		select count(*) /* MemberDao.selectTotalCount */
 		from t_member m 
 		inner join t_member_authorities a 
 		on m.username = a.username
@@ -75,7 +77,7 @@
 	</select>
 	
 	<select id="selectMemberListPagingByKeyword" resultMap="memberMap">
-		select *
+		select * /* MemberDao.selectMemberListPagingByKeyword */
 		from t_member m 
 		inner join t_member_authorities a 
 		on m.username = a.username
@@ -100,9 +102,11 @@
 	</select>
 	
 	<delete id="deleteMember">
+		/* MemberDao.deleteMember */
 		delete from t_member where username = #{username}
 	</delete>
 	<delete id="deleteAuthority">
+		/* MemberDao.deleteAuthority */
 		delete from t_member_authorities where username = #{username}
 	</delete>
 </mapper>

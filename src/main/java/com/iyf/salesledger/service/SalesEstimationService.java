@@ -3,9 +3,19 @@ package com.iyf.salesledger.service;
 import java.util.List;
 import java.util.Map;
 
-import com.iyf.salesledger.common.batch.model.SalesResult;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-public interface SalesEstimationService {
+import com.iyf.salesledger.dao.SalesEstimationDao;
 
-	List<Map<String, Object>> listByCompanyAndDepartmentAndBatchMonth(String company, String department, String batch_month);
+@Service
+public class SalesEstimationService {
+
+	@Autowired
+	private SalesEstimationDao salesEstimationDao;
+	
+	public List<Map<String, Object>> listByCompanyAndDepartmentAndBatchMonth(String company, String department, String batch_month) {
+		return salesEstimationDao.listByCompanyAndDepartmentAndBatchMonth(company, department, batch_month);
+	}
+
 }

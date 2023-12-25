@@ -3,14 +3,14 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.iyf.salesledger.common.batch.dao.SalesEstimationBatchDao">
 	<delete id="delete">
-		delete from t_sales_estimation 
+		delete from t_sales_estimation /* SalesEstimationBatchDao.delete */
 		where batch_month = to_char(date_trunc('month', now() + interval '1 month'), 'yyyymm')
 		and company = #{company} and department = #{department}
 		and (handwrite is null or handwrite = 'N')
 	</delete>
 	
 	<insert id="insert">
-		insert into t_sales_estimation 
+		insert into t_sales_estimation /* SalesEstimationBatchDao.insert */
 		(
 			sales_estimation_id, company, department, site, client, brief, project_name,
 			total_sales_amount, total_purchase_amount, batch_month, handwrite
@@ -39,14 +39,14 @@
 	</insert>
 	
 	<delete id="deleteManual">
-		delete from t_sales_estimation 
+		delete from t_sales_estimation /* SalesEstimationBatchDao.deleteManual */
 		where batch_month = #{batch_month}
 		and company = #{company} and department = #{department}
 		and (handwrite is null or handwrite = 'N')
 	</delete>
 	
 	<insert id="insertManual">
-		insert into t_sales_estimation 
+		insert into t_sales_estimation /* SalesEstimationBatchDao.insertManual */
 		(
 			sales_estimation_id, company, department, site, client, brief, project_name,
 			total_sales_amount, total_purchase_amount, batch_month, handwrite

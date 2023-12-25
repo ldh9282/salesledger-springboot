@@ -3,31 +3,147 @@ package com.iyf.salesledger.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.iyf.salesledger.dao.EmpLedgerDao;
+import com.iyf.salesledger.dao.EmpPoolDao;
+import com.iyf.salesledger.dao.SalesLedgerDao;
 import com.iyf.salesledger.model.EmpLedger;
 import com.iyf.salesledger.model.EmpPool;
+import com.iyf.salesledger.model.SalesLedger;
 
-public interface EmpLedgerService {
+@Service
+public class EmpLedgerService {
 
-	List<EmpLedger> list();
+	@Autowired
+	private EmpLedgerDao empLedgerDao;
 	
-	List<Map<String, Object>> listByCompanyAndDepartment(String company, String department);
+	@Autowired
+	private EmpPoolDao empPoolDao;
 	
-	EmpLedger selectOne(long emp_id);
+	@Autowired
+	private SalesLedgerDao salesLedgerDao;
 	
-	void insert(EmpLedger empLedger);
+	public List<EmpLedger> list() {
+		
+		return empLedgerDao.list();
+	}
 	
-	void insertByProgress(EmpLedger empLedger);
+	public List<Map<String, Object>> listByCompanyAndDepartment(String company, String department) {
+		return empLedgerDao.listByCompanyAndDepartment(company, department);
+	}
 
-	void update(EmpLedger empLedger);
-	
-	void patchProgress(long emp_id, String progress);
-	
-	void patchProgressReason(long emp_id, String progress_reason);
+	public EmpLedger selectOne(long emp_id) {
+		return empLedgerDao.selectOne(emp_id);
+	}
 
-	void update(EmpLedger empLedger, EmpPool empPool);
-
-	void patchDel(long emp_id, String del);
-
-	void patchForceDel(long emp_id, String del);
+	public void insert(EmpLedger empLedger) {
+		empLedgerDao.insert(empLedger);
+	}
 	
+	@Transactional
+	public void insertByProgress(EmpLedger empLedger) {
+		empLedger.setProgress("투입예정");
+		empLedgerDao.insert(empLedger);
+		
+		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		if (empPool != null) {
+			
+			int cntProjectAssign = empPoolDao.selectCntProjectAssign(empPool.getEmp_pool_id());
+			empPool.setProject_assign(cntProjectAssign);
+			empPoolDao.update(empPool);
+		}
+		
+		
+	}
+
+	public void update(EmpLedger empLedger) {
+		empLedgerDao.update(empLedger);
+	}
+
+	@Transactional
+	public void patchProgress(long emp_id, String progress) {
+		EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
+		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		
+		if (empLedger != null) {
+			empLedger.setProgress(progress);
+			empLedgerDao.update(empLedger);
+		}
+		
+		if (progress.equals("투입")) {
+			SalesLedger salesLedger = new SalesLedger();
+			salesLedger.setEmp_id(empLedger.getEmp_id());
+			salesLedgerDao.insert(salesLedger);
+			
+		} else if (progress.equals("드랍")) {
+			
+		} else if (progress.equals("철수")) {
+			
+		}
+		
+		
+		empPool.setProject_assign(empPoolDao.selectCntProjectAssign(empPool.getEmp_pool_id()));
+		empPoolDao.update(empPool);
+	}
+
+	public void patchProgressReason(long emp_id, String progress_reason) {
+		EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
+		
+		if (empLedger != null) {
+			empLedger.setProgress_reason(progress_reason);
+			empLedgerDao.update(empLedger);
+		}
+	}
+
+	@Transactional
+	public void update(EmpLedger empLedger, EmpPool empPool) {
+		
+		EmpPool theEmpPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		
+		if (theEmpPool != null) {
+			
+			empPool.setEmp_pool_id(theEmpPool.getEmp_pool_id());
+			empPoolDao.update(empPool);
+		}
+		
+		empLedgerDao.update(empLedger);
+		
+		
+	}
+
+	@Transactional
+	public void patchDel(long emp_id, String del) {
+		 EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
+		 if (empLedger != null) {
+			empLedger.setDel(del);
+			
+			empLedgerDao.update(empLedger);
+		}
+	}
+	
+	@Transactional
+	public void patchForceDel(long emp_id, String del) {
+		EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
+		SalesLedger salesLedger = salesLedgerDao.findByEmpId(emp_id);
+		
+		if (empLedger != null) {
+			empLedger.setDel(del);
+			empLedgerDao.update(empLedger);
+		}
+		if (salesLedger != null) {
+			salesLedger.setDel(del);
+			salesLedgerDao.update(salesLedger);
+		}
+		
+		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		if (empPool != null) {
+			empPool.setProject_assign(empPoolDao.selectCntProjectAssign(empPool.getEmp_pool_id()));
+			empPoolDao.update(empPool);
+		}
+		
+	}
+
 }

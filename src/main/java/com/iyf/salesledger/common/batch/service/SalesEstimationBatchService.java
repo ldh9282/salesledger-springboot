@@ -1,8 +1,27 @@
 package com.iyf.salesledger.common.batch.service;
 
-public interface SalesEstimationBatchService {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-	void monthlySalesBatchByCompanyAndDepartment(String company, String department);
+import com.iyf.salesledger.common.batch.dao.SalesEstimationBatchDao;
+
+@Service
+public class SalesEstimationBatchService {
+
+	@Autowired
+	private SalesEstimationBatchDao salesEstimationBatchDao;
 	
-	void manualSalesBatchByCompanyAndDepartment(String company, String department, String batch_month);
+	@Transactional
+	public void monthlySalesBatchByCompanyAndDepartment(String company, String department) {
+		salesEstimationBatchDao.delete(company, department);
+		salesEstimationBatchDao.insert(company, department);
+	}
+
+	@Transactional
+	public void manualSalesBatchByCompanyAndDepartment(String company, String department, String batch_month) {
+		salesEstimationBatchDao.deleteManual(company, department, batch_month);
+		salesEstimationBatchDao.insertManual(company, department, batch_month);
+	}
+
 }

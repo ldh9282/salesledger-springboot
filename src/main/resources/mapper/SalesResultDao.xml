@@ -16,11 +16,12 @@
 		<result property="handwrite" column="handwrite"/>
 	</resultMap>
 	<select id="listByCompanyAndDepartmentAndBatchMonth" resultMap="salesResultMap">
+		/* SalesResultDao.listByCompanyAndDepartmentAndBatchMonth */
 		select * from t_sales_result where company = #{company} and department = #{department} and batch_month = #{batch_month} ORDER BY 1 DESC;
 	</select>
 	
 	<insert id="insert">
-		insert into t_sales_result
+		insert into t_sales_result /* SalesResultDao.insert */
 		(
 			sales_result_id, company, department, site, client, brief, project_name,
 			total_sales_amount, total_purchase_amount, batch_month, handwrite	
@@ -33,15 +34,17 @@
 	</insert>
 	
 	<select id="selectOne" resultMap="salesResultMap">
+		/* SalesResultDao.selectOne */
 		select * from t_sales_result where sales_result_id = #{sales_result_id}
 	</select>
 	
 	<delete id="delete">
+		/* SalesResultDao.delete */
 		delete from t_sales_result where sales_result_id = #{sales_result_id}
 	</delete>
 	
 	<update id="update">
-		update
+		update /* SalesResultDao.update */
 		    t_sales_result
 		set
 		    total_sales_amount = #{total_sales_amount},
