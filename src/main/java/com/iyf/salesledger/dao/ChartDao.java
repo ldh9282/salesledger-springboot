@@ -8,4 +8,6 @@ import org.apache.ibatis.annotations.Param;
 public interface ChartDao {
 
 	List<Map<String, Object>> salesThisYearResultListByCompanyAndDepartment(@Param("company") String company, @Param("department") String department);
+	
+	List<Map<String, Object>> salesResultListByCompanyAndDepartmentAndYear(@Param("company") String company, @Param("department") String department, @Param("year") String year);
 }

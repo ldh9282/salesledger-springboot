@@ -17,5 +17,9 @@ public class ChartService {
 	public List<Map<String, Object>> salesThisYearResultListByCompanyAndDepartment(String company, String department) {
 		return chartDao.salesThisYearResultListByCompanyAndDepartment(company, department);
 	}
+	
+	public List<Map<String, Object>> salesResultListByCompanyAndDepartmentAndYear(String company, String department, String year) {
+		return chartDao.salesResultListByCompanyAndDepartmentAndYear(company, department, year);
+	}
 
 }

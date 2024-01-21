@@ -94,7 +94,7 @@
 		
 										<tr>
 											<th scope="row">
-												<c:out value="${memberStatus.index+1}" />
+												<c:out value="${(param.pageNum - 1) * param.rowAmountPerPage + memberStatus.index+1}" />
 											</th>
 											<td class="username">
 												<c:out value="${member.username}" />

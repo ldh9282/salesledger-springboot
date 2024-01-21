@@ -57,17 +57,22 @@
     <main id="main" class="main">
 
         <section>
-			<div class="d-flex mb-5">
-			    <div class="dropdown">
-			        <select class="form-select" id="defaultMaxData" name="defaultMaxData">
-			            <option value="">- Y축 기준설정 -</option>
-			            <option value="100000000">100,000천 원</option>
-			            <option value="500000000">500,000천 원</option>
-			            <option value="1000000000">1,000,000천 원</option>
-			            <option value="5000000000">5,000,000천 원</option>
-			            <option value="10000000000">10,000,000천 원</option>
-			        </select>
-			    </div>
+			<div class="d-flex mb-5 justify-content-between">
+				<div class="dropdown">
+					<select class="form-select" id="defaultMaxData" name="defaultMaxData">
+						<option value="">- Y축 기준설정 -</option>
+						<option value="100000000">100,000천 원</option>
+						<option value="500000000">500,000천 원</option>
+						<option value="1000000000">1,000,000천 원</option>
+						<option value="5000000000">5,000,000천 원</option>
+						<option value="10000000000">10,000,000천 원</option>
+					</select>
+				</div>
+			  
+				<div class="float-end mb-5">
+					<input type="text" name="keyword" id="keyword" placeholder="해당년도">
+					<button type="button" id="btnKeywordSearch">검색</button>
+				</div>
 			</div>
 
             <div class="row">
@@ -224,29 +229,33 @@
     <script>
     	$(document).ready(function() {
     		
+        	
     		const params = new URLSearchParams(window.location.search);
+    		
+
+        	$("#keyword").val(params.get("year") !== null ? params.get("year") : new Date().getFullYear());
     		const defaultMaxData = params.get('defaultMaxData') !== null ? params.get('defaultMaxData') : 100000000; // (100,000천 원)
     		
     		
-    		displaySalesResultChartByCompanyAndDepartment('IYCNC', 'ITO', 'iycncChart1');
-    		displaySalesResultChartByCompanyAndDepartment('IYCNC', 'IDC', 'iycncChart2');
-    		displaySalesResultChartByCompanyAndDepartment('IYCNC', 'CONVERSION', 'iycncChart3');
-    		displaySalesResultChartByCompanyAndDepartment('IBTS', 'ITO', 'ibtsChart1');
-    		displaySalesResultChartByCompanyAndDepartment('IBTS', 'IDC', 'ibtsChart2');
-    		displaySalesResultChartByCompanyAndDepartment('IBTS', 'CONVERSION', 'ibtsChart3');
-    		displaySalesResultChartByCompanyAndDepartment('IYS', 'ITO', 'iysChart1');
-    		displaySalesResultChartByCompanyAndDepartment('IYS', 'IDC', 'iysChart2');
-    		displaySalesResultChartByCompanyAndDepartment('IYS', 'CONVERSION', 'iysChart3');
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYCNC', 'ITO', 'iycncChart1', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYCNC', 'IDC', 'iycncChart2', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYCNC', 'CONVERSION', 'iycncChart3', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IBTS', 'ITO', 'ibtsChart1', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IBTS', 'IDC', 'ibtsChart2', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IBTS', 'CONVERSION', 'ibtsChart3', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYS', 'ITO', 'iysChart1', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYS', 'IDC', 'iysChart2', $("#keyword").val());
+    		displaySalesResultChartByCompanyAndDepartmentAndYear('IYS', 'CONVERSION', 'iysChart3', $("#keyword").val());
     		
-    		// 회사 및 부서별 실적차트
-    		function displaySalesResultChartByCompanyAndDepartment(company, department, elementId) {
+    		// 해당년도 회사 및 부서별 실적차트
+    		function displaySalesResultChartByCompanyAndDepartmentAndYear(company, department, elementId, year) {
     			$.ajax({
-                    url: "${pageContext.request.contextPath}/admin/salesThisYearResultByCompanyAndDepartment.ajax/company/" + company + "/department/" + department,
+                    url: "${pageContext.request.contextPath}/admin/salesYearResultByCompanyAndDepartmentAndYear.ajax/company/" + company + "/department/" + department + "/year/" + year,
                     method: "GET",
                     dataType: "json",
                     async: false,
                     success: function (response) {
-                    	const yyyy = new Date().getFullYear();
+                    	const yyyy = year;
                     	const yyyMMList = Array.from({ length: 12 }, (value, i) => {
                     	    return String(yyyy) + String(i + 1).padStart(2, '0');
                     	});
@@ -363,6 +372,18 @@
     	        url.searchParams.set('defaultMaxData', $(this).val());
     	        window.location.href = url.href;
     	    });
+    		
+    		$("#btnKeywordSearch").click(function() {
+    			const regex = /^(19|20)\d\d$/;
+
+                if (regex.test($('#keyword').val())) {
+        	        const url = new URL(window.location.href);
+        	        url.searchParams.set('year', $('#keyword').val());
+        	        window.location.href = url.href;
+                } else {
+                	alert('올바른 해당년도 키워드를 입력한 뒤 다시 검색해주세요');
+                }
+    		});
     		
        		// 사이드바 접을 때 그리드 리사이징
             $('i.toggle-sidebar-btn').click(function() {

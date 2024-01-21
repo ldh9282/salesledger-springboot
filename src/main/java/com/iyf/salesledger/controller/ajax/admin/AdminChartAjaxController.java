@@ -19,11 +19,12 @@ public class AdminChartAjaxController {
 	private ChartService chartService;
 	
 	/***
-	 * @기능 salesResultChart.jsp 페이지에서 매출실적 올해 차트 조회
+	 * @기능 salesResultChart.jsp 페이지에서 매출실적 올해 차트 조회 (사용안함)
 	 * @param company 회사 (IYCNC, IBTS, IYS)
 	 * @param department 부서 (ITO, CONVERSION, IDC)
 	 * @return salesThistYearResult 매출실적 올해 차트
 	 */
+	@Deprecated
 	@GetMapping("/admin/salesThisYearResultByCompanyAndDepartment.ajax/company/{company}/department/{department}")
 	public List<Map<String, Object>> retrieveSalesThisYearResultByCompanyAndDepartment(@PathVariable String company, @PathVariable String department) {
 		if (log.isInfoEnabled()) {log.info("Start AdminChartAjaxController.retrieveSalesThisYearResultByCompany");}
@@ -34,5 +35,23 @@ public class AdminChartAjaxController {
 		if (log.isInfoEnabled()) {log.info("return ::: salesThistYearResult");}
 		if (log.isInfoEnabled()) {log.info("End AdminChartAjaxController.retrieveSalesThisYearResultByCompany");}
 		return salesThistYearResult;
+	}
+	
+	/***
+	 * @기능 salesResultChart.jsp 페이지에서 매출실적 해당년도 차트 조회 (기본값: 올해, 검색시: 해당년도)
+	 * @param company 회사 (IYCNC, IBTS, IYS)
+	 * @param department 부서 (ITO, CONVERSION, IDC)
+	 * @return salesYearResult 매출실적 해당년도 차트
+	 */
+	@GetMapping("/admin/salesYearResultByCompanyAndDepartmentAndYear.ajax/company/{company}/department/{department}/year/{year}")
+	public List<Map<String, Object>> retrieveSalesYearResultByCompanyAndDepartmentAndYear(@PathVariable String company, @PathVariable String department, @PathVariable String year) {
+		if (log.isInfoEnabled()) {log.info("Start AdminChartAjaxController.retrieveSalesYearResultByCompanyAndDepartmentAndYear");}
+		if (log.isInfoEnabled()) {log.info("param ::: company ::: " + company);}
+		if (log.isInfoEnabled()) {log.info("param ::: department ::: " + department);}
+		if (log.isInfoEnabled()) {log.info("do service ::: chartService.salesYearResultByCompanyAndDepartmentAndYear");}
+		List<Map<String, Object>> salesYearResult = chartService.salesResultListByCompanyAndDepartmentAndYear(company, department, year);
+		if (log.isInfoEnabled()) {log.info("return ::: salesYearResult");}
+		if (log.isInfoEnabled()) {log.info("End AdminChartAjaxController.retrieveSalesYearResultByCompanyAndDepartmentAndYear");}
+		return salesYearResult;
 	}
 }

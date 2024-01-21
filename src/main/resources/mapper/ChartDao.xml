@@ -18,4 +18,14 @@
 		having company = #{company} and department = #{department} and batch_month between to_char(now(), 'yyyy01') and to_char(now(), 'yyyy12')
 		order by batch_month
 	</select>
+		<select id="salesResultListByCompanyAndDepartmentAndYear" resultMap="salesResultMap">
+		select /* ChartDao.salesThisYearResultListByCompanyAndDepartment */
+			company 회사, batch_month 해당년월,
+			sum(total_sales_amount) 총매출가,
+			sum(total_purchase_amount) 총매입가
+		from t_sales_result
+		group by company, department, batch_month
+		having company = #{company} and department = #{department} and batch_month between #{year} || '01' and #{year} || '12'
+		order by batch_month
+	</select>
 </mapper>

@@ -335,7 +335,7 @@
                		$('#month').text(monthString);
                		
                  	// 해당년월 키워드 세팅:
-                  		$('#keyword').val(yyyymm);
+              		$('#keyword').val(yyyymm);
                 }
             });
             
