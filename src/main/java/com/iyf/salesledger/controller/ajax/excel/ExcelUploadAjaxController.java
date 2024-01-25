@@ -1,4 +1,4 @@
-package com.iyf.salesledger.controller.ajax.empPool;
+package com.iyf.salesledger.controller.ajax.excel;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import com.iyf.salesledger.service.ExcelService;
 import lombok.extern.log4j.Log4j2;
 
 @Controller @Log4j2
-public class EmpPoolExcelController {
+public class ExcelUploadAjaxController {
 
 	
 	@Autowired
@@ -25,12 +25,12 @@ public class EmpPoolExcelController {
 	 * @param file
 	 * @return ResponseEntity<String>
 	 */
-	@PostMapping("/empPool.ajax/ExcelProcess")
+	@PostMapping("/excel/empPoolExcelUpload.ajax")
 	public ResponseEntity<String> empPoolExcelProcess(@RequestParam("file") MultipartFile file) {
-		if (log.isInfoEnabled()) {log.info("Start EmpPoolExcelController.empPoolExcelProcess");}
+		if (log.isInfoEnabled()) {log.info("Start ExcelUploadAjaxController.empPoolExcelProcess");}
 		ResponseEntity<String> uploadResult = excelService.empPoolExcelProcess(file);
         if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
-        if (log.isInfoEnabled()) {log.info("Start EmpPoolExcelController.empPoolExcelProcess");}
+        if (log.isInfoEnabled()) {log.info("End ExcelUploadAjaxController.empPoolExcelProcess");}
 		return uploadResult;
 	}
 }

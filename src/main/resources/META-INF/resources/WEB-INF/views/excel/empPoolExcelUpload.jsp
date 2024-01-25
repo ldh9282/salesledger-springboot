@@ -135,7 +135,7 @@
 				} else {
 				    $.ajax({
 				        type: "POST",
-				        url: "${pageContext.request.contextPath}/empPool.ajax/ExcelProcess",
+				        url: "${pageContext.request.contextPath}/excel/empPoolExcelUpload.ajax",
 				        data: formData,
 				        async: false,
 				        processData: false,
@@ -145,6 +145,8 @@
 							$('#file').val("")
 							
 				        	alert(response); // 서버에서 반환한 메시지 표시
+				        	
+							opener.parent.location.reload();
 				            
 				        },
 				        error: function (error) {

@@ -246,6 +246,9 @@
                 const del = 'Y';
 
                 if ($('#project_assign').val() <= 0) {
+                    if (!confirm("해당 인력을 정말로 삭제하시겠습니까?")) {
+                    	return;
+                    }
                     
                     $.ajax({
                         type: 'PATCH',

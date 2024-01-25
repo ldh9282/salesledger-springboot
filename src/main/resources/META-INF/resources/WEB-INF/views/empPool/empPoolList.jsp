@@ -486,10 +486,10 @@
 
                 window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
             });
-            // 엑셀페이지 버튼 클릭 이벤트: 인력등록페이지 팝업
+            // 엑셀업로드페이지 버튼 클릭 이벤트
             $('#btnShowExcelUploadPage').click(function () {
-                const popupUrl = '${pageContext.request.contextPath}/empPoolExcelUpload';
-                const popupName = 'empPoolRegister-popup';
+                const popupUrl = '${pageContext.request.contextPath}/excel/empPoolExcelUpload';
+                const popupName = 'empPoolExcelUpload-popup';
                 const popupWidth = 1000;
                 const popupHeight = 600;
                 const left = (screen.width - popupWidth) / 2;

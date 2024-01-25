@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.util.MapUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -21,6 +22,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.iyf.salesledger.common.utils.MapUtils;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -83,7 +86,7 @@ public class ExcelUtils {
                     }
                 }
 
-                if (!rowData.isEmpty()) {
+                if (!MapUtils.areAllPropertiesNullOrEmpty(rowData)) {
                     dataList.add(rowData);
                 }
             }
