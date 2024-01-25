@@ -15,6 +15,7 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
+import org.springframework.beans.factory.annotation.Value;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -22,6 +23,12 @@ import lombok.extern.log4j.Log4j2;
 @Log4j2
 public class CustomSqlLoggingInterceptor implements Interceptor {
 
+	@Value("${sql-logging-before-binding}")
+	private boolean sqlLoggingBeforeBinding;
+	
+	@Value("${sql-logging-after-binding}")
+	private boolean sqlLoggingAfterBinding;
+	
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
 		if (log.isInfoEnabled()) {log.info("Start CustomSqlLoggingInterceptor.intercept");}
@@ -34,9 +41,9 @@ public class CustomSqlLoggingInterceptor implements Interceptor {
         Object[] objectArr = changeObjectListToArr(objectList);
         String paramSql = getParamSql(originalSql, objectArr);
         
-        if (log.isInfoEnabled()) {log.info("바인딩 전 쿼리 \n" + originalSql.replaceAll("\n\t\t", "\n"));}
-        if (log.isInfoEnabled()) {log.info("바인딩 파라미터 \n" + (parameterObject == null ? "empty parameterObject" : parameterObject));}
-        if (log.isInfoEnabled()) {log.info("바인딩 후 쿼리 \n" + paramSql.replaceAll("\n\t\t", "\n"));}
+        if (sqlLoggingBeforeBinding && log.isInfoEnabled()) {log.info("바인딩 전 쿼리 \n" + originalSql.replaceAll("\n\t\t", "\n"));}
+        if ((sqlLoggingBeforeBinding || sqlLoggingAfterBinding) && log.isInfoEnabled()) {log.info("바인딩 파라미터 \n" + (parameterObject == null ? "empty parameterObject" : parameterObject));}
+        if (sqlLoggingAfterBinding && log.isInfoEnabled()) {log.info("바인딩 후 쿼리 \n" + paramSql.replaceAll("\n\t\t", "\n"));}
         if (log.isInfoEnabled()) {log.info("End CustomSqlLoggingInterceptor.intercept");}
         
         return invocation.proceed();
