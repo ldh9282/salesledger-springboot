@@ -60,10 +60,10 @@ public class ExcelService {
 				String career_years = (String) map.get("경력");
 				String career_field = (String) map.get("분야");
 				String career_level = StringUtils.defaultIfNullOrEmpty((String) map.get("등급"), "미기입");
-				int hope_purchase_unit = ((Double) map.get("희망단가")).intValue();
+				int hope_purchase_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("희망단가"), 0.0)).intValue();
 				
 				// 1. 필수값 체크
-				if (ObjectUtils.isAnyValueNullOrEmpty(name, phonenumber)) {
+				if (ObjectUtils.isAnyValueNullOrEmptyOrZero(name, phonenumber)) {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: ObjectUtils.isAnyValueNullOrEmpty ::: true");}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
@@ -145,16 +145,16 @@ public class ExcelService {
 				Date assign_date = DateUtils.parseObject(map.get("투입일")); // 필수값
 				Date end_date = DateUtils.parseObject(map.get("종료일")); // 필수값
 				Date resign_date = DateUtils.parseObject(map.get("철수날짜")); // 필수값
-				double sales_mm = ((Double) map.get("매출MM")).doubleValue(); // 필수값
-				double purchase_mm = ((Double) map.get("매입MM")).doubleValue(); // 필수값
-				long sales_unit = ((Double) map.get("매출단가")).longValue(); // 필수값
-				long purchase_unit = ((Double) map.get("매출단가")).longValue(); // 필수값
+				double sales_mm = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매출MM"), 0.0)).doubleValue(); // 필수값
+				double purchase_mm = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매입MM"), 0.0)).doubleValue(); // 필수값
+				long sales_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매출단가"), 0.0)).longValue(); // 필수값
+				long purchase_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매입단가"), 0.0)).longValue(); // 필수값
 				Date resume_submit_date = DateUtils.parseObject(map.get("이력서제출"));
 				Date i_contract_date = DateUtils.parseObject(map.get("개인계약일"));
 				Date c_contract_date = DateUtils.parseObject(map.get("업체계약일"));
 				
 				// 1. 필수값 체크
-				if (ObjectUtils.isAnyValueNullOrEmpty(
+				if (ObjectUtils.isAnyValueNullOrEmptyOrZero(
 						name, phonenumber, progress, company, department, site, client, project_name,
 						assign_date, end_date, resign_date, sales_mm, purchase_mm, sales_unit, purchase_unit)) {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: ObjectUtils.isAnyValueNullOrEmpty ::: true");}
@@ -169,6 +169,7 @@ public class ExcelService {
 				
 				if (findOne == null) {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: findOne ::: not exist");}
+					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당인력은 인력풀에 존재하지 않습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
 				}
@@ -196,9 +197,10 @@ public class ExcelService {
 				// 3. 인력원장 투입예정 등록
 				ResponseEntity<String> result = empLedgerService.insertByProgress(empLedger);
 				
-				// 4. 이미 등록된 프로젝트인지 체크
+				// 4. 이미 투입예정 혹은 투입된 프로젝트인지 체크
 				if (HttpStatus.BAD_REQUEST.equals(result.getStatusCode())) {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: 이미 투입예정 혹은 투입된 프로젝트입니다.");}
+					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
 					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당프로젝트에 이미 투입예정 혹은 투입되어있습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
 				}

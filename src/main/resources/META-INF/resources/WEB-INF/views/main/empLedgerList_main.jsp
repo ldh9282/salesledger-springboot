@@ -771,7 +771,7 @@
                 window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
             });
             
-            // 엑셀페이지 버튼 클릭 이벤트
+            // 엑셀업로드페이지 버튼 클릭 이벤트
             $('#btnShowExcelUploadPage').click(function () {
                 const popupUrl = '${pageContext.request.contextPath}/excel/empLedgerExcelUpload';
                 const popupName = 'empLedgerExcelUpload-popup';

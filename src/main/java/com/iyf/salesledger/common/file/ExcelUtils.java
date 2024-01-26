@@ -101,7 +101,9 @@ public class ExcelUtils {
             returnMap.put("sheetName", sheet.getSheetName());
             returnMap.put("headerList", headers);
             returnMap.put("dataList", dataList);
-            
+            if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: sheetName ::: " + sheet.getSheetName());}
+            if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: headerList ::: " + headers);}
+            if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: dataList.size ::: " + dataList.size());}
             return returnMap;
         } catch (IOException e) {
         	if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: IOException ::: " + e);}

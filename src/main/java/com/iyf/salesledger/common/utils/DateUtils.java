@@ -13,6 +13,11 @@ public class DateUtils {
 	 * @throws ParseException
 	 */
 	public static Date parseObject(Object object) throws ParseException {
+		
+		if (object == null) {
+			return null;
+		}
+		
 		if (object instanceof String) {
 			String str = (String) object;
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");

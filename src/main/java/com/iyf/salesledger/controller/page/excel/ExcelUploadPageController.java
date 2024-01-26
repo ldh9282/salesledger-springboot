@@ -10,7 +10,7 @@ import lombok.extern.log4j.Log4j2;
 public class ExcelUploadPageController {
 
 	/***
-	 * @기능 empPoolExcelUploadPage.jsp 페이지 호출
+	 * @기능 excel/empPoolExcelUploadPage.jsp 인력풀 엑셀업로드페이지
 	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/excel/empPoolExcelUpload")
@@ -22,7 +22,7 @@ public class ExcelUploadPageController {
 	}
 	
 	/***
-	 * @기능 empLedgerExcelUpload.jsp 페이지 호출
+	 * @기능 excel/empLedgerExcelUpload.jsp 인력원장 엑셀업로드페이지
 	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/excel/empLedgerExcelUpload")
