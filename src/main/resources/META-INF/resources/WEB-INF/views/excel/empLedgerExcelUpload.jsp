@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
 	<link rel="shortcut icon" type="image/x-icon" href="${pageContext.request.contextPath}/resources/icon/favicon.ico">
-    <title>인력풀 엑셀 업로드 페이지: IYF 영업관리시스템</title>
+    <title>인력원장 엑셀 업로드 페이지: IYF 영업관리시스템</title>
 
 
     <!-- Google Fonts -->
@@ -46,7 +46,7 @@
 	<div class="container mt-5">
 	    <div class="card">
 	        <div class="card-header">
-	            <h1 class="card-title">인력풀 엑셀 파일 업로드</h1>
+	            <h1 class="card-title">인력원장 엑셀 파일 업로드</h1>
 	        </div>
 	        <div class="card-body">
 	            <form>
@@ -135,7 +135,7 @@
 				} else {
 				    $.ajax({
 				        type: "POST",
-				        url: "${pageContext.request.contextPath}/excel/empPoolExcelUpload.ajax",
+				        url: "${pageContext.request.contextPath}/excel/empLedgerExcelUpload.ajax",
 				        data: formData,
 				        async: false,
 				        processData: false,
@@ -170,7 +170,7 @@
 			
 			// 샘플 엑셀 파일 다운로드
 			$('#btnSampleDownload').click(function() {
-				const sampleFileName = '인력풀_샘플_업로드.xlsx'
+				const sampleFileName = '인력원장_샘플_업로드.xlsx'
 				 $.ajax({
 		            url: "${pageContext.request.contextPath}/download/" + sampleFileName,
 		            method: "GET",
@@ -178,7 +178,7 @@
 		                responseType: 'blob'
 		            },
 		            success: function(data, status, xhr) {
-		                const fileName = '인력풀 샘플 업로드.xlsx';
+		                const fileName = '인력원장 샘플 업로드.xlsx';
 
 		                // 브라우저에서 파일 다운로드
 		                const blob = new Blob([data], { type: xhr.getResponseHeader('Content-Type') });

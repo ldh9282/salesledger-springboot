@@ -243,9 +243,13 @@
                         opener.parent.location.reload();
                         window.close();
                     },
-                    error: function() {
+                    error: function(error) {
+                    	if (error.responseText) {
+				            alert(error.responseText); // 서버에서 반환한 메시지 표시
+			            } else {
+			            	alert("내부 서버 오류입니다. 잠시 후 시도해주세요.");
+			            }
                         opener.parent.location.reload();
-                        window.close();
                     }
                 });
 

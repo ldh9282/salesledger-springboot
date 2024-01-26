@@ -151,29 +151,45 @@
 	</insert>
 	
 	<update id="update">
-	UPDATE t_emp_ledger SET /* EmpLedgerDao.update */
-		emp_pool_id = #{emp_pool_id}, 
-		company = #{company}, 
-		department = #{department}, 
-		assign_date = #{assign_date}, 
-		end_date = #{end_date}, 
-		sales_mm = #{sales_mm},
-		purchase_mm = #{purchase_mm},
-		sales_unit = #{sales_unit}, 
-		purchase_unit = #{purchase_unit}, 
-		comments = #{comments}, 
-		resume_submit_date = #{resume_submit_date}, 
-		resign_date = #{resign_date}, 
-		i_contract_date = #{i_contract_date}, 
-		c_contract_date = #{c_contract_date}, 
-		progress = #{progress}, 
-		progress_reason = #{progress_reason}, 
-		issues = #{issues},
-		del = #{del},
-		site = #{site},
-		client = #{client},
-		project_name = #{project_name},
-		brief = #{brief}
-	WHERE emp_id = #{emp_id}
+		UPDATE t_emp_ledger SET /* EmpLedgerDao.update */
+			emp_pool_id = #{emp_pool_id}, 
+			company = #{company}, 
+			department = #{department}, 
+			assign_date = #{assign_date}, 
+			end_date = #{end_date}, 
+			sales_mm = #{sales_mm},
+			purchase_mm = #{purchase_mm},
+			sales_unit = #{sales_unit}, 
+			purchase_unit = #{purchase_unit}, 
+			comments = #{comments}, 
+			resume_submit_date = #{resume_submit_date}, 
+			resign_date = #{resign_date}, 
+			i_contract_date = #{i_contract_date}, 
+			c_contract_date = #{c_contract_date}, 
+			progress = #{progress}, 
+			progress_reason = #{progress_reason}, 
+			issues = #{issues},
+			del = #{del},
+			site = #{site},
+			client = #{client},
+			project_name = #{project_name},
+			brief = #{brief}
+		WHERE emp_id = #{emp_id}
 	</update>
+	
+	<select id="selectProjectYn" resultType="String">
+		SELECT /* EmpLedgerDao.selectProjectYn */
+			CASE 
+				WHEN count(*) >= 1 THEN 'Y'
+				ELSE 'N'
+			END AS result
+		FROM t_emp_ledger
+		WHERE emp_pool_id = #{emp_pool_id} and progress in ('투입예정', '투입')
+			AND company = #{company}
+			AND department = #{department}
+			AND site = #{site}
+			AND client = #{client}
+			AND project_name = #{project_name}
+			AND (del = 'N' or del is null);
+	</select>
 </mapper>

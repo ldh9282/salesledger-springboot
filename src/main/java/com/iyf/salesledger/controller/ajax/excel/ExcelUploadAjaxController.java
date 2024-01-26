@@ -33,4 +33,19 @@ public class ExcelUploadAjaxController {
         if (log.isInfoEnabled()) {log.info("End ExcelUploadAjaxController.empPoolExcelProcess");}
 		return uploadResult;
 	}
+	
+	/***
+	 * @기능 1. 엑셀 데이터로 인력원장 다건 추가 <br>
+	 * 	    2. 엑셀 파일 삭제 
+	 * @param file
+	 * @return ResponseEntity<String>
+	 */
+	@PostMapping("/excel/empLedgerExcelUpload.ajax")
+	public ResponseEntity<String> empLedgerExcelProcess(@RequestParam("file") MultipartFile file) {
+		if (log.isInfoEnabled()) {log.info("Start ExcelUploadAjaxController.empLedgerExcelProcess");}
+		ResponseEntity<String> uploadResult = excelService.empLedgerExcelProcess(file);
+		if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
+		if (log.isInfoEnabled()) {log.info("End ExcelUploadAjaxController.empLedgerExcelProcess");}
+		return uploadResult;
+	}
 }

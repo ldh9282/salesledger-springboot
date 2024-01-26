@@ -19,5 +19,5 @@ public interface EmpLedgerDao {
 
 	void update(EmpLedger empLedger);
 
-	
+	String selectProjectYn(EmpLedger empLedger);
 }

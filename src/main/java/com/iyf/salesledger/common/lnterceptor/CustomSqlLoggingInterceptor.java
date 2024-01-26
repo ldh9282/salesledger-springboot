@@ -31,7 +31,7 @@ public class CustomSqlLoggingInterceptor implements Interceptor {
 	
 	@Override
 	public Object intercept(Invocation invocation) throws Throwable {
-		if (log.isInfoEnabled()) {log.info("Start CustomSqlLoggingInterceptor.intercept");}
+		if ((sqlLoggingBeforeBinding || sqlLoggingAfterBinding) && log.isInfoEnabled()) {log.info("Start CustomSqlLoggingInterceptor.intercept");}
 		
 		StatementHandler statementHandler = (StatementHandler) invocation.getTarget();
         String originalSql = statementHandler.getBoundSql().getSql();
@@ -44,7 +44,7 @@ public class CustomSqlLoggingInterceptor implements Interceptor {
         if (sqlLoggingBeforeBinding && log.isInfoEnabled()) {log.info("바인딩 전 쿼리 \n" + originalSql.replaceAll("\n\t\t", "\n"));}
         if ((sqlLoggingBeforeBinding || sqlLoggingAfterBinding) && log.isInfoEnabled()) {log.info("바인딩 파라미터 \n" + (parameterObject == null ? "empty parameterObject" : parameterObject));}
         if (sqlLoggingAfterBinding && log.isInfoEnabled()) {log.info("바인딩 후 쿼리 \n" + paramSql.replaceAll("\n\t\t", "\n"));}
-        if (log.isInfoEnabled()) {log.info("End CustomSqlLoggingInterceptor.intercept");}
+        if ((sqlLoggingBeforeBinding || sqlLoggingAfterBinding) && log.isInfoEnabled()) {log.info("End CustomSqlLoggingInterceptor.intercept");}
         
         return invocation.proceed();
 	}

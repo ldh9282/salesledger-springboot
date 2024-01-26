@@ -252,6 +252,7 @@
 
                 <div class="d-flex mt-5">
                     <button type="button" class="btn btn-primary ms-2" id="btnShowRegisterPage">인력투입예정페이지</button>
+                    <button type="button" class="btn btn-primary ms-2" id="btnShowExcelUploadPage">엑셀업로드페이지</button>
                 </div>
 
 
@@ -767,6 +768,18 @@
                 const left = (screen.width - popupWidth) / 2;
                 const top = (screen.height - popupHeight) / 2;
                 
+                window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
+            });
+            
+            // 엑셀페이지 버튼 클릭 이벤트
+            $('#btnShowExcelUploadPage').click(function () {
+                const popupUrl = '${pageContext.request.contextPath}/excel/empLedgerExcelUpload';
+                const popupName = 'empLedgerExcelUpload-popup';
+                const popupWidth = 1000;
+                const popupHeight = 600;
+                const left = (screen.width - popupWidth) / 2;
+                const top = (screen.height - popupHeight) / 2;
+
                 window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
             });
             

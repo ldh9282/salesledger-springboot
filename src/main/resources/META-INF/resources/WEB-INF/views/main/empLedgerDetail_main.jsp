@@ -417,7 +417,7 @@
                                     })
                                 } else {
                                     opener.parent.location.reload()
-                                    window.close()
+                                    window.location.reload()
                                 }
 
                             },
@@ -460,7 +460,7 @@
 	                        });
 	                    } else {
 	                        opener.parent.location.reload();
-	                        window.close();
+	                        window.location.reload();
 	                    }
                                 
                     },
@@ -770,7 +770,7 @@
 	   	                           });
 								} else {
 									opener.parent.location.reload();
-                                    window.close();
+									window.location.reload();
 								}
 	                       },
 	                       error: function() {

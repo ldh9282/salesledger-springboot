@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -79,14 +80,18 @@ public class EmpLedgerAjaxController {
 	 * @return
 	 */
 	@PostMapping("/empLedger.ajax")
-	public void insertByProgress(@RequestBody Map<String, Object> requestBodyMap) {
+	public ResponseEntity<String> insertByProgress(@RequestBody Map<String, Object> requestBodyMap) {
 		if (log.isInfoEnabled()) {log.info("Start EmpLedgerAjaxController.insertByProgress");}
 		Gson gson = new Gson();
 		EmpLedger empLedger = gson.fromJson(gson.toJson(requestBodyMap.get("empLedger")), EmpLedger.class);
 		if (log.isInfoEnabled()) {log.info("param ::: empLedger ::: " + empLedger);}
 		if (log.isInfoEnabled()) {log.info("do service ::: empLedgerService.insertByProgress");}
-		empLedgerService.insertByProgress(empLedger);
+		ResponseEntity<String> response = empLedgerService.insertByProgress(empLedger);
+		
+		if (log.isInfoEnabled()) {log.info("response ::: " + response);}
 		if (log.isInfoEnabled()) {log.info("End EmpLedgerAjaxController.insertByProgress");}
+		
+		return response;
 	}
 	
 	/***

@@ -20,4 +20,16 @@ public class ExcelUploadPageController {
 		if (log.isInfoEnabled()) {log.info("End ExcelUploadPageController.showEmpPoolExcelUploadPage");}
 		return "excel/empPoolExcelUpload";
 	}
+	
+	/***
+	 * @기능 empLedgerExcelUpload.jsp 페이지 호출
+	 */
+	@PreAuthorize("isAuthenticated()")
+	@GetMapping("/excel/empLedgerExcelUpload")
+	public String showEmpLedgerExcelUploadPage() {
+		if (log.isInfoEnabled()) {log.info("Start ExcelUploadPageController.showEmpLedgerExcelUploadPage");}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "excel/empLedgerExcelUpload");}
+		if (log.isInfoEnabled()) {log.info("End ExcelUploadPageController.showEmpLedgerExcelUploadPage");}
+		return "excel/empLedgerExcelUpload";
+	}
 }

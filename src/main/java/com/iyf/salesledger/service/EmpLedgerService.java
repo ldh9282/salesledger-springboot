@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,11 +46,19 @@ public class EmpLedgerService {
 	}
 	
 	@Transactional
-	public void insertByProgress(EmpLedger empLedger) {
+	public ResponseEntity<String> insertByProgress(EmpLedger empLedger) {
 		empLedger.setProgress("투입예정");
+		
+		String projectYn = empLedgerDao.selectProjectYn(empLedger);
+		
+		if ("Y".equals(projectYn)) {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("이미 투입예정 혹은 투입된 프로젝트입니다.");
+		}
+			
 		empLedgerDao.insert(empLedger);
 		
 		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		
 		if (empPool != null) {
 			
 			int cntProjectAssign = empPoolDao.selectCntProjectAssign(empPool.getEmp_pool_id());
@@ -56,6 +66,7 @@ public class EmpLedgerService {
 			empPoolDao.update(empPool);
 		}
 		
+		return ResponseEntity.status(HttpStatus.OK).body("인력원장 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
 		
 	}
 
