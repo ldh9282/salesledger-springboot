@@ -119,6 +119,7 @@
    			const department = '${department}';
             
         	const currentDate = new Date();
+        	currentDate.setDate(1);
         	currentDate.setMonth(currentDate.getMonth() + 1);
 
         	// 년도와 월을 가져옵니다.
