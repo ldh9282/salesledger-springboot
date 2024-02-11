@@ -35,7 +35,7 @@
 	          	<hr class="dropdown-divider">
 	          </li>
 	          <li>
-	            <a class="dropdown-item d-flex align-items-center" href="${pageContext.request.contextPath}/logout">
+	            <a class="dropdown-item d-flex align-items-center" href="#none" id="btnLogout">
 	              <i class="bi bi-box-arrow-right"></i>
 	              <span>로그아웃</span>
 	            </a>
@@ -52,14 +52,34 @@
 	
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$.ajax({
-				type: 'GET',
-				url: '${pageContext.request.contextPath}/member.ajax/username/' + '${principal.username}',
-				success: function(member) {
-					$('#name').text(member.name);
-					$('#auth').text(member.authorities[0].authority);
-					$('#company').text(member.company);
-				}
-			});
+		    
+	    	let cachedMember = JSON.parse(sessionStorage.getItem('cachedMember'));
+	    	
+		    if (!cachedMember || cachedMember.username !== '${principal.username}') {
+				$.ajax({
+					type: 'GET',
+					url: '${pageContext.request.contextPath}/member.ajax/username/' + '${principal.username}',
+					success: function(member) {
+					 	sessionStorage.setItem('cachedMember', JSON.stringify(member));
+					 	
+						$('#name').text(member.name);
+						$('#auth').text(member.authorities[0].authority);
+						$('#company').text(member.company);
+					}
+				});
+		    } else {
+				$('#name').text(cachedMember.name);
+				$('#auth').text(cachedMember.authorities[0].authority);
+				$('#company').text(cachedMember.company);
+		    }
+		    
+		    $('#btnLogout').click(function(e) {
+		    	e.preventDefault();
+		    	if (!confirm('로그아웃 하시겠습니까?')) {
+		    		return;
+		    	}
+		    	sessionStorage.removeItem('cachedMember');
+		    	window.location.href = '${pageContext.request.contextPath}/logout';
+		    });
 		});
 	</script>

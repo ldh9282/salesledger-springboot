@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.common.board.dao.BoardReplyDao">
+	
+	
+	<insert id="insertBoardReply">
+		INSERT INTO t_board_reply /* BoardReplyDao.insertBoardReply */
+		    (
+		        reply_id,
+		        board_id,
+		        ref_reply_id,
+		        reply_content,
+		        del,
+		        system_creator,
+		        system_modifier,
+		        system_created_at,
+		        system_modified_at,
+		        anonymous_name,
+		        anonymous_password
+		    )
+		VALUES
+		    (
+		        default, 
+		        #{board_id}, 
+		        #{ref_reply_id}, 
+		        #{reply_content}, 
+		        'N', 
+		        #{system_creator}, 
+		        #{system_modifier}, 
+		        now(), 
+		        now(), 
+		        #{anonymous_name}, 
+		        #{anonymous_password}
+		    )
+	</insert>
+	
+	<select id="getBoardReplyList" resultType="map">
+		WITH RECURSIVE recursive_reply /* BoardReplyDao.getBoardReplyList */
+			( 
+			    reply_id,
+			    board_id,
+			    ref_reply_id,
+			    reply_content,
+				del,
+				system_creator,
+				system_modifier,
+				system_created_at,
+				system_modified_at,
+				anonymous_name,
+				anonymous_password,
+			    recursive_path
+			) 
+		AS 
+			(
+			    SELECT -- 계층 구조의 시작조건 쿼리
+			        reply_id,
+			        board_id,
+			        ref_reply_id,
+			        reply_content,
+					del,
+					system_creator,
+					system_modifier,
+					system_created_at,
+					system_modified_at,
+					anonymous_name,
+					anonymous_password,
+			        ARRAY [reply_id]
+			    FROM
+			        t_board_reply
+			    WHERE
+			        ref_reply_id IS NULL
+					AND board_id = #{board_id}
+					
+			    UNION
+			    ALL 
+				
+			    SELECT -- 하위 데이터 반복조건 쿼리
+			        t2.reply_id,
+			        t2.board_id,
+			        t2.ref_reply_id,
+			        t2.reply_content,
+					t2.del,
+					t2.system_creator,
+					t2.system_modifier,
+					t2.system_created_at,
+					t2.system_modified_at,
+					t2.anonymous_name,
+					t2.anonymous_password,
+			        t1.recursive_path || t2.reply_id
+			    FROM
+			        recursive_reply t1, t_board_reply t2
+				Where
+					t1.reply_id = t2.ref_reply_id
+			) 
+		
+		SELECT -- 최종 결과 조회
+			board_id,
+			ARRAY_TO_STRING(recursive_path, '-') recursive_path,
+			ARRAY_LENGTH(recursive_path, 1) recursive_path_length,
+		    reply_id,
+		    ref_reply_id,
+			reply_content,
+			del,
+			system_creator,
+			system_modifier,
+			to_char(system_created_at, 'YYYY.MM.DD HH24:MI:SS') system_created_at,
+			to_char(system_modified_at, 'YYYY.MM.DD HH24:MI:SS') system_modified_at,
+			anonymous_name
+		FROM
+		    recursive_reply
+		ORDER BY
+		    CAST(recursive_path AS INTEGER[])
+	
+	</select>
+	
+	<update id="updateBoardReplyDelY">
+		UPDATE /* BoardReplyDao.updateBoardReplyDelY */
+		    t_board_reply
+		SET
+		    reply_content = 'DELETED',
+		    del = 'Y',
+   		    system_modifier = #{system_modifier},
+		    system_modified_at = now()
+		WHERE
+		    reply_id = #{reply_id}
+	</update>
+	
+	<update id="deleteBoardReply">
+		DELETE /* BoardReplyDao.deleteBoardReply */
+		FROM t_board_reply
+		WHERE
+		    reply_id = #{reply_id}
+	</update>
+	
+	<select id="getBoardReplyPassword" resultType="map">
+		SELECT /* BoardReplyDao.getBoardReplyPassword */
+		    CASE
+		        WHEN t_board_reply.anonymous_password IS NOT NULL THEN t_board_reply.anonymous_password
+		        ELSE t_member.password
+		    END AS password,
+			CASE
+		        WHEN t_board_reply.anonymous_password IS NOT NULL THEN '1'
+		        ELSE '0'
+		    END AS anonymous
+		FROM
+		    t_board_reply
+		LEFT JOIN
+		    t_member ON t_board_reply.system_creator = t_member.username
+		WHERE
+			t_board_reply.reply_id = #{reply_id}
+	</select>
+</mapper>

@@ -77,7 +77,7 @@
 							</select>
 							<input type="text" name="keyword" id="keyword" placeholder="키워드 입력">
 							<button type="button" id="btnKeywordSearch">검색</button>
-							<table class="table">
+							<table class="table mt-3">
 								<thead>
 									<tr>
 										<th scope="col">#</th>
@@ -150,30 +150,30 @@
 			  <ul class="pagination" style="justify-content:center;">
 			    <c:if test="${pagingCreator.prev }">
 					<li class="page-item">
-						<a class="page-link" href="?pageNum=1&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}&scope=${param.scope}&keyword=${param.keyword}">처음</a>
+						<a class="page-link" href="?pageNum=1&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}${param.scope eq null ? '' : '&scope='.concat(param.scope)}${param.keyword eq null ? '' : '&keyword='.concat(param.keyword)}">처음</a>
 					</li>
 				</c:if>
 				<c:if test="${pagingCreator.prev }">
 					<li class="page-item">
-						<a class="page-link" href="?pageNum=${pagingCreator.startPagingNum - 1}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}&scope=${param.scope}&keyword=${param.keyword}">이전</a>
+						<a class="page-link" href="?pageNum=${pagingCreator.startPagingNum - 1}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}${param.scope eq null ? '' : '&scope='.concat(param.scope)}${param.keyword eq null ? '' : '&keyword='.concat(param.keyword)}">이전</a>
 					</li>
 				</c:if>
 				
 				<c:forEach var="pageNum" begin="${pagingCreator.startPagingNum }" end="${pagingCreator.endPagingNum }">
 					<li class="page-item">
-						<a class="page-link" href="?pageNum=${pageNum}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}&scope=${param.scope}&keyword=${param.keyword}">${pageNum}</a>
+						<a class="page-link" href="?pageNum=${pageNum}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}${param.scope eq null ? '' : '&scope='.concat(param.scope)}${param.keyword eq null ? '' : '&keyword='.concat(param.keyword)}">${pageNum}</a>
 					</li>
 				</c:forEach>
 				
 				<c:if test="${pagingCreator.next }">
 					<li class="page-item">
-						<a class="page-link" href="?pageNum=${pagingCreator.endPagingNum + 1}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}&scope=${param.scope}&keyword=${param.keyword}">다음</a>
+						<a class="page-link" href="?pageNum=${pagingCreator.endPagingNum + 1}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}${param.scope eq null ? '' : '&scope='.concat(param.scope)}${param.keyword eq null ? '' : '&keyword='.concat(param.keyword)}">다음</a>
 					</li>
 				</c:if>
 				
 				<c:if test="${pagingCreator.next }">
 					<li class="page-item">
-						<a class="page-link" href="?pageNum=${pagingCreator.lastPageNum}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}&scope=${param.scope}&keyword=${param.keyword}">끝</a>
+						<a class="page-link" href="?pageNum=${pagingCreator.lastPageNum}&rowAmountPerPage=${param.rowAmountPerPage ne null ? param.rowAmountPerPage : 10}${param.scope eq null ? '' : '&scope='.concat(param.scope)}${param.keyword eq null ? '' : '&keyword='.concat(param.keyword)}">끝</a>
 					</li>
 				</c:if>
 			  </ul>
@@ -245,7 +245,7 @@
 		
 			$("a.page-link").filter(function() {
 				const pageNum = new URLSearchParams(window.location.search).get("pageNum");
-				debugger;
+				
 				if (!pageNum) {
 					return $(this).text() == 1
 				} else {
@@ -255,7 +255,7 @@
 			
 			
 			$("#memberTbody tr").hover(function() {
-				$(this).css({ "color" : "red", "text-decoration-line" : "underline" })
+				$(this).css({ "background-color": "lightgray", "text-decoration": "underline" })
 					   .click(function() {
 							const popupUrl = '${pageContext.request.contextPath}/admin/memberDetail?username=' + $(this).children(".username").text();
 							const popupName = 'empPoolDetail-popup';
@@ -268,7 +268,7 @@
 					
 					   })	
 			}, function() {
-				$(this).css({ "color" : "black", "text-decoration-line" : "none"  });
+				$(this).css({ "background-color": "", "text-decoration-line" : "none"  });
 			});
 
 
@@ -276,7 +276,15 @@
 				window.location.href = "?pageNum=1&rowAmountPerPage=" + $(this).val() + "&scope=" +$("#scope").val() + "&keyword=" + $("#keyword").val();
 			})
 
-
+			// 키워드 엔터입력 이벤트
+			$('#keyword').keydown(function(e) {
+				
+		        if (e.keyCode === 13) { // Enter 키의 keyCode는 13입니다.
+		            $("#btnKeywordSearch").trigger('click');
+		        }
+		    });
+			
+			// 키워드 검색 클릭 이벤트
 			$("#btnKeywordSearch").click(function() {
 				window.location.href = "?pageNum=1&rowAmountPerPage=" + $("#rowAmountPerPage").val() + "&scope=" +$("#scope").val() + "&keyword=" + $("#keyword").val();
 			})

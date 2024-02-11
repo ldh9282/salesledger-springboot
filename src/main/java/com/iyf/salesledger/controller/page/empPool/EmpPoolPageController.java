@@ -56,7 +56,7 @@ public class EmpPoolPageController {
 	}
 	
 	/***
-	 * @기능 empPoolDetail.jsp 페이지 호출
+	 * @기능 empPoolProgressDetail.jsp 페이지 호출
 	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/empPoolProgressDetail")

@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.common.board.dao.BoardDao">
+	
+	
+	<insert id="insertBoard">
+		INSERT INTO t_board /* BoardDao.insertBoard */
+		    (
+		        board_id,
+		        board_type,
+		        board_title,
+		        board_content,
+		        del,
+		        system_creator,
+		        system_modifier,
+		        system_created_at,
+		        system_modified_at
+		    )
+		VALUES
+		    (
+		        default,
+		        #{board_type},
+		        #{board_title},
+		        #{board_content},
+		        #{del},
+		        #{system_creator},
+		        #{system_modifier},
+		        now(),
+		        now()
+		    )
+	</insert>
+	
+	<select id="getBoardById" resultType="map">
+		SELECT /* BoardDao.getBoardById */
+		    board_id,
+		    board_type,
+		    board_title,
+		    board_content,
+		    system_creator,
+		    system_modifier,
+		    to_char(system_created_at, 'YYYY.MM.DD HH24:MI:SS') system_created_at,
+		    to_char(system_modified_at, 'YYYY.MM.DD HH24:MI:SS') system_modified_at
+		FROM
+		    t_board
+		WHERE
+		    board_id = #{board_id}    
+		    AND del = 'N'
+	</select>
+	
+	<update id="updateBoard">
+		UPDATE /* BoardDao.updateBoard */
+		    t_board
+		SET
+		    board_type = #{board_type},
+		    board_title = #{board_title},
+		    board_content = #{board_content},
+		    system_modifier = #{system_modifier},
+		    system_modified_at = now()
+		WHERE
+		    board_id = #{board_id}
+	</update>
+	
+	<update id="updateBoardDelY">
+		UPDATE /* BoardDao.updateBoardDelY */
+		    t_board
+		SET
+		    del = 'Y',
+		    system_modifier = #{system_modifier},
+		    system_modified_at = now()
+		WHERE
+		    board_id = #{board_id}
+	</update>
+	<update id="deleteBoard">
+		DELETE /* BoardDao.deleteBoard */
+		FROM t_board
+		WHERE
+		    board_id = #{board_id}
+	</update>
+	
+	<select id="getTotalCountByKeyword" resultType="long">
+		SELECT /* BoardDao.getTotalCountByKeyword */
+		    count(1)
+		FROM
+		    t_board
+	    where del = 'N'
+		<if test="board_type != null and board_type != ''">
+			and board_type = #{board_type}
+		</if>
+		<choose>
+			<when test="pagingDTO.scope == 'U'.toString()">and system_creator LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+			<when test="pagingDTO.scope == 'T'.toString()">and board_title LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+			<when test="pagingDTO.scope == 'TC'.toString()">and (board_title LIKE '%'||#{pagingDTO.keyword}||'%' or board_content LIKE '%'||#{pagingDTO.keyword}||'%')</when>
+			<when test="pagingDTO.scope == 'C'.toString()">and board_content LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+		</choose>
+	</select>
+	
+	<select id="getBoardListByKeyword" resultType="map">
+		SELECT /* BoardDao.getBoardListByKeyword */
+		    board_id,
+		    board_type,
+		    board_title,
+		    (SELECT count(1) FROM t_board_reply WHERE t_board_reply.board_id = t_board.board_id) reply_count,
+		    board_content,
+		    system_creator,
+		    system_modifier,
+		    to_char(system_created_at, 'YYYY.MM.DD HH24:MI:SS') system_created_at,
+		    to_char(system_modified_at, 'YYYY.MM.DD HH24:MI:SS') system_modified_at
+		FROM
+		    t_board
+	    where del = 'N'
+		<if test="board_type != null and board_type != ''">
+			and board_type = #{board_type}
+		</if>
+		<choose>
+			<when test="pagingDTO.scope == 'U'.toString()">and system_creator LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+			<when test="pagingDTO.scope == 'T'.toString()">and board_title LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+			<when test="pagingDTO.scope == 'TC'.toString()">and (board_title LIKE '%'||#{pagingDTO.keyword}||'%' or board_content LIKE '%'||#{pagingDTO.keyword}||'%')</when>
+			<when test="pagingDTO.scope == 'C'.toString()">and board_content LIKE '%'||#{pagingDTO.keyword}||'%'</when>
+		</choose>
+		order by
+		<if test="board_type == null or board_type == ''">
+			/* 전체글에서 이번달에 수정한 공지글은 상단표시 */
+		 	CASE WHEN board_type = '03' AND to_char(system_modified_at, 'YYYY.MM') = to_char(CURRENT_DATE, 'YYYY.MM') THEN 0 ELSE 1 END,
+		</if>
+			board_id desc
+		offset (#{pagingDTO.pageNum}-1) * #{pagingDTO.rowAmountPerPage}   
+		limit #{pagingDTO.rowAmountPerPage}	 
+	</select>
+</mapper>

@@ -10,6 +10,10 @@
 			<li class="nav-heading">공통</li>
 			<security:authorize access="isAuthenticated()">
 				<li class="nav-item">
+					<a class="nav-link collapsed" href="${pageContext.request.contextPath}/board/list">
+						<i class="bi bi-chat-text"></i>
+						<span>소통</span>
+					</a>
 					<a class="nav-link collapsed" href="${pageContext.request.contextPath}/empPoolList">
 						<i class="bi bi-person"></i>
 						<span>인력풀</span>
