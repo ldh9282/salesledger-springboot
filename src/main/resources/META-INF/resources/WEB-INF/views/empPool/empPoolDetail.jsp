@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -125,6 +127,29 @@
                         <label for="hope_purchase_unit">희망단가:</label>
                         <input type="text" class="form-control" id="hope_purchase_unit" name="hope_purchase_unit" data-type="money">
                     </div>
+                    <c:choose>
+                    	<c:when test="${emp_resume ne null}">
+                    	
+                    	</c:when>
+                    
+                    </c:choose>
+					<div class="row mt-5 mb-5">
+						<div class="col-10 d-flex align-items-center" >
+					        <!-- 이력서 등록 인풋 -->
+					        <div class="input-group">
+					            <label for="file" class="btn btn-secondary" id="selectFile" >이력서 선택</label>
+					            <input type="file" class="form-control" id="file" name="file" style="display: none;">
+					            <span class="input-group-text flex-grow-1 bg-white text-dark" id="selectedFileName">${emp_resume.file_name}</span>
+					        </div>
+					    </div>
+					    <div class="col-2">
+					        <!-- 다운로드 버튼 -->
+					        <div class="form-group d-flex align-items-end">
+					            <button type="button" class="btn btn-success" id="btnDownload">다운로드</a>
+					        </div>
+					    </div>
+					</div>
+				    
                     <button type="button" class="btn btn-primary" id="btnUpdate">수정</button>
                     <button type="button" class="btn btn-danger float-end" id="btnDelete" title="진행중인 프로젝트 수가 0인 인력만 삭제할 수 있습니다">삭제</button>
                 </form>
@@ -147,11 +172,10 @@
                 dataType: 'json',
                 success: function (empPool) {
                     // 생년월일 Formatting
-                    const birthdate = new Date(empPool.birthdate);
-                    empPool.birthdate = birthdate.getFullYear() + '-' + String(Number(birthdate.getMonth() + 1)).padStart(2, '0') + '-' + String(birthdate.getDate()).padStart(2, '0');
+                    empPool.birthdate = dateUtils.formatYYYYMMDD(empPool.birthdate, '-');
 					
                     // 전화번호 Formatting
-                    empPool.phonenumber = empPool.phonenumber.replace(/(\d{3})(\d{0,4})(\d{0,4})/, '$1-$2-$3');
+                    empPool.phonenumber = phoneUtils.formatPhoneNumber(empPool.phonenumber);
                     
                     $('#emp_pool_id').val(empPool.emp_pool_id);
                     $('#sourcing_manager').val(empPool.sourcing_manager);
@@ -175,6 +199,40 @@
                 }
             });
 
+            $('#btnDownload').click(function() {
+				 const file_path = '${emp_resume.file_path}';
+				 if (!file_path) {
+					 alert("이력서를 등록해주세요.");
+					 return;
+				 } else {
+					 
+					 $.ajax({
+			            url: "${pageContext.request.contextPath}/download?fileName=" + file_path,
+			            method: "GET",
+			            xhrFields: {
+			                responseType: 'blob'
+			            },
+			            success: function(data, status, xhr) {
+			                const fileName = '${emp_resume.file_name}';
+		
+			                // 브라우저에서 파일 다운로드
+			                const blob = new Blob([data], { type: xhr.getResponseHeader('Content-Type') });
+			                const link = document.createElement('a');
+			                link.href = window.URL.createObjectURL(blob);
+			                link.download = fileName;
+			                link.click();
+			            },
+			            error: function(error) {
+			                alert("파일 다운로드에 실패했습니다.");
+			            }
+			        });
+				 }
+            });
+            
+			$("#file").change(function() {
+				$('#selectedFileName').text($('#file')[0].files[0].name);
+			})
+            
             // 수정 버튼 클릭 시 이벤트
             $('#btnUpdate').click(function() {
             	
@@ -203,32 +261,98 @@
                     career_field: $('#career_field').val(),
                     career_level: $('#career_level').val(),
                     project_assign: $('#project_assign').val(),
-                    birthdate: new Date($('#birthdate').val()),
+                    birthdate: !$('#birthdate').val()? null : new Date($('#birthdate').val()),
                     del: $('#del').val(),
                     hope_purchase_unit: $('input[name=hope_purchase_unit]').val().replaceAll(',', '') ? $('input[name=hope_purchase_unit]').val().replaceAll(',', '') : 0,
                 }
+                
+                
+                
+             	// 1. 인력풀 중복 검증
                 
                 $.ajax({
                     type: 'GET',
                     url: '${pageContext.request.contextPath}/empPool.ajax/name/' + empPool.name + '/phonenumber/' + empPool.phonenumber,
                     success: function(theEmpPool) {
                     	if (theEmpPool.emp_pool_id == empPool.emp_pool_id || !theEmpPool) {
-                            $.ajax({
-                                type: 'PUT',
-                                url: '${pageContext.request.contextPath}/empPool.ajax/',
-                                data: JSON.stringify(empPool),
-                                contentType: 'application/json',
-                                success: function() {
-                                	alert('인력 정보가 수정되었습니다')
-                                    opener.parent.location.reload();
-                                	window.close();
-                                    
-                                },
-                                error: function() {
-                                    opener.parent.location.reload();
-                                    window.close();
-                                }
-                            })            
+                    		let isError = false;
+                    		
+	         				// 2. 해당 인력의 이력서 파일 업로드
+	         				let empResume;
+                           	if (!isError && $('#file')[0].files[0]) {
+                                const formData = new FormData();
+                                   
+                   				formData.append("file", $('#file')[0].files[0]);
+                   				
+                   				$.ajax({
+                   			        url: "${pageContext.request.contextPath}/upload/emp_resume", 
+                   			        type: "POST",
+                   			        data: formData,
+                   			        async: false,
+                   			        contentType: false,
+                   			        processData: false,
+                   			        success: function (response) {
+                   			        	empResume = {
+                  			        		emp_pool_id: empPool.emp_pool_id,
+                  			        		file_name: response.file_name,
+                  			        		file_path: response.file_path,
+                  			        		
+                   			        	}
+                   			        },
+                   			        error: function (error) {
+                   			            // 파일 업로드 실패 시
+                   			            isError = true;
+                   						
+                			            if (error.responseJSON.message) {
+                				            alert(error.responseJSON.message); // 서버에서 반환한 메시지 표시
+                			            } else {
+                			            	alert("내부 서버 오류입니다. 잠시 후 시도해주세요.");
+                			            }
+                   			        }
+                   				});
+                   				
+              					// 3. 해당 인력의 이력서 위치정보 등록
+                   				if (!isError) {
+                   					
+	               				    $.ajax({
+	               				        type: "POST",
+	               				        url: "${pageContext.request.contextPath}/empResume.ajax",
+	               				     	async: false,
+		                                data: JSON.stringify(empResume),
+		                                contentType: 'application/json',
+	               				        success: function (response) {
+	               							
+	               				            
+	               				        },
+	               				        error: function (error) {
+	                   			            // 인력 이력서 정보 등록 실패시
+	                   			            isError = true;
+	                   			            alert("내부 서버 오류입니다. 잠시 후 시도해주세요. (이력서 파일 위치정보 등록 실패)");
+	               				        }
+	               				    });
+                   				}
+                   				
+                           	}
+                    		
+                            // 4. 인력풀 수정
+                           	if (!isError) {
+                           		
+	                            $.ajax({
+	                                type: 'PUT',
+	                                url: '${pageContext.request.contextPath}/empPool.ajax/',
+	                                data: JSON.stringify(empPool),
+	                                contentType: 'application/json',
+	                                success: function() {
+	                                	alert('인력 정보가 수정되었습니다')
+	                                    opener.parent.location.reload();
+	                                	window.location.reload();
+	                                    
+	                                },
+	                                error: function() {
+	                                	alert("내부 서버 오류입니다. 잠시 후 시도해주세요. (인력풀 수정 실패)");
+	                                }
+	                            });           
+                           	}
                         } else {
                         	$('#phonenumber').focus();
                             alert('성명과 전화번호가 같은 인력이 있습니다.');
@@ -319,7 +443,9 @@
 
 
     
-
+	<!-- common utils : formatting or unformatting -->
+    <script src="${pageContext.request.contextPath}/resources/common/utils.js"></script>
+    
     <!-- Excel Export JS File-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 

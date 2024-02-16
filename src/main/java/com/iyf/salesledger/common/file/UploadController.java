@@ -1,6 +1,7 @@
 package com.iyf.salesledger.common.file;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,21 +32,55 @@ public class UploadController {
      * @return ResponseEntity<String>
      */
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Map<String, Object>> uploadFile(@RequestParam("file") MultipartFile file) {
     	if (log.isInfoEnabled()) {log.info("Start ::: UploadController.uploadFile");}
     	if (log.isInfoEnabled()) {log.info("do ::: uploadUtils.uploadFile");}
-    	HttpStatus uploadResult = uploadUtils.uploadFile(file);
-        if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
-        if (HttpStatus.OK.equals(uploadResult)) {
+    	ResponseEntity<Map<String, Object>> uploadResult = uploadUtils.uploadFile(file, "");
+    	HttpStatus statusCode = uploadResult.getStatusCode();
+    	Map<String, Object> resultMap = uploadResult.getBody();
+    	
+		if (HttpStatus.OK.equals(statusCode)) {
+        	resultMap.put("message", "파일 업로드가 성공적으로 수행되었습니다.");
+        } else if (HttpStatus.BAD_REQUEST.equals(statusCode)) {
         	if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
-            return ResponseEntity.status(HttpStatus.OK).body("파일 업로드가 성공적으로 수행되었습니다.");
-        } else if (HttpStatus.BAD_REQUEST.equals(uploadResult)) {
-        	if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("파일 업로드에 실패하였습니다. 올바른 파일은 선택해주세요.");
+        	resultMap.put("message", "파일 업로드에 실패하였습니다. 올바른 파일은 선택해주세요.");
         } else {
+        	statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
         	if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 오류입니다. 잠시 후 시도해주세요.");
+        	resultMap.put("message", "내부 서버 오류입니다. 잠시 후 시도해주세요.");
         }
+		
+		if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
+		if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
+		return ResponseEntity.status(statusCode).body(resultMap);
+    }
+    /***
+     * @기능 파일업로드. 업로드 경로는 application.properties 의 upload-dir
+     * @param file
+     * @return ResponseEntity<String>
+     */
+    @PostMapping("/upload/{subDir}")
+    public ResponseEntity<Map<String, Object>> uploadFile(@RequestParam("file") MultipartFile file, @PathVariable String subDir) {
+    	if (log.isInfoEnabled()) {log.info("Start ::: UploadController.uploadFile");}
+    	if (log.isInfoEnabled()) {log.info("do ::: uploadUtils.uploadFile");}
+    	ResponseEntity<Map<String, Object>> uploadResult = uploadUtils.uploadFile(file, subDir + "/");
+    	HttpStatus statusCode = uploadResult.getStatusCode();
+    	Map<String, Object> resultMap = uploadResult.getBody();
+    	
+		if (HttpStatus.OK.equals(statusCode)) {
+        	resultMap.put("message", "파일 업로드가 성공적으로 수행되었습니다.");
+        } else if (HttpStatus.BAD_REQUEST.equals(statusCode)) {
+        	if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
+        	resultMap.put("message", "파일 업로드에 실패하였습니다. 올바른 파일은 선택해주세요.");
+        } else {
+        	statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+        	if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
+        	resultMap.put("message", "내부 서버 오류입니다. 잠시 후 시도해주세요.");
+        }
+		
+		if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
+		if (log.isInfoEnabled()) {log.info("End ::: UploadController.uploadFile");}
+		return ResponseEntity.status(statusCode).body(resultMap);
     }
     
     /**
@@ -54,8 +89,8 @@ public class UploadController {
      * @return ResponseEntity<Resource>
      * @throws IOException
      */
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> downloadFile(@PathVariable String fileName) throws IOException {
+    @GetMapping("/download")
+    public ResponseEntity<Resource> downloadFile(@RequestParam String fileName) throws IOException {
         if (log.isInfoEnabled()) {log.info("Start ::: UploadController.downloadFile");}
         if (log.isInfoEnabled()) {log.info("do ::: uploadUtils.downloadFile");}
         Resource resource = uploadUtils.downloadFile(fileName);

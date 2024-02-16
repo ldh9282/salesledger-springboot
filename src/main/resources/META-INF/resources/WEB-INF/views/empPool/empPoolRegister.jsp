@@ -117,6 +117,17 @@
                     <label for="hope_purchase_unit">희망단가:</label>
                     <input type="text" class="form-control" id="hope_purchase_unit" name="hope_purchase_unit" data-type="money">
                 </div>
+    			<div class="row mt-5 mb-5">
+				    <div class="col-12 d-flex align-items-center" >
+				        <!-- 이력서 등록 인풋 -->
+				        <div class="input-group">
+				            <label for="file" class="btn btn-secondary" id="selectFile" >이력서 선택</label>
+				            <input type="file" class="form-control" id="file" name="file" style="display: none;">
+				            <span class="input-group-text flex-grow-1 bg-white text-dark" id="selectedFileName">파일을 선택해주세요</span>
+				        </div>
+				    </div>
+				</div>
+				
                 <button type="submit" class="btn btn-primary" id="btnRegister">인력 등록</button>
             </div>
         </section>
@@ -126,6 +137,10 @@
     <script>
         $(document).ready(function () {
 
+			$("#file").change(function() {
+				$('#selectedFileName').text($('#file')[0].files[0].name);
+			})
+        	
             // 인력 등록 버튼 클릭 이벤트
             $('#btnRegister').click(function () {
             	// 필수값 체크
@@ -138,7 +153,8 @@
             		alert('등록하려는 인력의 전화번호를 입력하셔야합니다');
             		return;
             	}
-                const empPool = {
+                let empPool = {
+               		emp_pool_id: '-1',
                     sourcing_manager: $('#sourcing_manager').val(),
                     name: $('#name').val(),
                     phonenumber: $('#phonenumber').val().replaceAll('-', ''),
@@ -154,32 +170,117 @@
                     hope_purchase_unit: $('input[name=hope_purchase_unit]').val().replaceAll(',', '') ? $('input[name=hope_purchase_unit]').val().replaceAll(',', '') : 0,
                 };
 
+                // 1. 인력풀 중복 검증
                 $.ajax({
                     type: 'GET',
                     url: '${pageContext.request.contextPath}/empPool.ajax/name/' + empPool.name + '/phonenumber/' + empPool.phonenumber,
                     success: function(theEmpPool) {
                         if (!theEmpPool) {
-                            $.ajax({
-                                type: 'POST',
-                                url: '${pageContext.request.contextPath}/empPool.ajax',
-                                data: JSON.stringify(empPool),
-                                contentType: 'application/json',
-                                success: function () {
-                                	alert('인력이 등록되었습니다')
-                                    opener.parent.location.reload();
-                                    window.close();
-                                },
-                                error: function () {
-                                    opener.parent.location.reload();
-                                    window.close();
-                                }
-                            });            
+                        	let isError = false;
+                        	let empPoolId;
+			                // 2. 인력풀 시퀀스 조회
+			                $.ajax({
+	         			        url: "${pageContext.request.contextPath}/empPool.ajax/emp_pool_id/new", 
+	         			        type: "GET",
+	         			        async: false,
+	         			        success: function (theEmpPoolId) {
+	         			        	empPool.emp_pool_id = theEmpPoolId;
+	         			        },
+	         			        error: function (error) {
+	         			            isError = true;
+	         			            alert("내부 서버 오류입니다. 잠시 후 시도해주세요. (인력풀 시퀀스 조회 실패)");
+	         			        }
+	         				})
+	         				
+	         				// 3. 해당 인력의 이력서 파일 업로드
+	         				let empResume;
+                           	if (!isError && $('#file')[0].files[0]) {
+                                const formData = new FormData();
+                                   
+                   				formData.append("file", $('#file')[0].files[0]);
+                   				
+                   				$.ajax({
+                   			        url: "${pageContext.request.contextPath}/upload/emp_resume", 
+                   			        type: "POST",
+                   			        data: formData,
+                   			        async: false,
+                   			        contentType: false,
+                   			        processData: false,
+                   			        success: function (response) {
+                   			        	empResume = {
+                  			        		emp_pool_id: String(empPool.emp_pool_id),
+                  			        		file_name: response.file_name,
+                  			        		file_path: response.file_path,
+                  			        		
+                   			        	}
+                   			        },
+                   			        error: function (error) {
+                   			            // 파일 업로드 실패 시
+                   			            isError = true;
+                   						
+                			            if (error.responseJSON.message) {
+                				            alert(error.responseJSON.message); // 서버에서 반환한 메시지 표시
+                			            } else {
+                			            	alert("내부 서버 오류입니다. 잠시 후 시도해주세요.");
+                			            }
+                   			        }
+                   				});
+                   				
+              					// 4. 해당 인력의 이력서 위치정보 등록
+                   				if (!isError) {
+                   					
+	               				    $.ajax({
+	               				        type: "POST",
+	               				        url: "${pageContext.request.contextPath}/empResume.ajax",
+	               				     	async: false,
+		                                data: JSON.stringify(empResume),
+		                                contentType: 'application/json',
+	               				        success: function (response) {
+	               							
+	               				            
+	               				        },
+	               				        error: function (error) {
+	                   			            // 인력 이력서 정보 등록 실패시
+	                   			            isError = true;
+	                   			            alert("내부 서버 오류입니다. 잠시 후 시도해주세요. (이력서 파일 위치정보 등록 실패)");
+	               				        }
+	               				    });
+                   				}
+                   				
+                           	}
+			                
+			             	// 5. 인력풀 등록
+             				if (!isError) {
+            					
+	                            $.ajax({
+	                                url: '${pageContext.request.contextPath}/empPool.ajax',
+	                                type: 'POST',
+	                                async: false,
+	                                data: JSON.stringify(empPool),
+	                                contentType: 'application/json',
+	                                success: function () {
+	                                	alert('인력이 등록되었습니다')
+			                            opener.parent.location.reload();
+			                            window.close();
+	                                },
+	                                error: function () {
+	                                	// 인력풀 등록 실패시
+	                                	isError = true;
+	                                	alert("내부 서버 오류입니다. 잠시 후 시도해주세요. (인력풀 등록 실패)");
+	                                }
+	                            });
+	                            
+             				}
+             				
+	         				
+	         				
                         } else {
                             $('#phonenumber').focus();
                             alert('성명과 전화번호가 같은 인력이 있습니다.');
                         }
                     }
                 });
+                
                 
                 
             });
@@ -214,6 +315,8 @@
 				
 				input.val(value);
             });
+            
+				
         });
 
     </script>

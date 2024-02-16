@@ -3,6 +3,7 @@ package com.iyf.salesledger.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.iyf.salesledger.common.file.ExcelUtils;
 import com.iyf.salesledger.common.utils.DateUtils;
 import com.iyf.salesledger.common.utils.ObjectUtils;
@@ -36,12 +38,19 @@ public class ExcelService {
 	private EmpLedgerService empLedgerService;
 	
 	@Transactional
-    public ResponseEntity<String> empPoolExcelProcess(MultipartFile file) {
-    	
+    public ResponseEntity<Map<String, Object>> empPoolExcelProcess(MultipartFile file) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
+		
     	Map<String, Object> excelMap = excelUtils.convertExceltoMap(file);
     	String sheetName = (String) excelMap.get("sheetName");
     	List<String> headers = (List<String>) excelMap.get("headerList");
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) excelMap.get("dataList");
+        
+        if (dataList == null || dataList.size() == 0) {
+        	resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 등록하려는 데이터를 엑셀시트에 기입해주세요.");
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
+		}
         
         int headerIndex = 1;
         int rowIndex = headerIndex + 1;
@@ -67,7 +76,8 @@ public class ExcelService {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: ObjectUtils.isAnyValueNullOrEmpty ::: true");}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 필수값을 미기입했습니다.\n\n이름 또는 전화번호를 기입해주세요.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+					resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 필수값을 미기입했습니다.\n\n이름 또는 전화번호를 기입해주세요.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+		        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 				}
 				
 				// 2. 인력 중복 체크
@@ -77,10 +87,14 @@ public class ExcelService {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: findOne ::: " + findOne);}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 이미 등록된 인력이 포함되어 있습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+					resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 이미 등록된 인력이 포함되어 있습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+		        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 				}
-			
+				// 3. 인력풀 시퀀스 채번
+				long emp_pool_id = empPoolService.getEmpPoolSeq();
+				
 				EmpPool empPool = new EmpPool();
+				empPool.setEmp_pool_id(emp_pool_id);
 				empPool.setSourcing_manager(sourcing_manager);
 				empPool.setName(name);
 				empPool.setPhonenumber(phonenumber);
@@ -95,7 +109,7 @@ public class ExcelService {
 				empPool.setCareer_level(career_level);
 				empPool.setHope_purchase_unit(hope_purchase_unit);
 				
-				// 3. 인력등록
+				// 4. 인력등록
 				empPoolService.insert(empPool);
 				
 				rowIndex++;
@@ -105,24 +119,35 @@ public class ExcelService {
         	e.printStackTrace();
         	if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
         	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
         } catch (Exception e) {
         	if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: Exception");}
         	e.printStackTrace();
         	if (log.isInfoEnabled()) {log.info("ExcelService.empPoolExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
         	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
+        	
         }
-    	return ResponseEntity.status(HttpStatus.OK).body("인력풀 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
+        resultMap.put("message", "인력풀 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
+    	return ResponseEntity.status(HttpStatus.OK).body(resultMap);
     }
 
 	@Transactional
-	public ResponseEntity<String> empLedgerExcelProcess(MultipartFile file) {
+	public ResponseEntity<Map<String, Object>> empLedgerExcelProcess(MultipartFile file) {
+		
+		Map<String, Object> resultMap = new HashMap<>();
 		
     	Map<String, Object> excelMap = excelUtils.convertExceltoMap(file);
     	String sheetName = (String) excelMap.get("sheetName");
     	List<String> headers = (List<String>) excelMap.get("headerList");
         List<Map<String, Object>> dataList = (List<Map<String, Object>>) excelMap.get("dataList");
+        
+        if (dataList == null || dataList.size() == 0) {
+        	resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 등록하려는 데이터를 엑셀시트에 기입해주세요.");
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
+		}
         
         int headerIndex = 1;
         int rowIndex = headerIndex + 1;
@@ -160,7 +185,8 @@ public class ExcelService {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: ObjectUtils.isAnyValueNullOrEmpty ::: true");}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 필수값을 미기입했습니다.\n\n필수값 목록: (진행, 소속, 사업부서, 사이트, 진행업체, 프로젝트명, 이름, 전화번호, 투입일, 종료일, 철수날짜, 매출MM, 매입MM, 매출단가, 매입단가)\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+					resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 필수값을 미기입했습니다.\n\n필수값 목록: (진행, 소속, 사업부서, 사이트, 진행업체, 프로젝트명, 이름, 전화번호, 투입일, 종료일, 철수날짜, 매출MM, 매입MM, 매출단가, 매입단가)\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+		        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 					
 				}
 				
@@ -171,7 +197,8 @@ public class ExcelService {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: findOne ::: not exist");}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당인력은 인력풀에 존재하지 않습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+					resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당인력은 인력풀에 존재하지 않습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+		        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 				}
 				
 				
@@ -202,7 +229,8 @@ public class ExcelService {
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: 이미 투입예정 혹은 투입된 프로젝트입니다.");}
 					if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
 					TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-					return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당프로젝트에 이미 투입예정 혹은 투입되어있습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+					resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 해당프로젝트에 이미 투입예정 혹은 투입되어있습니다.\n\n추적: (이름: " + name + ", 전화번호: " + (String) map.get("전화번호") + ", 행번호: " + rowIndex + ")");
+		        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 				}
 				
 				
@@ -213,15 +241,18 @@ public class ExcelService {
         	e.printStackTrace();
         	if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
         	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 	    } catch (Exception e) {
 	    	if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: Exception");}
         	e.printStackTrace();
         	if (log.isInfoEnabled()) {log.info("ExcelService.empLedgerExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
         	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
 		}
         
-	    return ResponseEntity.status(HttpStatus.OK).body("인력원장 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
+	    resultMap.put("message", "인력원장 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
+    	return ResponseEntity.status(HttpStatus.OK).body(resultMap);
 	}
 }

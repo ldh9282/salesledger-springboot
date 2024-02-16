@@ -114,7 +114,7 @@
 			        processData: false,
 			        success: function (response) {
 			            // 파일 업로드 성공 시
-// 			            alert(response); // 서버에서 반환한 메시지 표시
+// 			            alert(response.message); // 서버에서 반환한 메시지 표시
 			        },
 			        error: function (error) {
 			            // 파일 업로드 실패 시
@@ -123,8 +123,8 @@
 						isBtnUploadClicked = false;
 						$('#btnUpload').prop("disabled", false);
 						
-			            if (error.responseText) {
-				            alert(error.responseText); // 서버에서 반환한 메시지 표시
+			            if (error.responseJSON.message) {
+				            alert(error.responseJSON.message); // 서버에서 반환한 메시지 표시
 			            } else {
 			            	alert("내부 서버 오류입니다. 잠시 후 시도해주세요.");
 			            }
@@ -143,8 +143,7 @@
 				        success: function (response) {
 				        	// 엑셀 데이터 추가 성공 시
 							$('#file').val("")
-							
-				        	alert(response); // 서버에서 반환한 메시지 표시
+				        	alert(response.message); // 서버에서 반환한 메시지 표시
 				        	
 							opener.parent.location.reload();
 				            
@@ -156,8 +155,8 @@
 							isBtnUploadClicked = false;
 							$('#btnUpload').prop("disabled", false);
 							
-				            if (error.responseText) {
-					            alert(error.responseText); // 서버에서 반환한 메시지 표시
+				            if (error.responseJSON.message) {
+					            alert(error.responseJSON.message); // 서버에서 반환한 메시지 표시
 				            } else {
 				            	alert("내부 서버 오류입니다. 잠시 후 시도해주세요.");
 				            }
@@ -172,7 +171,7 @@
 			$('#btnSampleDownload').click(function() {
 				const sampleFileName = '인력풀_샘플_업로드.xlsx'
 				 $.ajax({
-		            url: "${pageContext.request.contextPath}/download/" + sampleFileName,
+		            url: "${pageContext.request.contextPath}/download?fileName=" + sampleFileName,
 		            method: "GET",
 		            xhrFields: {
 		                responseType: 'blob'

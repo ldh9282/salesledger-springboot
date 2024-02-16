@@ -117,7 +117,7 @@
 		)
 			VALUES 
 		(
-			DEFAULT,
+			#{emp_pool_id},
 			#{sourcing_manager},
 			#{name},
 			#{phonenumber},
@@ -167,6 +167,11 @@
 		where (t1.del != 'Y' or t1.del is null)
 		and progress = '투입'
 		and t3.emp_pool_id = #{emp_pool_id}
+	</select>
+	
+	<select id="getEmpPoolSeq" resultType="long">
+		/* EmpPoolDao.getEmpPoolSeq */
+		select nextval('t_emp_pool_emp_pool_id_seq')
 	</select>
 	
 

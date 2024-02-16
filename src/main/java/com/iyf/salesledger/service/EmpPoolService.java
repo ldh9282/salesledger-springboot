@@ -37,9 +37,9 @@ public class EmpPoolService {
 	}
 	
 	// empPoolRegister.jsp 페이지에서 등록
-	public void insert(EmpPool empPool) {
+	public long insert(EmpPool empPool) {
 		empPoolDao.insert(empPool);
-		
+		return empPool.getEmp_pool_id();
 	}
 
 	// empPoolDetail.jsp 페이지에서 del 필드 수정
@@ -66,6 +66,10 @@ public class EmpPoolService {
 	public List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id) {
 		List<Map<String, Object>> empPoolProgressDetail2 = empPoolDao.selectEmpPoolProgressDetail2(emp_pool_id);
 		return empPoolProgressDetail2;
+	}
+
+	public long getEmpPoolSeq() {
+		return empPoolDao.getEmpPoolSeq();
 	}
 
 

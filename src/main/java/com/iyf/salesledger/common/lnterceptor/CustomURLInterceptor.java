@@ -16,7 +16,8 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 
 	private ThreadLocal<Long> startTime = new NamedThreadLocal<>("startTime");
 	private ThreadLocal<Long> endTime = new NamedThreadLocal<>("endTime");
-	
+	private String requsetUrl;
+	private String requsetMethod;
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -34,26 +35,33 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 		if (log.isInfoEnabled()
 				&& url.indexOf(request.getContextPath() + "/resources") == -1
 				&& url.indexOf(request.getContextPath() + "/error") == -1
+				&& handler instanceof HandlerMethod
 				) {
 			
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
-			String className = handlerMethod.getBeanType().getName();
-			String methodName = handlerMethod.getMethod().getName();
-			
-			log.info("Start CustomURLInterceptor.preHandle");
-			log.info("handler ::: " + className + "." + methodName); 
-			log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session); 
-			log.info("request ::: url ::: " + url + queryString);
-			log.info("request ::: method ::: " + method);
-			
-			Enumeration<String> parameterNames = request.getParameterNames();
-			while (parameterNames.hasMoreElements()) {
-				String paramName = parameterNames.nextElement();
-				log.info("request ::: param ::: " + paramName + " ::: " + request.getParameter(paramName));
+			try {
+				HandlerMethod handlerMethod = (HandlerMethod) handler;
+				String className = handlerMethod.getBeanType().getName();
+				String methodName = handlerMethod.getMethod().getName();
+				
+				requsetUrl = url + queryString;
+				requsetMethod = method;
+				log.info(">>> Start CustomURLInterceptor.preHandle");
+				log.info(">>> handler ::: " + className + "." + methodName); 
+//				log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session); 
+				log.info(">>> request ::: url ::: " + requsetUrl);
+				log.info(">>> request ::: method ::: " + requsetMethod);
+				
+				Enumeration<String> parameterNames = request.getParameterNames();
+				while (parameterNames.hasMoreElements()) {
+					String paramName = parameterNames.nextElement();
+					log.info(">>> request ::: param ::: " + paramName + " ::: " + request.getParameter(paramName));
+				}
+				
+				log.info(">>> End CustomURLInterceptor.preHandle");
+			} catch (Exception e) {
+				log.info(">>> Exception ::: " + e.getMessage());
+				log.info(">>> error request ::: url ::: " + requsetUrl);
 			}
-			
-			log.info("response ::: status ::: " + response.getStatus());
-			log.info("End CustomURLInterceptor.preHandle");
 		}
 		
 		
@@ -71,22 +79,30 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 		if (log.isInfoEnabled()
 				&& url.indexOf(request.getContextPath() + "/resources") == -1
 				&& url.indexOf(request.getContextPath() + "/error") == -1
+				&& handler instanceof HandlerMethod
 				) {
 			
-			HandlerMethod handlerMethod = (HandlerMethod) handler;
-			String className = handlerMethod.getBeanType().getName();
-			String methodName = handlerMethod.getMethod().getName();
-			
-			log.info("Start CustomURLInterceptor.afterCompletion");
-			log.info("handler ::: " + className + "." + methodName); 
-			log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session);
-			log.info("execution time  ::: " + (endTime.get() - startTime.get()) + "ms");
-			
-		    // ThreadLocal 변수 정리 ::: 메모리 누수를 방지
-		    startTime.remove();
-		    endTime.remove();
-		    
-			log.info("End CustomURLInterceptor.afterCompletion");
+			try {
+				
+				HandlerMethod handlerMethod = (HandlerMethod) handler;
+				String className = handlerMethod.getBeanType().getName();
+				String methodName = handlerMethod.getMethod().getName();
+				
+				log.info("<<< Start CustomURLInterceptor.afterCompletion");
+//				log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session);
+				log.info("<<< request ::: url ::: " + requsetUrl);
+				log.info("<<< request ::: method ::: " + requsetMethod);
+				log.info("<<< execution time  ::: " + (endTime.get() - startTime.get()) + "ms");
+				
+				// ThreadLocal 변수 정리 ::: 메모리 누수를 방지
+				startTime.remove();
+				endTime.remove();
+				
+				log.info("<<< End CustomURLInterceptor.afterCompletion");
+			} catch (Exception e) {
+				log.info(">>> Exception ::: " + e.getMessage());
+				log.info(">>> error request ::: url ::: " + requsetUrl);
+			}
 		}
 	}
 

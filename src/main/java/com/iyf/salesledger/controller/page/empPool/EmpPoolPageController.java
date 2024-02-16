@@ -3,13 +3,17 @@ package com.iyf.salesledger.controller.page.empPool;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.jni.File;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.iyf.salesledger.service.EmpPoolService;
+import com.iyf.salesledger.service.EmpResumeService;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -19,6 +23,8 @@ public class EmpPoolPageController {
 	@Autowired
 	private EmpPoolService empPoolService;
 	
+	@Autowired
+	private EmpResumeService empResumeService;
 	/***
 	 * @기능 empPoolList.jsp 페이지 호출
 	 */
@@ -48,8 +54,11 @@ public class EmpPoolPageController {
 	 */
 	@PreAuthorize("isAuthenticated()")
 	@GetMapping("/empPoolDetail")
-	public String showEmpPoolDetailPage() {
+	public String showEmpPoolDetailPage(@RequestParam long emp_pool_id, ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start EmpPoolPageController.showEmpPoolDetailPage");}
+		Map<String, Object> empResume = empResumeService.getEmpResumeByEmpPoolId(emp_pool_id);
+		modelMap.addAttribute("emp_resume", empResume);
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "empPool/empPoolDetail");}
 		if (log.isInfoEnabled()) {log.info("End EmpPoolPageController.showEmpPoolDetailPage");}
 		return "empPool/empPoolDetail";

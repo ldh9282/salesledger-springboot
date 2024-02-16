@@ -38,17 +38,32 @@ public class EmpPoolAjaxController {
 	}
 	
 	/***
+	 * @기능 empPoolRegister.jsp 페이지에서 시퀀스 조회
+	 * @param 
+	 * @return 
+	 */
+	@GetMapping("/empPool.ajax/emp_pool_id/new")
+	public long getEmpPoolSeq() {
+		if (log.isInfoEnabled()) {log.info("Start EmpPoolAjaxController.getEmpPoolSeq");}
+		if (log.isInfoEnabled()) {log.info("do service ::: empPoolService.getEmpPoolSeq");}
+		long emp_pool_id = empPoolService.getEmpPoolSeq();
+		if (log.isInfoEnabled()) {log.info("emp_pool_id ::: " + emp_pool_id);}
+		if (log.isInfoEnabled()) {log.info("End EmpPoolAjaxController.getEmpPoolSeq");}
+		return emp_pool_id;
+	}
+	/***
 	 * @기능 empPoolRegister.jsp 페이지에서 등록
 	 * @param empPool 인력풀 단건
 	 * @return 
 	 */
 	@PostMapping("/empPool.ajax")
-	public void insertEmpPool(@RequestBody EmpPool empPool) {
+	public long insertEmpPool(@RequestBody EmpPool empPool) {
 		if (log.isInfoEnabled()) {log.info("Start EmpPoolAjaxController.insertEmpPool");}
 		if (log.isInfoEnabled()) {log.info("param ::: empPool ::: " + empPool);}
 		if (log.isInfoEnabled()) {log.info("do service ::: empPoolService.insert");}
-		empPoolService.insert(empPool);
+		long emp_pool_id = empPoolService.insert(empPool);
 		if (log.isInfoEnabled()) {log.info("End EmpPoolAjaxController.insertEmpPool");}
+		return emp_pool_id;
 	}
 	
 	/***

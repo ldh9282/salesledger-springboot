@@ -19,11 +19,13 @@ public interface EmpPoolDao {
 	
 	void delete(long emp_pool_id);
 	
-	void insert(EmpPool empPool);
+	long insert(EmpPool empPool);
 
 	int selectCntProjectAssign(long emp_pool_id);
 	
 	List<Map<String, Object>> selectEmpPoolProgressDetail1(long emp_pool_id);
 	
 	List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id);
+
+	long getEmpPoolSeq();
 }

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.EmpResumeDao">
+	
+	
+	<insert id="insertEmpResume">
+		INSERT INTO t_emp_resume /* EmpResumeDao.insertEmpResume */
+			(
+				emp_resume_id,
+				emp_pool_id,
+				file_name,
+				file_path,
+				system_creator,
+				system_modifier,
+				system_created_at,
+				system_modified_at
+			)
+		VALUES
+			(
+				default, 
+				#{emp_pool_id}, 
+				#{file_name}, 
+				#{file_path}, 
+				#{system_creator}, 
+				#{system_modifier}, 
+				now(), 
+				now()
+			)
+	</insert>
+	
+	
+	<select id="getEmpResumeByEmpPoolId" resultType="map">
+		SELECT /* EmpResumeDao.getEmpResumeByEmpPoolId */
+			emp_resume_id,
+			emp_pool_id,
+			file_name,
+			file_path,
+			system_creator,
+			system_modifier,
+			to_char(system_created_at, 'YYYY.MM.DD HH24:MI:SS') system_created_at,
+			to_char(system_modified_at, 'YYYY.MM.DD HH24:MI:SS') system_modified_at
+		FROM
+			t_emp_resume
+		WHERE
+			emp_pool_id = #{emp_pool_id}
+		ORDER BY 
+			emp_resume_id DESC
+		LIMIT 1;			
+	</select>
+	
+</mapper>

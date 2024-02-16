@@ -10,7 +10,7 @@
                 <input type="hidden" id="project_assign" name="project_assign">
                 <input type="hidden" id="del" name="del">
                 
-                <h1>IYS ITO 매출원장 상세 페이지</h1>
+                <h1>${company} ${department_kr} 매출원장 상세 페이지</h1>
                 <form id="salesLedgerForm">
                 	<div class="form-group mb-3">
                         <label for="include">금월실적반영:</label>
@@ -244,23 +244,17 @@
                         success: function(empLedger) {
                             
                             // Date 년월일 Formatting
-                            const assign_date = new Date(empLedger.assign_date);
-                            empLedger.assign_date = assign_date.getFullYear() + '-' + String(Number(assign_date.getMonth() + 1)).padStart(2, '0') + '-' + String(assign_date.getDate()).padStart(2, '0');
+                            empLedger.assign_date = dateUtils.formatYYYYMMDD(empLedger.assign_date, '-');
                             // Date 년월일 Formatting
-                            const end_date = new Date(empLedger.end_date);
-                            empLedger.end_date = end_date.getFullYear() + '-' + String(Number(end_date.getMonth() + 1)).padStart(2, '0') + '-' + String(end_date.getDate()).padStart(2, '0');
+                            empLedger.end_date = dateUtils.formatYYYYMMDD(empLedger.end_date, '-');
                             // Date 년월일 Formatting
-                            const resume_submit_date = new Date(empLedger.resume_submit_date);
-                            empLedger.resume_submit_date = resume_submit_date.getFullYear() + '-' + String(Number(resume_submit_date.getMonth() + 1)).padStart(2, '0') + '-' + String(resume_submit_date.getDate()).padStart(2, '0');
+                            empLedger.resume_submit_date = dateUtils.formatYYYYMMDD(empLedger.resume_submit_date, '-');
                             // Date 년월일 Formatting
-                            const resign_date = new Date(empLedger.resign_date);
-                            empLedger.resign_date = resign_date.getFullYear() + '-' + String(Number(resign_date.getMonth() + 1)).padStart(2, '0') + '-' + String(resign_date.getDate()).padStart(2, '0');
+                            empLedger.resign_date = dateUtils.formatYYYYMMDD(empLedger.resign_date, '-');
                             // Date 년월일 Formatting
-                            const i_contract_date = new Date(empLedger.i_contract_date);
-                            empLedger.i_contract_date = i_contract_date.getFullYear() + '-' + String(Number(i_contract_date.getMonth() + 1)).padStart(2, '0') + '-' + String(i_contract_date.getDate()).padStart(2, '0');
+                            empLedger.i_contract_date = dateUtils.formatYYYYMMDD(empLedger.i_contract_date, '-');
                             // Date 년월일 Formatting
-                            const c_contract_date = new Date(empLedger.c_contract_date);
-                            empLedger.c_contract_date = c_contract_date.getFullYear() + '-' + String(Number(c_contract_date.getMonth() + 1)).padStart(2, '0') + '-' + String(c_contract_date.getDate()).padStart(2, '0');
+                            empLedger.c_contract_date = dateUtils.formatYYYYMMDD(empLedger.c_contract_date, '-');
 
                             
 
@@ -292,8 +286,7 @@
                                 dataType: 'json',
                                 success: function(empPool) {
                                     // 생년월일 Formatting
-                                    const birthdate = new Date(empPool.birthdate);
-                                    empPool.birthdate = birthdate.getFullYear() + '-' + String(Number(birthdate.getMonth() + 1)).padStart(2, '0') + '-' + String(birthdate.getDate()).padStart(2, '0');
+                                    empPool.birthdate = dateUtils.formatYYYYMMDD(empPool.birthdate, '-');
 
                                     $('#emp_pool_id').val(empPool.emp_pool_id);
                                     $('#sourcing_manager').val(empPool.sourcing_manager);
