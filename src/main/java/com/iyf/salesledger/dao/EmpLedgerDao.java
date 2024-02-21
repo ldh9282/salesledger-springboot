@@ -24,4 +24,8 @@ public interface EmpLedgerDao {
 	String selectProjectYn(EmpLedger empLedger);
 
 	void updateProgress(EmpLedger empLedger);
+	
+	List<Map<String, Object>> getMonthlyMM(Map<String, Object> paramMap);
+	
+	void updateMonthlyMM(Map<String, Object> paramMap);
 }

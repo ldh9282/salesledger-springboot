@@ -174,5 +174,23 @@ public class IYCNCITOPageController {
 		if (log.isInfoEnabled()) {log.info("End IYCNCITOPageController.showSalesEstimationListPage");}
 		return "iycnc/ito/salesEstimationList";
 	}
+	
+    /***
+	 * @기능 iycnc/ito/salesCostStatusList.jsp 매출원가현황 목록페이지
+	 */
+	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
+	@GetMapping("/iycnc/ito/salesCostStatusList")
+	public String salesCostStatusListpPage(ModelMap modelMap) {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCITOPageController.salesCostStatusListpPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/ito/salesCostStatusList");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCITOPageController.salesCostStatusListpPage");}
+		return "iycnc/ito/salesCostStatusList";
+	}
 
 }

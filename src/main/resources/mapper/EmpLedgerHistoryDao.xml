@@ -97,4 +97,113 @@
 			) t
 	</insert>	
 	
+	<insert id="insertHistory">
+		INSERT INTO t_emp_ledger_history /* EmpLedgerHistoryDao.insertHistory */
+			(
+				emp_history_id,
+				emp_id,
+				emp_pool_id,
+				company,
+				assign_date,
+				end_date,
+				sales_mm,
+				purchase_mm,
+				sales_unit,
+				purchase_unit,
+				comments,
+				resume_submit_date,
+				resign_date,
+				i_contract_date,
+				c_contract_date,
+				progress,
+				progress_reason,
+				issues,
+				del,
+				department,
+				site,
+				project_name,
+				brief,
+				client,
+				system_creator,
+				system_modifier,
+				system_created_at,
+				system_modified_at
+			)
+		SELECT
+			nextval('t_emp_ledger_history_emp_history_id_seq'),
+			t.emp_id,
+			t.emp_pool_id,
+			t.company,
+			t.assign_date,
+			t.end_date,
+			t.sales_mm,
+			t.purchase_mm,
+			t.sales_unit,
+			t.purchase_unit,
+			t.comments,
+			t.resume_submit_date,
+			t.resign_date,
+			t.i_contract_date,
+			t.c_contract_date,
+			t.progress,
+			t.progress_reason,
+			t.issues,
+			t.del,
+			t.department,
+			t.site,
+			t.project_name,
+			t.brief,
+			t.client,
+			#{system_creator},
+			#{system_modifier},
+			now(),
+			now()
+		FROM 
+			(
+				SELECT
+					emp_id,
+					emp_pool_id,
+					company,
+					assign_date,
+					end_date,
+					sales_mm,
+					purchase_mm,
+					sales_unit,
+					purchase_unit,
+					comments,
+					resume_submit_date,
+					resign_date,
+					i_contract_date,
+					c_contract_date,
+					progress,
+					progress_reason,
+					issues,
+					del,
+					department,
+					site,
+					project_name,
+					brief,
+					client
+				FROM
+					t_emp_ledger
+				WHERE
+					emp_id = #{emp_id}
+			) t
+	</insert>	
+	
+	<update id="updateHistory">
+		UPDATE t_emp_ledger_history SET /* EmpLedgerHistoryDao.updateHistory */ 
+			sales_mm = TRUNC(#{sales_mm}, 3),
+			purchase_mm = TRUNC(#{purchase_mm}, 3),
+			system_modifier = #{system_modifier},
+			system_modified_at = now()
+		WHERE emp_history_id = (
+			SELECT emp_history_id
+			WHERE emp_id = #{emp_id}
+			AND to_char(system_created_at, 'YYYYMM') = #{batch_month}
+			ORDER BY
+				emp_history_id DESC
+			LIMIT 1
+		)
+	</update>
 </mapper>
