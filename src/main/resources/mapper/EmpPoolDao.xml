@@ -34,8 +34,13 @@
 		    major, 
 		    career_years, 
 		    career_field, 
-		    career_level, 
-		    project_assign,
+		    career_level,
+   		    (
+		    	SELECT count(1) FROM t_emp_ledger 
+		    	WHERE t_emp_ledger.emp_pool_id = t_emp_pool.emp_pool_id
+		    	AND t_emp_ledger.progress in ('투입예정', '투입')
+		    	AND t_emp_ledger.del = 'N' OR t_emp_ledger.del IS NULL
+		    ) project_assign, 
 		    del,
 		    hope_purchase_unit 
 		FROM t_emp_pool
@@ -64,9 +69,29 @@
 	</select>
 	<select id="list" resultMap="empPoolMap">
 		SELECT /* EmpPoolDao.list */
-		    *
+   		    emp_pool_id, 
+		    sourcing_manager, 
+		    name, 
+		    phonenumber, 
+		    birthdate, 
+		    email, 
+		    address, 
+		    education, 
+		    school_name, 
+		    major, 
+		    career_years, 
+		    career_field, 
+		    career_level, 
+		    (
+		    	SELECT count(1) FROM t_emp_ledger 
+		    	WHERE t_emp_ledger.emp_pool_id = t_emp_pool.emp_pool_id
+		    	AND t_emp_ledger.progress in ('투입예정', '투입')
+		    	AND t_emp_ledger.del = 'N' OR t_emp_ledger.del IS NULL
+		    ) project_assign,
+		    del,
+		    hope_purchase_unit 
 		FROM t_emp_pool
-		ORDER BY 1 DESC
+		ORDER BY emp_pool_id DESC
 	</select>
 	<update id="update">
 		UPDATE t_emp_pool /* EmpPoolDao.update */

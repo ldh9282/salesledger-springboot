@@ -22,6 +22,8 @@ public interface SalesLedgerDao {
 	void delete(long sales_id);
 
 	SalesLedger findByEmpId(long emp_id);
+
+	Map<String, Object> getCountByEmpId(Long emp_pool_id);
 	
 
 	

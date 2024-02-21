@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.iyf.salesledger.common.security.SecurityUtils;
 import com.iyf.salesledger.dao.EmpLedgerDao;
+import com.iyf.salesledger.dao.EmpLedgerHistoryDao;
 import com.iyf.salesledger.dao.EmpPoolDao;
 import com.iyf.salesledger.dao.SalesLedgerDao;
 import com.iyf.salesledger.model.EmpLedger;
@@ -25,6 +27,9 @@ public class SalesLedgerService {
 	
 	@Autowired
 	private EmpPoolDao empPoolDao;
+	
+	@Autowired
+	private EmpLedgerHistoryDao empLedgerHistoryDao;
 	
 	public List<SalesLedger> list() {
 		return salesLedgerDao.list();
@@ -65,7 +70,11 @@ public class SalesLedgerService {
 		EmpLedger theEmpLedger = empLedgerDao.selectOne(salesLedger.getEmp_id());
 		if (theEmpLedger != null) {
 			empLedger.setEmp_id(theEmpLedger.getEmp_id());
+			String username = SecurityUtils.getCurrentUsername();
+			empLedger.setSystem_creator(username);
+			empLedger.setSystem_modifier(username);
 			empLedgerDao.update(empLedger);
+			empLedgerHistoryDao.insert(empLedger);
 		}
 		
 		EmpPool theEmpPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());

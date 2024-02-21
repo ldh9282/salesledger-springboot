@@ -100,13 +100,11 @@ public class EmpLedgerAjaxController {
 	 * @param progress 진행상태
 	 * @return
 	 */
-	@PatchMapping("/empLedger.ajax/{emp_id}/progress/{progress}")
-	public void patchProgress(@PathVariable long emp_id, @PathVariable String progress) {
+	@PatchMapping("/empLedger.ajax/{emp_id}/progress")
+	public void patchProgress(@RequestBody EmpLedger empLedger) {
 		if (log.isInfoEnabled()) {log.info("Start EmpLedgerAjaxController.patchProgress");}
-		if (log.isInfoEnabled()) {log.info("param ::: emp_id ::: " + emp_id);}
-		if (log.isInfoEnabled()) {log.info("param ::: progress ::: " + progress);}
 		if (log.isInfoEnabled()) {log.info("do service ::: empLedgerService.patchProgress");}
-		empLedgerService.patchProgress(emp_id, progress);
+		empLedgerService.patchProgress(empLedger);
 		if (log.isInfoEnabled()) {log.info("End EmpLedgerAjaxController.patchProgress");}
 	}
 	

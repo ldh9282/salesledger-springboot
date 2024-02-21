@@ -116,7 +116,11 @@
 			site,
 			client,
 			project_name,
-			brief
+			brief,
+			system_creator,
+			system_modifier,
+			system_created_at,
+			system_modified_at
 		)
 			VALUES 
 		(
@@ -142,7 +146,11 @@
 			#{site},
 			#{client},
 			#{project_name},
-			#{brief}
+			#{brief},
+			#{system_creator},
+			#{system_modifier},
+			now(),
+			now()
 			
 		)
 		<selectKey keyProperty="emp_id" keyColumn="emp_id" order="AFTER" resultType="long">
@@ -169,11 +177,29 @@
 			progress = #{progress}, 
 			progress_reason = #{progress_reason}, 
 			issues = #{issues},
-			del = #{del},
+			del = 'N',
 			site = #{site},
 			client = #{client},
 			project_name = #{project_name},
-			brief = #{brief}
+			brief = #{brief},
+			system_modifier = #{system_modifier},
+			system_modified_at = now()
+		WHERE emp_id = #{emp_id}
+	</update>
+	
+	<update id="updateDel">
+		UPDATE t_emp_ledger SET /* EmpLedgerDao.updateDel */
+			del = #{del},
+			system_modifier = #{system_modifier},
+			system_modified_at = now()
+		WHERE emp_id = #{emp_id}
+	</update>
+	<update id="updateProgress">
+		UPDATE t_emp_ledger SET /* EmpLedgerDao.updateDel */
+			progress = #{progress}, 
+			progress_reason = #{progress_reason}, 
+			system_modifier = #{system_modifier},
+			system_modified_at = now()
 		WHERE emp_id = #{emp_id}
 	</update>
 	

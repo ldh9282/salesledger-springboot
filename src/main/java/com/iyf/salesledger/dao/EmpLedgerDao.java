@@ -18,6 +18,10 @@ public interface EmpLedgerDao {
 	void insert(EmpLedger empLedger);
 
 	void update(EmpLedger empLedger);
+	
+	void updateDel(EmpLedger empLedger);
 
 	String selectProjectYn(EmpLedger empLedger);
+
+	void updateProgress(EmpLedger empLedger);
 }

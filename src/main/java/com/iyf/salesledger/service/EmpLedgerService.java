@@ -9,7 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.iyf.salesledger.common.security.SecurityUtils;
 import com.iyf.salesledger.dao.EmpLedgerDao;
+import com.iyf.salesledger.dao.EmpLedgerHistoryDao;
 import com.iyf.salesledger.dao.EmpPoolDao;
 import com.iyf.salesledger.dao.SalesLedgerDao;
 import com.iyf.salesledger.model.EmpLedger;
@@ -24,6 +26,9 @@ public class EmpLedgerService {
 	
 	@Autowired
 	private EmpPoolDao empPoolDao;
+	
+	@Autowired
+	private EmpLedgerHistoryDao empLedgerHistoryDao;
 	
 	@Autowired
 	private SalesLedgerDao salesLedgerDao;
@@ -47,6 +52,10 @@ public class EmpLedgerService {
 	
 	@Transactional
 	public ResponseEntity<String> insertByProgress(EmpLedger empLedger) {
+		String username = SecurityUtils.getCurrentUsername();
+		empLedger.setSystem_creator(username);
+		empLedger.setSystem_modifier(username);
+		
 		empLedger.setProgress("투입예정");
 		
 		String projectYn = empLedgerDao.selectProjectYn(empLedger);
@@ -56,8 +65,8 @@ public class EmpLedgerService {
 		}
 			
 		empLedgerDao.insert(empLedger);
-		
-		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
+		empLedgerHistoryDao.insert(empLedger);
+		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_id());
 		
 		if (empPool != null) {
 			
@@ -69,29 +78,38 @@ public class EmpLedgerService {
 		return ResponseEntity.status(HttpStatus.OK).body("인력원장 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
 		
 	}
-
+	
+	@Transactional
 	public void update(EmpLedger empLedger) {
+		String username = SecurityUtils.getCurrentUsername();
+		empLedger.setSystem_creator(username);
+		empLedger.setSystem_modifier(username);
 		empLedgerDao.update(empLedger);
+		empLedgerHistoryDao.insert(empLedger);
+		
 	}
 
 	@Transactional
-	public void patchProgress(long emp_id, String progress) {
-		EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
+	public void patchProgress(EmpLedger theEmpLedger) {
+		EmpLedger empLedger = empLedgerDao.selectOne(theEmpLedger.getEmp_id());
 		EmpPool empPool = empPoolDao.selectOne(empLedger.getEmp_pool_id());
 		
 		if (empLedger != null) {
-			empLedger.setProgress(progress);
-			empLedgerDao.update(empLedger);
+			empLedger.setProgress(theEmpLedger.getProgress());
+			empLedger.setProgress_reason(theEmpLedger.getProgress_reason());
+			
+			String username = SecurityUtils.getCurrentUsername();
+			empLedger.setSystem_creator(username);
+			empLedger.setSystem_modifier(username);
+			empLedgerDao.updateProgress(empLedger);
+			empLedgerHistoryDao.insert(empLedger);
 		}
 		
-		if (progress.equals("투입")) {
+		Map<String, Object> countByEmpId = salesLedgerDao.getCountByEmpId(empLedger.getEmp_id());
+		if (empLedger.getProgress().equals("투입") && (Long) countByEmpId.get("count") == 0) {
 			SalesLedger salesLedger = new SalesLedger();
 			salesLedger.setEmp_id(empLedger.getEmp_id());
 			salesLedgerDao.insert(salesLedger);
-			
-		} else if (progress.equals("드랍")) {
-			
-		} else if (progress.equals("철수")) {
 			
 		}
 		
@@ -100,12 +118,18 @@ public class EmpLedgerService {
 		empPoolDao.update(empPool);
 	}
 
+	@Deprecated
 	public void patchProgressReason(long emp_id, String progress_reason) {
 		EmpLedger empLedger = empLedgerDao.selectOne(emp_id);
 		
 		if (empLedger != null) {
 			empLedger.setProgress_reason(progress_reason);
+			
+			String username = SecurityUtils.getCurrentUsername();
+			empLedger.setSystem_creator(username);
+			empLedger.setSystem_modifier(username);
 			empLedgerDao.update(empLedger);
+			empLedgerHistoryDao.insert(empLedger);
 		}
 	}
 
@@ -117,11 +141,24 @@ public class EmpLedgerService {
 		if (theEmpPool != null) {
 			
 			empPool.setEmp_pool_id(theEmpPool.getEmp_pool_id());
+			empPool.setProject_assign(empPoolDao.selectCntProjectAssign(empPool.getEmp_pool_id()));
 			empPoolDao.update(empPool);
 		}
 		
-		empLedgerDao.update(empLedger);
+		Map<String, Object> countByEmpId = salesLedgerDao.getCountByEmpId(empLedger.getEmp_id());
 		
+		if (empLedger.getProgress().equals("투입") && (Long) countByEmpId.get("count") == 0) {
+			SalesLedger salesLedger = new SalesLedger();
+			salesLedger.setEmp_id(empLedger.getEmp_id());
+			salesLedgerDao.insert(salesLedger);
+			
+		}
+		
+		String username = SecurityUtils.getCurrentUsername();
+		empLedger.setSystem_creator(username);
+		empLedger.setSystem_modifier(username);
+		empLedgerDao.update(empLedger);
+		empLedgerHistoryDao.insert(empLedger);
 		
 	}
 
@@ -131,7 +168,11 @@ public class EmpLedgerService {
 		 if (empLedger != null) {
 			empLedger.setDel(del);
 			
-			empLedgerDao.update(empLedger);
+			String username = SecurityUtils.getCurrentUsername();
+			empLedger.setSystem_creator(username);
+			empLedger.setSystem_modifier(username);
+			empLedgerDao.updateDel(empLedger);
+			empLedgerHistoryDao.insert(empLedger);
 		}
 	}
 	
@@ -142,7 +183,11 @@ public class EmpLedgerService {
 		
 		if (empLedger != null) {
 			empLedger.setDel(del);
-			empLedgerDao.update(empLedger);
+			String username = SecurityUtils.getCurrentUsername();
+			empLedger.setSystem_creator(username);
+			empLedger.setSystem_modifier(username);
+			empLedgerDao.updateDel(empLedger);
+			empLedgerHistoryDao.insert(empLedger);
 		}
 		if (salesLedger != null) {
 			salesLedger.setDel(del);

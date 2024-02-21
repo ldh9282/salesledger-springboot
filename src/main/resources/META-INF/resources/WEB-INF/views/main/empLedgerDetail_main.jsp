@@ -282,9 +282,6 @@
 
 
             $('#btnConfirm').click(function() {
-                const emp_id = $('#emp_id').val();
-                const progress = '투입'
-               	const progress_reason = $('#progress_reason').val();
 				
             	// 필수값 체크
             	if (!$('#company').val()) {
@@ -354,7 +351,7 @@
                            "resign_date": new Date($('input[name=resign_date]').val()),
                            "i_contract_date": new Date($('input[name=i_contract_date]').val()),
                            "c_contract_date": new Date($('input[name=c_contract_date]').val()),
-                           "progress": $('input[name=progress]').val(),
+                           "progress": '투입',
                            "progress_reason": $('input[name=progress_reason]').val(),
                            "issues": $('input[name=issues]').val(),
                            "include": $('input[name=include]').val(),
@@ -388,36 +385,9 @@
                     contentType: "application/json",
                     data: JSON.stringify(jsonObject),
                     success: function () {
-
-                        $.ajax({
-                            type: 'PATCH',
-                            url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
-                            success: function () {
-                                alert('해당 인력의 투입이 확정이 되어 매출원장에 등록되었습니다')
-                                if (progress_reason) {
-                                    $.ajax({
-                                        type: 'PATCH',
-                                        url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
-                                        success: function () {
-
-                                            opener.parent.location.reload()
-                                            window.location.reload()
-                                        },
-                                        error: function () {
-                                            opener.parent.location.reload()
-                                            window.close()
-                                        }
-                                    })
-                                } else {
-                                    opener.parent.location.reload()
-                                    window.location.reload()
-                                }
-
-                            },
-                            error: function () {
-
-                            }
-                        })
+                    	alert('해당 인력의 투입이 확정이 되어 매출원장에 등록되었습니다')
+                        opener.parent.location.reload()
+                        window.location.reload()
                     },
                     error: function () {
                         opener.parent.location.reload()
@@ -430,35 +400,27 @@
 
             $('#btnDrop').click(function() {
                 const emp_id = $('#emp_id').val();
-                const progress = '드랍';
-                const progress_reason = $('#progress_reason').val();
+                
+         	   const progressMap = {
+           			   "emp_id": $('input[name=emp_id]').val(), 
+           			   "progress": '드랍', 
+           			   "progress_reason": $('input[name=progress_reason]').val(), 
+            	   }
 
                 $.ajax({
                     type: 'PATCH',
-                    url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
+                    url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress',
+                    contentType: "application/json",
+                    data: JSON.stringify(progressMap),
                     success: function() {
                        	alert('해당 인력의 투입을 드랍하였습니다')
-	                    if (progress_reason) {
-	                        $.ajax({
-	                            type: 'PATCH',
-	                            url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
-	                            success: function() {
-	                                opener.parent.location.reload();
-	                                window.location.reload();
-	                            },
-	                            error: function() {
-	                                opener.parent.location.reload();
-	                                window.close();
-	                            }
-	                        });
-	                    } else {
-	                        opener.parent.location.reload();
-	                        window.location.reload();
-	                    }
+                       	opener.parent.location.reload()
+                        window.location.reload()
                                 
                     },
                     error: function() {
-                        
+                    	opener.parent.location.reload()
+                        window.location.reload()
                     }
                 });
 
@@ -631,8 +593,6 @@
             $('#btnResign').click(function() {
             	
             	const emp_id = $('#emp_id').val();
-            	const progress = '철수';
-            	const progress_reason = $('#progress_reason').val();
             	
             	// 필수값 체크
             	if (!$('#company').val()) {
@@ -708,7 +668,7 @@
                        "resign_date": new Date($('input[name=resign_date]').val()),
                        "i_contract_date": new Date($('input[name=i_contract_date]').val()),
                        "c_contract_date": new Date($('input[name=c_contract_date]').val()),
-                       "progress": $('input[name=progress]').val(),
+                       "progress": '철수',
                        "progress_reason": $('input[name=progress_reason]').val(),
                        "issues": $('input[name=issues]').val(),
                        "include": $('input[name=include]').val(),
@@ -742,34 +702,9 @@
                    contentType: "application/json",
                    data: JSON.stringify(jsonObject),
                    success: function() {
-	            	   $.ajax({
-	                       type: 'PATCH',
-	                       url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress/' + progress,
-	                       success: function() {
-	                    	   alert('해당 인력을 철수하였습니다')
-	                    	   if (progress_reason) {
-	     	                       	$.ajax({
-	   	                               type: 'PATCH',
-	   	                               url: '${pageContext.request.contextPath}/empLedger.ajax/' + emp_id + '/progress_reason/' + progress_reason,
-	   	                               success: function() {
-	   	                            	   
-	   	                                   opener.parent.location.reload();
-	   	                                   window.location.reload();
-	   	                               },
-	   	                               error: function() {
-	   	                                   opener.parent.location.reload();
-	   	                                   window.close();
-	   	                               }
-	   	                           });
-								} else {
-									opener.parent.location.reload();
-									window.location.reload();
-								}
-	                       },
-	                       error: function() {
-	                           
-	                       }
-	                   });
+                	   alert('해당 인력을 철수하였습니다')
+                	   opener.parent.location.reload()
+                       window.location.reload()
                    },
                    error: function() {
                        opener.parent.location.reload();

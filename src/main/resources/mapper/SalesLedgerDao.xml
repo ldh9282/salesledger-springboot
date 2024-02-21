@@ -140,4 +140,13 @@
 		delete t_sales_ledger /* SalesLedgerDao.delete */
 		where sales_id = #{sales_id}
 	</delete>
+	
+	<select id="getCountByEmpId" resultType="map">
+		select /* SalesLedgerDao.getCountByEmpId */
+			count(1) count
+		from
+			t_sales_ledger
+		where
+			emp_id = #{emp_id}
+	</select>
 </mapper>

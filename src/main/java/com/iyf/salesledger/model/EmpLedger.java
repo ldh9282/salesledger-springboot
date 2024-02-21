@@ -31,4 +31,9 @@ public class EmpLedger {
     private String project_name; // 프로젝트명
     private String brief; // 적요란
     
+    private String system_creator;
+    private String system_modifier;
+    private Date system_created_at;
+    private Date system_modified_at;
+    
 }
