@@ -100,8 +100,8 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 				
 				log.info("<<< End CustomURLInterceptor.afterCompletion");
 			} catch (Exception e) {
-				log.info(">>> Exception ::: " + e.getMessage());
-				log.info(">>> error request ::: url ::: " + requsetUrl);
+				log.info("<<< Exception ::: " + e.getMessage());
+				log.info("<<< error request ::: url ::: " + requsetUrl);
 			}
 		}
 	}

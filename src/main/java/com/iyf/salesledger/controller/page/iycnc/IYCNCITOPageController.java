@@ -1,14 +1,24 @@
 package com.iyf.salesledger.controller.page.iycnc;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import com.iyf.salesledger.service.SalesCostStatusService;
 
 import lombok.extern.log4j.Log4j2;
 
 @Controller @Log4j2
 public class IYCNCITOPageController {
+	
+	@Autowired
+	private SalesCostStatusService salesCostStatusService;
 
 	/***
 	 * @기능 iycnc/ito/empLedgerList.jsp 인력기초원장 목록페이지
@@ -180,7 +190,7 @@ public class IYCNCITOPageController {
 	 */
 	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
 	@GetMapping("/iycnc/ito/salesCostStatusList")
-	public String salesCostStatusListpPage(ModelMap modelMap) {
+	public String salesCostStatusListPage(ModelMap modelMap) {
 		if (log.isInfoEnabled()) {log.info("Start IYCNCITOPageController.salesCostStatusListpPage");}
 		modelMap.addAttribute("company", "IYCNC");
 		modelMap.addAttribute("company_lower", "iycnc");
@@ -193,4 +203,27 @@ public class IYCNCITOPageController {
 		return "iycnc/ito/salesCostStatusList";
 	}
 
+    /***
+	 * @기능 iycnc/ito/salesCostStatusDetail.jsp 매출원가현황 목록페이지
+	 */
+	@PreAuthorize("hasAuthority('통합 관리자') or hasAuthority('IYCNC 관리자')")
+	@GetMapping("/iycnc/ito/salesCostStatusDetail")
+	public String salesCostStatusDetailPage(@RequestParam long emp_id, ModelMap modelMap) {
+		if (log.isInfoEnabled()) {log.info("Start IYCNCITOPageController.salesCostStatusDetailPage");}
+		modelMap.addAttribute("company", "IYCNC");
+		modelMap.addAttribute("company_lower", "iycnc");
+		modelMap.addAttribute("department", "ITO");
+		modelMap.addAttribute("department_lower", "ito");
+		modelMap.addAttribute("department_kr", "ITO");
+		
+		Map<String, Object> requestMap = new HashMap<>();
+		requestMap.put("emp_id", emp_id);
+		Map<String, Object> salesCostStatus = salesCostStatusService.getSalesCostStatus(requestMap);
+		modelMap.addAttribute("salesCostStatus", salesCostStatus);
+		
+		if (log.isInfoEnabled()) {log.info("modelMap ::: " + modelMap);}
+		if (log.isInfoEnabled()) {log.info("page ::: " + "iycnc/ito/salesCostStatusDetail");}
+		if (log.isInfoEnabled()) {log.info("End IYCNCITOPageController.salesCostStatusDetailPage");}
+		return "iycnc/ito/salesCostStatusDetail";
+	}
 }

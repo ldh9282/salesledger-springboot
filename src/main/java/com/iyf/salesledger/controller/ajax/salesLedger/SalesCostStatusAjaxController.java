@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iyf.salesledger.common.batch.service.empLedger.EmpLedgerBatchService;
@@ -50,5 +52,11 @@ public class SalesCostStatusAjaxController {
 		} else {
 			empLedgerBatchService.updateHistoryMonthlyMM(requestMap);
 		}
+	}
+	
+	@PutMapping("/salesCostStatus.ajax")
+	public void updateSalesCostStatus(@RequestBody Map<String, Object> requestMap) {
+		
+		salesCostStatusService.updateSalesCostStatus(requestMap);
 	}
 }

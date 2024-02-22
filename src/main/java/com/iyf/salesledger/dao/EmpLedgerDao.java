@@ -28,4 +28,6 @@ public interface EmpLedgerDao {
 	List<Map<String, Object>> getMonthlyMM(Map<String, Object> paramMap);
 	
 	void updateMonthlyMM(Map<String, Object> paramMap);
+
+	void updateEmpLedger(Map<String, Object> requestMap);
 }

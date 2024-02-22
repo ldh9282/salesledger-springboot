@@ -4,228 +4,380 @@
 <mapper namespace="com.iyf.salesledger.dao.SalesCostStatusDao">
 	
 	<select id="getSalesCostStatuslist" resultType="map">
+		WITH IndividualRecords AS (
+			SELECT
+				/* SalesCostStatusDao.getSalesCostStatuslist */
+				(
+					SELECT
+						CASE
+							WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
+								THEN TRUNC(0, 3)
+							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+								THEN TRUNC(
+										(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
+										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									, 3)
+							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
+								THEN 1 - TRUNC(
+											(EXTRACT(DAY FROM t2.assign_date) - 1) / 
+											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+										, 3)
+							WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
+								THEN TRUNC(
+										EXTRACT(DAY FROM t2.resign_date) / 
+										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									, 3)
+							WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+								THEN TRUNC(0, 3)
+							ELSE TRUNC(1, 3)
+						END
+					
+				) 자동계산mm,
+				t2.emp_id,
+				t2.company 소속,
+				t2.department 사업부서,
+				t2.site 사이트,
+				t2.client 진행업체,
+				t2.project_name 프로젝트명,
+				t3.sourcing_manager 소싱담당자,
+				t2.purchase_mm 인원,
+				t3.name 이름,
+				t3.career_years 경력,
+				t3.career_field 분야,
+				t3.career_level 등급,
+				t2.assign_date 투입일,
+				t2.end_date 종료일,
+				t2.resign_date 철수일,
+				t2.sales_unit 매출단가,
+				t2.sales_mm * 100 청구율,
+				t2.sales_unit * t2.sales_mm 청구금액,
+				t2.purchase_unit 원가단가,
+				t2.purchase_unit * t2.purchase_mm mm원가,
+				t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm 이익,
+				TRUNC(COALESCE((t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm) / NULLIF(t2.sales_mm * t2.sales_unit, 0)), 3) * 100 이익율,
+				TRUNC(COALESCE((t2.sales_unit * t2.sales_mm) / NULLIF(t2.purchase_unit * t2.purchase_mm, 0)), 3) 비율,
+				t2.brief 특이사항
+			FROM
+				t_sales_ledger t1
+				INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
+				INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
+			WHERE
+				t2.company = #{company}
+				AND t2.department = #{department}
+				AND (
+					t1.del != 'Y'
+					OR t1.del IS NULL
+				)
+			ORDER BY
+				t2.emp_id DESC
+		)
+		SELECT *
+		FROM
+		(
+			-- 총합 행
+			SELECT
+			    SUM(자동계산mm) AS 자동계산mm,
+			    NULL AS emp_id,
+			    NULL AS 소속,
+			    NULL AS 사업부서,
+			    NULL AS 사이트,
+			    NULL AS 진행업체,
+			    NULL AS 프로젝트명,
+			    NULL AS 소싱담당자,
+			    SUM(인원) AS 인원,
+			    NULL AS 이름,
+			    NULL AS 경력,
+			    NULL AS 분야,
+			    NULL AS 등급,
+			    NULL AS 투입일,
+			    NULL AS 종료일,
+			    NULL AS 철수일,
+			    SUM(매출단가) AS 매출단가,
+			    NULL AS 청구율,
+			    SUM(청구금액) AS 청구금액,
+			    SUM(원가단가) AS 원가단가,
+			    SUM(mm원가) AS mm원가,
+			    SUM(이익) AS 이익,
+			    NULL AS 이익율,
+			    NULL AS 비율,
+			    NULL AS 특이사항
+			FROM
+			    IndividualRecords
+			UNION ALL
+			-- 개별 행
+			SELECT * FROM IndividualRecords
+		) t
+		WHERE 자동계산mm IS NOT NULL
+	</select>
+	<select id="getSalesCostStatusHistorylist" resultType="map">
+		WITH IndividualRecords AS (
+			SELECT
+				/* SalesCostStatusDao.getSalesCostStatusHistorylist */
+				(
+					SELECT
+						CASE
+							WHEN to_char(A.투입일, 'YYYYMM') > #{batch_month}
+								THEN TRUNC(0, 3)
+							WHEN to_char(A.투입일, 'YYYYMM') = #{batch_month} AND to_char(A.철수일, 'YYYYMM') = #{batch_month}
+								THEN TRUNC(
+											(EXTRACT(DAY FROM A.철수일) - (EXTRACT(DAY FROM A.투입일) - 1)) / 
+											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+										, 3)
+							WHEN to_char(A.투입일, 'YYYYMM') = #{batch_month} AND to_char(A.철수일, 'YYYYMM') != #{batch_month}
+								THEN 1 - TRUNC(
+											(EXTRACT(DAY FROM A.투입일) - 1) / 
+											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+										, 3)
+							WHEN to_char(A.철수일, 'YYYYMM') = #{batch_month} AND to_char(A.투입일, 'YYYYMM') != #{batch_month}
+								THEN TRUNC(
+										EXTRACT(DAY FROM A.철수일) / 
+										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									, 3)
+							WHEN to_char(A.철수일, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+								THEN TRUNC(0, 3)
+							ELSE TRUNC(1, 3)
+						END
+					
+				) 자동계산mm,
+				A.emp_id,
+				A.emp_history_id,
+				A.소속,
+				A.사업부서,
+				A.사이트,
+				A.진행업체,
+				A.프로젝트명,
+				A.소싱담당자,
+				A.인원,
+				A.이름,
+				A.경력,
+				A.분야,
+				A.등급,
+				A.투입일,
+				A.종료일,
+				A.철수일,
+				A.매출단가,
+				A.청구율 * 100 청구율,
+				A.청구율 * A.매출단가 청구금액,
+				A.원가단가,
+				A.원가단가 * A.인원 mm원가,
+				A.청구율 * A.매출단가 - A.원가단가 * A.인원 이익,
+				TRUNC(COALESCE((A.청구율 * A.매출단가 - A.원가단가 * A.인원) / NULLIF(A.청구율 * A.매출단가, 0)), 3) * 100 이익율,
+				TRUNC(COALESCE((A.청구율 * A.매출단가) / NULLIF(A.원가단가 * A.인원, 0)), 3) 비율,
+				A.특이사항
+			FROM
+				(
+					SELECT
+						(
+							select
+								t4.emp_history_id
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) emp_history_id,
+						t2.emp_id,
+						t2.company 소속,
+						t2.department 사업부서,
+						t2.site 사이트,
+						t2.client 진행업체,
+						t2.project_name 프로젝트명,
+						t3.sourcing_manager 소싱담당자,
+						(
+							select
+								t4.purchase_mm
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) 인원, 
+						t3.name 이름, 
+						t3.career_years 경력, 
+						t3.career_field 분야, 
+						t3.career_level 등급, 
+						t2.assign_date 투입일, 
+						t2.end_date 종료일, 
+						t2.resign_date 철수일, 
+						(
+							select
+								t4.sales_unit
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) 매출단가, 
+						(
+							select
+								t4.sales_mm
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) 청구율, 
+						(
+							select
+								t4.purchase_unit
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) 원가단가,
+						(
+							select
+								'Y'
+							from
+								t_emp_ledger_history t4
+							where
+								t4.emp_id = t2.emp_id
+								and to_char(system_created_at, 'YYYYMM') = #{batch_month}
+							order by
+								emp_history_id desc
+							limit
+								1
+						) searchYN, 
+						t2.brief 특이사항
+					FROM
+						t_sales_ledger t1
+						INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
+						INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
+					WHERE
+						t2.company = 'IYCNC'
+						AND t2.department = 'ITO'
+						AND (
+							t1.del != 'Y'
+							OR t1.del IS NULL
+						)
+				) A
+			WHERE
+				searchYN = 'Y'
+			ORDER BY
+				A.emp_id DESC
+		)
+		SELECT *
+		FROM
+		(
+			-- 총합 행
+			SELECT
+			    SUM(자동계산mm) AS 자동계산mm,
+			    NULL AS emp_id,
+			    NULL AS emp_history_id,
+			    NULL AS 소속,
+			    NULL AS 사업부서,
+			    NULL AS 사이트,
+			    NULL AS 진행업체,
+			    NULL AS 프로젝트명,
+			    NULL AS 소싱담당자,
+			    SUM(인원) AS 인원,
+			    NULL AS 이름,
+			    NULL AS 경력,
+			    NULL AS 분야,
+			    NULL AS 등급,
+			    NULL AS 투입일,
+			    NULL AS 종료일,
+			    NULL AS 철수일,
+			    SUM(매출단가) AS 매출단가,
+			    NULL AS 청구율,
+			    SUM(청구금액) AS 청구금액,
+			    SUM(원가단가) AS 원가단가,
+			    SUM(mm원가) AS mm원가,
+			    SUM(이익) AS 이익,
+			    NULL AS 이익율,
+			    NULL AS 비율,
+			    NULL AS 특이사항
+			FROM
+			    IndividualRecords
+			UNION ALL
+			-- 개별 행
+			SELECT * FROM IndividualRecords
+		) t
+		WHERE 자동계산mm IS NOT NULL
+	</select>
+	
+	<select id="getSalesCostStatus" resultType="map">
 		SELECT
-			/* SalesCostStatusDao.getSalesCostStatuslist */
+			/* SalesCostStatusDao.getSalesCostStatus */
 			(
 				SELECT
 					CASE
-						WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
+						WHEN to_char(t2.assign_date, 'YYYYMM') > '202402'
 							THEN TRUNC(0, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month}
+						WHEN to_char(t2.assign_date, 'YYYYMM') = '202402' AND to_char(t2.resign_date, 'YYYYMM') = '202402'
+							THEN TRUNC(
+									(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
+									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+								, 3)
+						WHEN to_char(t2.assign_date, 'YYYYMM') = '202402' AND to_char(t2.resign_date, 'YYYYMM') != '202402'
 							THEN 1 - TRUNC(
 										(EXTRACT(DAY FROM t2.assign_date) - 1) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 									, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+						WHEN to_char(t2.resign_date, 'YYYYMM') = '202402' AND to_char(t2.assign_date, 'YYYYMM') != '202402'
 							THEN TRUNC(
 									EXTRACT(DAY FROM t2.resign_date) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 								, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> '202402' 
 							THEN TRUNC(0, 3)
 						ELSE TRUNC(1, 3)
 					END
 				
-			) 자동계산mm,
-			t2.emp_id,
-			t2.company 소속,
-			t2.department 사업부서,
-			t2.site 사이트,
-			t2.client 진행업체,
-			t2.project_name 프로젝트명,
-			t3.sourcing_manager 소싱담당자,
-			t2.purchase_mm 인원,
-			t3.name 이름,
-			t3.career_years 경력,
-			t3.career_field 분야,
-			t3.career_level 등급,
-			t2.assign_date 투입일,
-			t2.end_date 종료일,
-			t2.resign_date 철수일,
-			t2.sales_unit 매출단가,
-			t2.sales_mm * 100 청구율,
-			t2.sales_unit * t2.sales_mm 청구금액,
-			t2.purchase_unit 원가단가,
-			t2.purchase_unit * t2.purchase_mm mm원가,
-			t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm 이익,
-			TRUNC(COALESCE((t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm) / NULLIF(t2.sales_mm * t2.sales_unit, 0)), 3) * 100 이익율,
-			TRUNC(COALESCE((t2.sales_unit * t2.sales_mm) / NULLIF(t2.purchase_unit * t2.purchase_mm, 0)), 3) 비율,
-			t2.brief 특이사항
+			) auto_mm,
+			t2.emp_id emp_id,
+			t2.emp_pool_id emp_pool_id,
+			t2.progress progress,
+			t2.company company,
+			t2.department department,
+			t2.site site,
+			t2.client client,
+			t2.project_name project_name,
+			t3.sourcing_manager sourcing_manager,
+			t2.purchase_mm purchase_mm,
+			t3.name name,
+			t3.career_years career_years,
+			t3.career_field career_field,
+			t3.career_level career_level,
+			t2.assign_date assign_date,
+			t2.end_date end_date,
+			t2.resign_date resign_date,
+			t2.sales_unit sales_unit,
+			t2.sales_mm * 100 sales_mm,
+			t2.sales_unit * t2.sales_mm sales_amount,
+			t2.purchase_unit purchase_unit,
+			t2.purchase_unit * t2.purchase_mm purchase_amount,
+			t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm profit,
+			TRUNC(COALESCE((t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm) / NULLIF(t2.sales_mm * t2.sales_unit, 0)), 3) * 100 profit_rate,
+			TRUNC(COALESCE((t2.sales_unit * t2.sales_mm) / NULLIF(t2.purchase_unit * t2.purchase_mm, 0)), 3) rate,
+			t2.brief brief
 		FROM
 			t_sales_ledger t1
 			INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
 			INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
 		WHERE
-			t2.company = #{company}
-			AND t2.department = #{department}
-			AND (
-				t1.del != 'Y'
-				OR t1.del IS NULL
-			)
-		ORDER BY
-			t2.emp_id DESC
+			t2.emp_id = #{emp_id}
 	</select>
-	<select id="getSalesCostStatusHistorylist" resultType="map">
-		
-		SELECT
-			/* SalesCostStatusDao.getSalesCostStatusHistorylist */
-			(
-				SELECT
-					CASE
-						WHEN to_char(A.투입일, 'YYYYMM') > #{batch_month}
-							THEN TRUNC(0, 3)
-						WHEN to_char(A.투입일, 'YYYYMM') = #{batch_month}
-							THEN 1 - TRUNC(
-										(EXTRACT(DAY FROM A.투입일) - 1) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-						WHEN to_char(A.철수일, 'YYYYMM') = #{batch_month}
-							THEN TRUNC(
-									EXTRACT(DAY FROM A.철수일) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-								, 3)
-						WHEN to_char(A.철수일, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
-							THEN TRUNC(0, 3)
-						ELSE TRUNC(1, 3)
-					END
-				
-			) 자동계산mm,
-			A.emp_id,
-			A.emp_history_id,
-			A.소속,
-			A.사업부서,
-			A.사이트,
-			A.진행업체,
-			A.프로젝트명,
-			A.소싱담당자,
-			A.인원,
-			A.이름,
-			A.경력,
-			A.분야,
-			A.등급,
-			A.투입일,
-			A.종료일,
-			A.철수일,
-			A.매출단가,
-			A.청구율 * 100 청구율,
-			A.청구율 * A.매출단가 청구금액,
-			A.원가단가,
-			A.원가단가 * A.인원 mm원가,
-			A.청구율 * A.매출단가 - A.원가단가 * A.인원 이익,
-			TRUNC(COALESCE((A.청구율 * A.매출단가 - A.원가단가 * A.인원) / NULLIF(A.청구율 * A.매출단가, 0)), 3) * 100 이익율,
-			TRUNC(COALESCE((A.청구율 * A.매출단가) / NULLIF(A.원가단가 * A.인원, 0)), 3) 비율,
-			A.특이사항
-		FROM
-			(
-				SELECT
-					(
-						select
-							t4.emp_history_id
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) emp_history_id,
-					t2.emp_id,
-					t2.company 소속,
-					t2.department 사업부서,
-					t2.site 사이트,
-					t2.client 진행업체,
-					t2.project_name 프로젝트명,
-					t3.sourcing_manager 소싱담당자,
-					(
-						select
-							t4.purchase_mm
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) 인원, 
-					t3.name 이름, 
-					t3.career_years 경력, 
-					t3.career_field 분야, 
-					t3.career_level 등급, 
-					t2.assign_date 투입일, 
-					t2.end_date 종료일, 
-					t2.resign_date 철수일, 
-					(
-						select
-							t4.sales_unit
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) 매출단가, 
-					(
-						select
-							t4.sales_mm
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) 청구율, 
-					(
-						select
-							t4.purchase_unit
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) 원가단가,
-					(
-						select
-							'Y'
-						from
-							t_emp_ledger_history t4
-						where
-							t4.emp_id = t2.emp_id
-							and to_char(system_created_at, 'YYYYMM') = #{batch_month}
-						order by
-							emp_history_id desc
-						limit
-							1
-					) searchYN, 
-					t2.brief 특이사항
-				FROM
-					t_sales_ledger t1
-					INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
-					INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
-				WHERE
-					t2.company = 'IYCNC'
-					AND t2.department = 'ITO'
-					AND (
-						t1.del != 'Y'
-						OR t1.del IS NULL
-					)
-			) A
-		WHERE
-			searchYN = 'Y'
-		ORDER BY
-			A.emp_id DESC
-	</select>
+	
 </mapper>

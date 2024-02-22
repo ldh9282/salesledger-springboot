@@ -53,7 +53,7 @@
 						</li>
 						<li>
 							<a href="${pageContext.request.contextPath}/iycnc/ito/salesCostStatusList">
-								<i class="bi bi-circle"></i><span>매출원가현황 ::: 개발용 테스트 페이지</span>
+								<i class="bi bi-circle"></i><span>매출원가현황</span>
 							</a>
 						</li>
 					</ul>

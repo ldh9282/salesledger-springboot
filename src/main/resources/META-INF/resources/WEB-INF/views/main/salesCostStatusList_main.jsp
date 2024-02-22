@@ -400,7 +400,11 @@
                         align: 'center',
                         filter: 'number',
                         formatter({value}) {
-                        	return value + '%';
+                        	if (!value) {
+                        		return '-'
+                        	} else {
+	                        	return value + '%';
+                        	}
                         },
                         sortable: true,
                         sortingType: 'desc'
@@ -634,23 +638,22 @@
             grid.on('dblclick', function (ev) {
                 const empLedger = grid.getRow(ev.rowKey)
                 
-                if (!empLedger.emp_history_id) {
-                	// To do:: 해당년월이 이번달이면 emp_id로 상세팝업페이지불러와서 t_emp_ledger테이블 update(동시에 t_emp_ledger_history테이블 insert) 기능구현
-                	
+                if (!empLedger.emp_history_id && !empLedger.emp_id) {
+                	alert('총합계 데이터입니다')
+                } else if (!empLedger.emp_history_id) {
+                    const popupUrl = '${pageContext.request.contextPath}/${company_lower}/${department_lower}/salesCostStatusDetail?emp_id=' + empLedger.emp_id;
+                    const popupName = 'salesCostStatusDetail-popup';
+                    const popupWidth = 800;
+                    const popupHeight = 600;
+                    const left = (screen.width - popupWidth) / 2;
+                    const top = (screen.height - popupHeight) / 2;
+
+                    window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
                 } else {
-                	
-	                // To do:: 해당년월이 과거면 emp_history_id로 상세팝업페이지 불러와서 t_emp_ledger_history 테이블 update 기능구현
+                	alert('과거 데이터는 상세수정이 불가합니다')
+
                 }
                 
-                	// 하다가 안되시면 목요일 저녁에 구현하겠습니다
-//                 const popupUrl = '${pageContext.request.contextPath}/${company_lower}/${department_lower}/salesLedgerDetail?sales_id=' + salesLedger.sales_id;
-//                 const popupName = 'salesLedgerDetail-popup';
-//                 const popupWidth = 800;
-//                 const popupHeight = 600;
-//                 const left = (screen.width - popupWidth) / 2;
-//                 const top = (screen.height - popupHeight) / 2;
-
-//                 window.open(popupUrl, popupName, 'width=' + popupWidth + ', height=' + popupHeight + ', left=' + left + ', top=' + top);
             });
 
             

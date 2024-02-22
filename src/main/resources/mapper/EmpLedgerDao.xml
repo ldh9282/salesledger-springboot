@@ -228,12 +228,17 @@
 					CASE
 						WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
 							THEN TRUNC(0, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month}
+						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+							THEN TRUNC(
+									(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
+									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+								, 3)
+						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
 							THEN 1 - TRUNC(
 										(EXTRACT(DAY FROM t2.assign_date) - 1) / 
 										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 									, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+						WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
 							THEN TRUNC(
 									EXTRACT(DAY FROM t2.resign_date) / 
 									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
@@ -269,5 +274,66 @@
 		WHERE emp_id = #{emp_id}
 	</update>
 	
+	<update id="updateEmpLedger">
+	    UPDATE t_emp_ledger SET /* EmpLedgerDao.updateEmpLedger */
+	    emp_id = #{emp_id}
+	    <if test="assign_date != null">
+	        , assign_date = #{assign_date} 
+	    </if>
+	    <if test="end_date != null">
+	        , end_date = #{end_date} 
+	    </if>
+	    <if test="sales_mm != null">
+	        , sales_mm = #{sales_mm}
+	    </if>
+	    <if test="purchase_mm != null">
+	        , purchase_mm = #{purchase_mm}
+	    </if>
+	    <if test="sales_unit != null">
+	        , sales_unit = #{sales_unit} 
+	    </if>
+	    <if test="purchase_unit != null">
+	        , purchase_unit = #{purchase_unit} 
+	    </if>
+	    <if test="comments != null and comments != ''">
+	        , comments = #{comments}
+	    </if>
+	    <if test="resume_submit_date != null">
+	        , resume_submit_date = #{resume_submit_date} 
+	    </if>
+	    <if test="resign_date != null">
+	        , resign_date = #{resign_date} 
+	    </if>
+	    <if test="i_contract_date != null">
+	        , i_contract_date = #{i_contract_date} 
+	    </if>
+	    <if test="c_contract_date != null">
+	        , c_contract_date = #{c_contract_date} 
+	    </if>
+	    <if test="progress != null and progress != ''">
+	        , progress = #{progress} 
+	    </if>
+	    <if test="progress_reason != null and progress_reason != ''">
+	        , progress_reason = #{progress_reason} 
+	    </if>
+	    <if test="issues != null and issues != ''">
+	        , issues = #{issues}
+	    </if>
+	    <if test="site != null and site != ''">
+	        , site = #{site}
+	    </if>
+	    <if test="client != null and client != ''">
+	        , client = #{client}
+	    </if>
+	    <if test="project_name != null and project_name != ''">
+	        , project_name = #{project_name}
+	    </if>
+	    <if test="brief != null and brief != ''">
+	        , brief = #{brief}
+	    </if>
+		    , system_modifier = #{system_modifier}
+		    , system_modified_at = now()
+	    WHERE emp_id = #{emp_id}
+	</update>
 	
 </mapper>

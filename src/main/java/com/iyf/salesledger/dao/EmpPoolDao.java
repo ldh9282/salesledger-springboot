@@ -28,4 +28,6 @@ public interface EmpPoolDao {
 	List<Map<String, Object>> selectEmpPoolProgressDetail2(long emp_pool_id);
 
 	long getEmpPoolSeq();
+	
+	void updateEmpPool(Map<String, Object> paramMap);
 }

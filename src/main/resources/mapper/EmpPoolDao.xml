@@ -198,7 +198,53 @@
 		/* EmpPoolDao.getEmpPoolSeq */
 		select nextval('t_emp_pool_emp_pool_id_seq')
 	</select>
-	
-
+		
+	<update id="updateEmpPool">
+	    UPDATE t_emp_pool SET /* EmpPoolDao.updateEmpPool */
+	    emp_pool_id = #{emp_pool_id}
+	    <if test="sourcing_manager != null and sourcing_manager != ''">
+	        , sourcing_manager = #{sourcing_manager}
+	    </if>
+	    <if test="name != null and name != ''">
+	        , name = #{name}
+	    </if>
+	    <if test="phonenumber != null and phonenumber != ''">
+	        , phonenumber = #{phonenumber}
+	    </if>
+	    <if test="birthdate != null and birthdate != ''">
+	        , birthdate = #{birthdate}
+	    </if>
+	    <if test="email != null and email != ''">
+	        , email = #{email}
+	    </if>
+	    <if test="address != null and address != ''">
+	        , address = #{address}
+	    </if>
+	    <if test="education != null and education != ''">
+	        , education = #{education}
+	    </if>
+	    <if test="school_name != null and school_name != ''">
+	        , school_name = #{school_name}
+	    </if>
+	    <if test="major != null and major != ''">
+	        , major = #{major}
+	    </if>
+	    <if test="career_years != null and career_years != ''">
+	        , career_years = #{career_years}
+	    </if>
+	    <if test="career_field != null and career_field != ''">
+	        , career_field = #{career_field}
+	    </if>
+	    <if test="career_level != null and career_level != ''">
+	        , career_level = #{career_level}
+	    </if>
+	    <if test="project_assign != null and project_assign != ''">
+	        , project_assign = #{project_assign}
+	    </if>
+	    <if test="hope_purchase_unit != null and hope_purchase_unit != ''">
+	        , hope_purchase_unit = #{hope_purchase_unit}
+	    </if>
+	    WHERE emp_pool_id = #{emp_pool_id}
+	</update>
 	
 </mapper>
