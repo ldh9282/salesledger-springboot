@@ -20,6 +20,11 @@ public class DateUtils {
 		
 		if (object instanceof String) {
 			String str = (String) object;
+			
+			if ("".equals(str)) {
+				return null;
+			}
+			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			return sdf.parse(str);
 		} else if (object instanceof Date) {
@@ -44,6 +49,11 @@ public class DateUtils {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		if (object instanceof String) {
 			String str = (String) object;
+			
+			if ("".equals(str)) {
+				return null;
+			}
+			
 			Date date = sdf.parse(str);
 			return sdf.format(date);
 		} else if (object instanceof Date) {
