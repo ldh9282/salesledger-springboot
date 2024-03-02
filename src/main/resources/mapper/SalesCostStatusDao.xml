@@ -265,8 +265,8 @@
 						INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
 						INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
 					WHERE
-						t2.company = 'IYCNC'
-						AND t2.department = 'ITO'
+						t2.company = #{company}
+						AND t2.department = #{department}
 						AND (
 							t1.del != 'Y'
 							OR t1.del IS NULL
@@ -323,24 +323,24 @@
 			(
 				SELECT
 					CASE
-						WHEN to_char(t2.assign_date, 'YYYYMM') > '202402'
+						WHEN to_char(t2.assign_date, 'YYYYMM') > TO_CHAR(NOW(), 'YYYYMM')
 							THEN TRUNC(0, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = '202402' AND to_char(t2.resign_date, 'YYYYMM') = '202402'
+						WHEN to_char(t2.assign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM')
 							THEN TRUNC(
 									(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 								, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = '202402' AND to_char(t2.resign_date, 'YYYYMM') != '202402'
+						WHEN to_char(t2.assign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') != TO_CHAR(NOW(), 'YYYYMM')
 							THEN 1 - TRUNC(
 										(EXTRACT(DAY FROM t2.assign_date) - 1) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 									, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') = '202402' AND to_char(t2.assign_date, 'YYYYMM') != '202402'
+						WHEN to_char(t2.resign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.assign_date, 'YYYYMM') != TO_CHAR(NOW(), 'YYYYMM')
 							THEN TRUNC(
 									EXTRACT(DAY FROM t2.resign_date) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE('202402', 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
+									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
 								, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> '202402' 
+						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> TO_CHAR(NOW(), 'YYYYMM') 
 							THEN TRUNC(0, 3)
 						ELSE TRUNC(1, 3)
 					END

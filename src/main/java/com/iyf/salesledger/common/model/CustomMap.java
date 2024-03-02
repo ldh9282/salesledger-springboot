@@ -10,8 +10,8 @@ import java.util.Map;
  * <pre>
  * 커스텀 맵
  * </pre>
- * @기능 1. get 할때 Object 값을 각종 타입으로 형변환 <br>
- * 		2. toString 개발용 로깅 <br>
+ * @기능 <p>1. get 할때 Object 값을 각종 타입으로 형변환 </p>
+ * 		<p>2. toString 개발용 로깅 </p>
  *
  */
 public class CustomMap extends LinkedHashMap<String, Object> {
