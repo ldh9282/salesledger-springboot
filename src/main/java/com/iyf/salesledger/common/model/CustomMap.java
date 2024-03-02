@@ -81,6 +81,17 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		
 		return value;
 	}
+	
+	public String getString(String key, String defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getString(key);
+		}
+	}
 
 	public int getInt(String key) {
 		if (key == null) {
@@ -119,6 +130,18 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		return returnValue;
 	}
 	
+	public int getInt(String key, int defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getInt(key);
+		}
+	}
+	
+	
 	public long getLong(String key) {
 		if (key == null) {
 			throw new RuntimeException("CustomMap.getLong ::: key is null");
@@ -154,6 +177,17 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		}
 		
 		return returnValue;
+	}
+	
+	public long getLong(String key, long defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getLong(key);
+		}
 	}
 	
 	public float getFloat(String key) {
@@ -193,6 +227,17 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		return returnValue;
 	}
 	
+	public float getFloat(String key, float defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getFloat(key);
+		}
+	}
+	
 	public double getDouble(String key) {
 		if (key == null) {
 			throw new RuntimeException("CustomMap.getDouble ::: key is null");
@@ -207,7 +252,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 			throw new RuntimeException("CustomMap.getDouble ::: value is null");
 		} else if (object instanceof String) {
 			returnValue = Double.parseDouble((String) object);
-		} else if (object instanceof Float) {
+		} else if (object instanceof Double) {
 			Double value = null;
 			try {
 				value = (Double) object;
@@ -228,6 +273,17 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		}
 		
 		return returnValue;
+	}
+	
+	public double getDouble(String key, double defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getDouble(key);
+		}
 	}
 	
 	public boolean getBoolean(String key) {
@@ -254,6 +310,17 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		}
 		
 		return false;
+	}
+	
+	public boolean getBoolean(String key, boolean defaultValue) {
+		Object object = null;
+		object = get(key);
+		
+		if (object == null || (object instanceof String && "".equals((String) object))) {
+			return defaultValue;
+		} else {
+			return getBoolean(key);
+		}
 	}
 
 	public CustomMap getCustomMap(String key) {
@@ -367,7 +434,6 @@ public class CustomMap extends LinkedHashMap<String, Object> {
             if (item instanceof CustomMap) {
                 newList.add(((CustomMap) item).toHashMap());
             } else if (item instanceof List<?>) {
-            	// 리스트 안에 아이템이 리스트인 경우도 처리. 재귀호출
                 newList.add(convertListToHashMap((List<?>) item));
             } else {
                 newList.add(item);
@@ -381,12 +447,9 @@ public class CustomMap extends LinkedHashMap<String, Object> {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
-        // 링크드 해쉬맵은 키 넣은 순서있으니
-        // 로깅할때 알파벳순으로 정렬하려면 해쉬맵으로 상속하는 것으로 바꾸거나 키 정렬해야함
         List<String> keyList = new ArrayList<>(keySet());
 //        Collections.sort(sortedKeys);
 
-        // 최대 길이 계산
         int maxKeyLength = 0;
         int maxValueLength = 0;
         for (String key : keyList) {
