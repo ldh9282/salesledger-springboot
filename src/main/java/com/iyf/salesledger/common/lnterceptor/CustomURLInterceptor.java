@@ -1,10 +1,12 @@
 package com.iyf.salesledger.common.lnterceptor;
 
 import java.util.Enumeration;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.MDC;
 import org.springframework.core.NamedThreadLocal;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -50,6 +52,9 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 				
 				requsetUrl = url + queryString;
 				requsetMethod = method;
+				
+				MDC.put("identifier", generateIdentifier());
+				
 				log.info(">>> Start CustomURLInterceptor.preHandle");
 				log.info(">>> Controller ::: " + className + "." + methodName); 
 //				log.info("remote ip" + " ::: " + ip + " ::: " + "session" + " ::: " + session); 
@@ -114,6 +119,13 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 			}
 		}
 	}
+	
+    private String generateIdentifier() {
+    	
+    	UUID uuid = UUID.randomUUID();
+        String identifier = uuid.toString().replace("-", "").toUpperCase().substring(0, 4);
+        return identifier;
+    }
 
 
 }

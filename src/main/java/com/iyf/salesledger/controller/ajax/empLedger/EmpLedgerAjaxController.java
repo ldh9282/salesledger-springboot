@@ -37,7 +37,7 @@ public class EmpLedgerAjaxController {
 		if (log.isInfoEnabled()) {log.info("Start EmpLedgerAjaxController.retrieveEmpLedgerList");}
 		if (log.isInfoEnabled()) {log.info("do service ::: empLedgerService.list");}
 		List<EmpLedger> empLedgerList = empLedgerService.list();
-		if (log.isInfoEnabled()) {log.info("End EmpLedgerAjaxController.retrieveEmpPoolList");}
+		if (log.isInfoEnabled()) {log.info("End EmpLedgerAjaxController.retrieveEmpLedgerList");}
 		return empLedgerList;
 	}
 	
