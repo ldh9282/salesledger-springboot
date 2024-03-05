@@ -1,17 +1,18 @@
 package com.iyf.salesledger.common.board.dao;
 
 import java.util.List;
-import java.util.Map;
+
+import com.iyf.salesledger.common.model.CustomMap;
 
 public interface BoardReplyDao {
 
-	void insertBoardReply(Map<String, Object> paraMap);
+	void insertBoardReply(CustomMap paraMap);
 	
-	List<Map<String, Object>> getBoardReplyList(Map<String, Object> paraMap);
+	List<CustomMap> getBoardReplyList(CustomMap paraMap);
 	
-	void updateBoardReplyDelY(Map<String, Object> paraMap);
+	void updateBoardReplyDelY(CustomMap paraMap);
 
-	void deleteBoardReply(Map<String, Object> paraMap);
+	void deleteBoardReply(CustomMap paraMap);
 	
-	Map<String, Object> getBoardReplyPassword(Map<String, Object> paraMap);
+	CustomMap getBoardReplyPassword(CustomMap paraMap);
 }

@@ -31,7 +31,7 @@
 		    )
 	</insert>
 	
-	<select id="getBoardById" resultType="map">
+	<select id="getBoardById" resultType="CustomMap">
 		SELECT /* BoardDao.getBoardById */
 		    board_id,
 		    board_type,
@@ -95,7 +95,7 @@
 		</choose>
 	</select>
 	
-	<select id="getBoardListByKeyword" resultType="map">
+	<select id="getBoardListByKeyword" resultType="CustomMap">
 		SELECT /* BoardDao.getBoardListByKeyword */
 		    board_id,
 		    board_type,
@@ -121,7 +121,7 @@
 		order by
 		<if test="board_type == null or board_type == ''">
 			/* 전체글에서 이번달에 수정한 공지글은 상단표시 */
-		 	CASE WHEN board_type = '03' AND to_char(system_modified_at, 'YYYY.MM') = to_char(CURRENT_DATE, 'YYYY.MM') THEN 0 ELSE 1 END,
+		 	CASE WHEN board_type = '03' AND to_char(system_modified_at, 'YYYY.MM') = to_char(CURRENT_DATE, 'YYYY.MM') THEN 1 ELSE 2 END,
 		</if>
 			board_id desc
 		offset (#{pagingDTO.pageNum}-1) * #{pagingDTO.rowAmountPerPage}   

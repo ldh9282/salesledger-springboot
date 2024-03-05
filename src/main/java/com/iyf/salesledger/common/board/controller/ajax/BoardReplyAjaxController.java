@@ -1,8 +1,6 @@
 package com.iyf.salesledger.common.board.controller.ajax;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.iyf.salesledger.common.board.service.BoardReplyService;
+import com.iyf.salesledger.common.model.CustomMap;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -32,14 +31,14 @@ public class BoardReplyAjaxController {
 	 * @return boardReplyList
 	 */
 	@GetMapping("/boardReply.ajax/board_id/{board_id}")
-	public List<Map<String, Object>> getBoardReplyList(@PathVariable long board_id) {
+	public List<CustomMap> getBoardReplyList(@PathVariable long board_id) {
 		if (log.isInfoEnabled()) {log.info("Start BoardReplyAjaxController.getBoardReplyList");}
-		Map<String, Object> requsetMap = new HashMap<>();
+		CustomMap requsetMap = new CustomMap();
 		requsetMap.put("board_id", board_id);
 		if (log.isInfoEnabled()) {log.info("param ::: requsetMap ::: " + requsetMap);}
 		if (log.isInfoEnabled()) {log.info("do service ::: boardReplyService.getBoardReplyList");}
-		List<Map<String, Object>> boardReplyList = boardReplyService.getBoardReplyList(requsetMap);
-		if (log.isInfoEnabled()) {log.info("boardReplyList ::: " + boardReplyList);}
+		List<CustomMap> boardReplyList = boardReplyService.getBoardReplyList(requsetMap);
+		if (log.isInfoEnabled()) {log.info("boardReplyList ::: " + boardReplyList.size());}
 		if (log.isInfoEnabled()) {log.info("End BoardReplyAjaxController.getBoardReplyList");}
 		return boardReplyList;
 	}
@@ -51,32 +50,11 @@ public class BoardReplyAjaxController {
 	 * @return 
 	 */
 	@PostMapping("/boardReply.ajax")
-	public void insertBoardReply(@RequestBody Map<String, Object> requsetMap, HttpServletRequest request) {
+	public void insertBoardReply(@RequestBody CustomMap requsetMap, HttpServletRequest request) {
 		if (log.isInfoEnabled()) {log.info("Start BoardReplyAjaxController.insertBoardReply");}
-		
-		requsetMap.put("board_id", Long.valueOf((String) requsetMap.get("board_id")));
-		requsetMap.put("reply_content", requsetMap.get("reply_content"));
-		
-		if ("1".equals(requsetMap.get("ref_reply"))) {
-			requsetMap.put("ref_reply_id", Long.parseLong((String) requsetMap.get("ref_reply_id")));
-		} else {
-			requsetMap.put("ref_reply_id", null);
-		}
-		
-		if ("1".equals(requsetMap.get("anonymous"))) {
-			requsetMap.put("system_creator", requsetMap.get("anonymous_name"));
-			requsetMap.put("system_modifier", requsetMap.get("anonymous_name"));
-			requsetMap.put("anonymous_name", requsetMap.get("anonymous_name"));
-			requsetMap.put("anonymous_password", requsetMap.get("anonymous_password"));
-		} else {
-			requsetMap.put("system_creator", request.getRemoteUser());
-			requsetMap.put("system_modifier", request.getRemoteUser());
-		}
-		
-		
 		if (log.isInfoEnabled()) {log.info("param ::: requsetMap ::: " + requsetMap);}
 		if (log.isInfoEnabled()) {log.info("do service ::: boardReplyService.insertBoardReply");}
-		boardReplyService.insertBoardReply(requsetMap);
+		boardReplyService.insertBoardReply(requsetMap, request);
 		if (log.isInfoEnabled()) {log.info("End BoardReplyAjaxController.insertBoardReply");}
 	}
 	
@@ -87,11 +65,11 @@ public class BoardReplyAjaxController {
 	 * @param request
 	 */
 	@DeleteMapping("/boardReply.ajax/{reply_id}")
-	public void updateBoardReplyDelY(@PathVariable long reply_id, @RequestBody Map<String, Object> requsetMap, HttpServletRequest request) {
+	public void updateBoardReplyDelY(@PathVariable long reply_id, @RequestBody CustomMap requsetMap, HttpServletRequest request) {
 		if (log.isInfoEnabled()) {log.info("Start BoardReplyAjaxController.updateBoardReplyDelY");}
 		
 		if ("1".equals(requsetMap.get("anonymous"))) {
-			requsetMap.put("system_modifier", requsetMap.get("anonymous_name"));
+			requsetMap.put("system_modifier", requsetMap.getString("anonymous_name"));
 			requsetMap.put("reply_id", reply_id);
 		} else {
 			requsetMap.put("system_modifier", request.getRemoteUser());
@@ -111,14 +89,14 @@ public class BoardReplyAjaxController {
 	 * @return resultMap
 	 */
 	@GetMapping("/boardReply.ajax/{reply_id}/password/validate")
-	public Map<String, Object> validateBoardReplyPassword(@PathVariable long reply_id, @RequestParam String password) {
+	public CustomMap validateBoardReplyPassword(@PathVariable long reply_id, @RequestParam String password) {
 		if (log.isInfoEnabled()) {log.info("Start BoardReplyAjaxController.validateBoardReplyPassword");}
-		Map<String, Object> requsetMap = new HashMap<>();
+		CustomMap requsetMap = new CustomMap();
 		requsetMap.put("reply_id", reply_id);
 		requsetMap.put("password", password);
 		if (log.isInfoEnabled()) {log.info("param ::: requsetMap ::: " + requsetMap);}
 		if (log.isInfoEnabled()) {log.info("do service ::: boardReplyService.validateBoardReplyPassword");}
-		Map<String, Object> resultMap = boardReplyService.validateBoardReplyPassword(requsetMap);
+		CustomMap resultMap = boardReplyService.validateBoardReplyPassword(requsetMap);
 		if (log.isInfoEnabled()) {log.info("End BoardReplyAjaxController.validateBoardReplyPassword");}
 		return resultMap;
 	}

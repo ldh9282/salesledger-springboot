@@ -35,7 +35,7 @@
 		    )
 	</insert>
 	
-	<select id="getBoardReplyList" resultType="map">
+	<select id="getBoardReplyList" resultType="CustomMap">
 		WITH RECURSIVE recursive_reply /* BoardReplyDao.getBoardReplyList */
 			( 
 			    reply_id,
@@ -133,7 +133,7 @@
 		    reply_id = #{reply_id}
 	</update>
 	
-	<select id="getBoardReplyPassword" resultType="map">
+	<select id="getBoardReplyPassword" resultType="CustomMap">
 		SELECT /* BoardReplyDao.getBoardReplyPassword */
 		    CASE
 		        WHEN t_board_reply.anonymous_password IS NOT NULL THEN t_board_reply.anonymous_password

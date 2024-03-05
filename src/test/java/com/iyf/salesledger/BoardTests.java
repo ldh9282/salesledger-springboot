@@ -1,13 +1,11 @@
 package com.iyf.salesledger;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.iyf.salesledger.common.board.service.BoardService;
+import com.iyf.salesledger.common.model.CustomMap;
 
 @SpringBootTest
 public class BoardTests {
@@ -18,7 +16,7 @@ public class BoardTests {
 	@Test
 	void test01() {
 		for (int i = 0; i < 100; i++) {
-			Map<String, Object> requestMap = new HashMap<>();
+			CustomMap requestMap = new CustomMap();
 			
 			requestMap.put("board_type", "02");
 			requestMap.put("board_title", "qqqq" + i);

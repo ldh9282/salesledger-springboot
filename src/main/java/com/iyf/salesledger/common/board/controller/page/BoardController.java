@@ -2,13 +2,11 @@ package com.iyf.salesledger.common.board.controller.page;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.ibatis.javassist.expr.NewArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -18,9 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.iyf.salesledger.common.board.service.BoardReplyService;
 import com.iyf.salesledger.common.board.service.BoardService;
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.common.paging.PagingCreatorDTO;
 import com.iyf.salesledger.common.paging.PagingDTO;
-import com.iyf.salesledger.common.security.Member;
 import com.iyf.salesledger.common.utils.DateUtils;
 
 import lombok.extern.log4j.Log4j2;
@@ -69,16 +67,16 @@ public class BoardController {
 		if (log.isInfoEnabled()) {log.info("Start BoardController.showBoardDetailPage");}
 		if (log.isInfoEnabled()) {log.info("param ::: board_id ::: " + board_id);}
 		if (log.isInfoEnabled()) {log.info("do service ::: boardService.getBoardById");}
-		Map<String, Object> board = boardService.getBoardById(board_id);
+		CustomMap board = boardService.getBoardById(board_id);
 		
-		Map<String, Object> requsetMap = new HashMap<>();
+		CustomMap requsetMap = new CustomMap();
 		requsetMap.put("board_id", board_id);
-		List<Map<String, Object>> boardReplyList = boardReplyService.getBoardReplyList(requsetMap);
+		List<CustomMap> boardReplyList = boardReplyService.getBoardReplyList(requsetMap);
 		
 		modelMap.addAttribute("board", board);
 		modelMap.addAttribute("boardReplyList", boardReplyList);
 		if (log.isInfoEnabled()) {log.info("modelMap ::: board ::: " + board);}
-		if (log.isInfoEnabled()) {log.info("modelMap ::: boardReplyList ::: " + boardReplyList);}
+		if (log.isInfoEnabled()) {log.info("modelMap ::: boardReplyList ::: " + boardReplyList.size());}
 		if (log.isInfoEnabled()) {log.info("page ::: " + "board/boardDetail");}
 		if (log.isInfoEnabled()) {log.info("End BoardController.showBoardDetailPage");}
 		return "board/boardDetail";
@@ -93,12 +91,12 @@ public class BoardController {
 		if (log.isInfoEnabled()) {log.info("Start BoardController.showBoardListPage");}
 		if (log.isInfoEnabled()) {log.info("param ::: pagingDTO ::: " + pagingDTO);}
 		if (log.isInfoEnabled()) {log.info("do service ::: boardService.getTotalCountByKeyword");}
-		Map<String, Object> requsetMap = new HashMap<>();
+		CustomMap requsetMap = new CustomMap();
 		requsetMap.put("pagingDTO", pagingDTO);
 		requsetMap.put("board_type", request.getParameter("board_type"));
 		long count = boardService.getTotalCountByKeyword(requsetMap);
 		if (log.isInfoEnabled()) {log.info("do service ::: boardService.getBoardListByKeyword");}
-		List<Map<String, Object>> boardList = boardService.getBoardListByKeyword(requsetMap);
+		List<CustomMap> boardList = boardService.getBoardListByKeyword(requsetMap);
 		PagingCreatorDTO pagingCreatorDTO = new PagingCreatorDTO(count, pagingDTO);
 		if (log.isInfoEnabled()) {log.info("build PagingCreatorDTO ::: instance ::: " + pagingCreatorDTO);}
 		modelMap.addAttribute("boardList", boardList);
