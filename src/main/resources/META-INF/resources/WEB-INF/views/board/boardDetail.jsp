@@ -538,25 +538,33 @@
     	// 댓글: 등록 클릭이벤트
     	$('#btnBoardReplyRegister').click(function() {
     		let boardReply;
-    		
     		if (!$('#replyContent').val().trim()) {
     			alert('댓글 내용을 입력해주세요.')
     			return;
     		}
     		
     		if ($('#anonymous').prop('checked')) {
+    			
+    			if (!$('#replyAnonymousCreator').val().trim()) {
+        			alert('댓글 작성자 이름을 입력해주세요.')
+        			return;
+        		} else if (!$('#replyPassword').val().trim()) {
+        			alert('댓글 작성자 비밀번호를 입력해주세요.')
+        			return;
+        		}
+    			
     			boardReply = {
    					anonymous: "1",
    					board_id: boardId,
    					anonymous_name: $('#replyAnonymousCreator').val(),
    					anonymous_password: $('#replyPassword').val(),
-   					reply_content: $('#replyContent').val().replaceAll('\n', ' '),
+   					reply_content: $('#replyContent').val().replaceAll('\n', '<br>').replaceAll(' ', '&nbsp;'),
     			};
     		} else {
     			boardReply = {
    					anonymous: "0",
    					board_id: boardId,
-   					reply_content: $('#replyContent').val().replaceAll('\n', ' '), 
+   					reply_content: $('#replyContent').val().replaceAll('\n', '<br>').replaceAll(' ', '&nbsp;'), 
        			};
     		}
     		
@@ -593,6 +601,14 @@
     		}
     		
     		if ($('#anonymous2').prop('checked')) {
+    			if (!$('#replyAnonymousCreator2').val().trim()) {
+        			alert('댓글 작성자 이름을 입력해주세요.')
+        			return;
+        		} else if (!$('#replyPassword2').val().trim()) {
+        			alert('댓글 작성자 비밀번호를 입력해주세요.')
+        			return;
+        		}
+    			
     			boardReply = {
    					anonymous: "1",
    					ref_reply: "1",
@@ -600,7 +616,7 @@
    					board_id: boardId,
    					anonymous_name: $('#replyAnonymousCreator2').val(),
    					anonymous_password: $('#replyPassword2').val(),
-   					reply_content: $('#replyContent2').val().replaceAll('\n', ' '),
+   					reply_content: $('#replyContent2').val().replaceAll('\n', '<br>').replaceAll(' ', '&nbsp;'),
     			};
     		} else {
     			boardReply = {
@@ -608,7 +624,7 @@
    					ref_reply: "1",
    					ref_reply_id: $('#reply2').attr('data-reply-id'),
    					board_id: boardId,
-   					reply_content: $('#replyContent2').val().replaceAll('\n', ' '), 
+   					reply_content: $('#replyContent2').val().replaceAll('\n', '<br>').replaceAll(' ', '&nbsp;'), 
        			};
     		}
     		

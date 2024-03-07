@@ -448,7 +448,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         StringBuilder sb = new StringBuilder();
         
         List<String> keyList = new ArrayList<>(keySet());
-//        Collections.sort(sortedKeys);
+//        Collections.sort(keyList);
 
         int maxKeyLength = 0;
         int maxValueLength = 0;
@@ -483,7 +483,7 @@ public class CustomMap extends LinkedHashMap<String, Object> {
         return sb.toString();
     }
 
-    private String padRight(String str, int length) {
+    private static String padRight(String str, int length) {
         return String.format("%-" + length + "s", str);
     }
     

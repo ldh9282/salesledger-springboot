@@ -120,7 +120,7 @@ public class CustomURLInterceptor implements HandlerInterceptor {
 		}
 	}
 	
-    private String generateIdentifier() {
+    private static String generateIdentifier() {
     	
     	UUID uuid = UUID.randomUUID();
         String identifier = uuid.toString().replace("-", "").toUpperCase().substring(0, 4);
