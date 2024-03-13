@@ -222,48 +222,49 @@
 	<select id="getMonthlyMM" resultType="map">
 		SELECT
 			/* EmpLedgerDao.getMonthlyMM */
-			t2.emp_id,
-			(
-				SELECT
-					CASE
-						WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
-							THEN TRUNC(0, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
-							THEN TRUNC(
-									(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-								, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
-							THEN 1 - TRUNC(
-										(EXTRACT(DAY FROM t2.assign_date) - 1) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
-							THEN TRUNC(
-									EXTRACT(DAY FROM t2.resign_date) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-								, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
-							THEN TRUNC(0, 3)
-						ELSE TRUNC(1, 3)
-					END
-				
-			) 자동계산mm
-
+			A.emp_id,
+			TRUNC(A.근무일/A.영업일, 3) 자동계산mm,
+			A.근무일,
+			A.영업일
 		FROM
-			t_sales_ledger t1
-			INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
-			INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
-		WHERE (
-				t1.del != 'Y'
-				OR t1.del IS NULL
-				)			
-		<if test="company != null and company != ''">
-		AND t2.company = #{company}
-		</if>
-		<if test="department != null and department != ''">
-		AND t2.department = #{department}
-		</if>
+		(
+			SELECT
+			
+				t2.emp_id,
+				(
+					SELECT
+						CASE
+							WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
+								THEN 0
+							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+								THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd between to_char(t2.assign_date, 'DD') and to_char(t2.resign_date, 'DD'))
+							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
+								THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd >= to_char(t2.assign_date, 'DD'))
+							WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
+								THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd <![CDATA[ <= ]]> to_char(t2.resign_date, 'DD'))
+							WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+								THEN 0
+							ELSE (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N')
+						END
+		
+				) 근무일,
+				(select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N') 영업일
+		
+			FROM
+				t_sales_ledger t1
+				INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
+				INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
+			WHERE (
+					t1.del != 'Y'
+					OR t1.del IS NULL
+					)			
+			<if test="company != null and company != ''">
+			AND t2.company = #{company}
+			</if>
+			<if test="department != null and department != ''">
+			AND t2.department = #{department}
+			</if>
+		) A
 	</select>
 	<update id="updateMonthlyMM">
 		UPDATE t_emp_ledger SET /* EmpLedgerDao.updateMonthlyMM */ 

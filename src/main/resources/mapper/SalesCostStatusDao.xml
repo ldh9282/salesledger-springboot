@@ -5,71 +5,93 @@
 	
 	<select id="getSalesCostStatuslist" resultType="map">
 		WITH IndividualRecords AS (
-			SELECT
-				/* SalesCostStatusDao.getSalesCostStatuslist */
-				(
-					SELECT
-						CASE
-							WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
-								THEN TRUNC(0, 3)
-							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
-								THEN TRUNC(
-										(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-							WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
-								THEN 1 - TRUNC(
-											(EXTRACT(DAY FROM t2.assign_date) - 1) / 
-											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-										, 3)
-							WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
-								THEN TRUNC(
-										EXTRACT(DAY FROM t2.resign_date) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-							WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
-								THEN TRUNC(0, 3)
-							ELSE TRUNC(1, 3)
-						END
-					
-				) 자동계산mm,
-				t2.emp_id,
-				t2.company 소속,
-				t2.department 사업부서,
-				t2.site 사이트,
-				t2.client 진행업체,
-				t2.project_name 프로젝트명,
-				t3.sourcing_manager 소싱담당자,
-				t2.purchase_mm 인원,
-				t3.name 이름,
-				t3.career_years 경력,
-				t3.career_field 분야,
-				t3.career_level 등급,
-				t2.assign_date 투입일,
-				t2.end_date 종료일,
-				t2.resign_date 철수일,
-				t2.sales_unit 매출단가,
-				t2.sales_mm * 100 청구율,
-				t2.sales_unit * t2.sales_mm 청구금액,
-				t2.purchase_unit 원가단가,
-				t2.purchase_unit * t2.purchase_mm mm원가,
-				t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm 이익,
-				TRUNC(COALESCE((t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm) / NULLIF(t2.sales_mm * t2.sales_unit, 0)), 3) * 100 이익율,
-				TRUNC(COALESCE((t2.sales_unit * t2.sales_mm) / NULLIF(t2.purchase_unit * t2.purchase_mm, 0)), 3) 비율,
-				t2.brief 특이사항
+			SELECT /* SalesCostStatusDao.getSalesCostStatuslist */
+				TRUNC(a.근무일 :: decimal/a.영업일 :: decimal, 3) 자동계산mm,
+				a.근무일,
+				a.영업일,
+				a.emp_id,
+				a.소속,
+				a.사업부서,
+				a.사이트,
+				a.진행업체,
+				a.프로젝트명,
+				a.소싱담당자,
+				a.인원,
+				a.이름,
+				a.경력,
+				a.분야,
+				a.등급,
+				a.투입일,
+				a.종료일,
+				a.철수일,
+				a.매출단가,
+				a.청구율,
+				a.청구금액,
+				a.원가단가,
+				a.mm원가,
+				a.이익,
+				a.이익율,
+				a.비율,
+				a.특이사항
 			FROM
-				t_sales_ledger t1
-				INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
-				INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
-			WHERE
-				t2.company = #{company}
-				AND t2.department = #{department}
-				AND (
-					t1.del != 'Y'
-					OR t1.del IS NULL
-				)
-			ORDER BY
-				t2.emp_id DESC
+			(
+				SELECT
+					(
+						SELECT
+							CASE
+								WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
+									THEN 0
+								WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+									THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd between to_char(t2.assign_date, 'DD') and to_char(t2.resign_date, 'DD'))
+								WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
+									THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd >= to_char(t2.assign_date, 'DD'))
+								WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
+									THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd <![CDATA[ <= ]]> to_char(t2.resign_date, 'DD'))
+								WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+									THEN 0
+								ELSE (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N')
+							END
+		
+					) 근무일,
+					(select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N') 영업일,
+					t2.emp_id,
+					t2.company 소속,
+					t2.department 사업부서,
+					t2.site 사이트,
+					t2.client 진행업체,
+					t2.project_name 프로젝트명,
+					t3.sourcing_manager 소싱담당자,
+					t2.purchase_mm 인원,
+					t3.name 이름,
+					t3.career_years 경력,
+					t3.career_field 분야,
+					t3.career_level 등급,
+					t2.assign_date 투입일,
+					t2.end_date 종료일,
+					t2.resign_date 철수일,
+					t2.sales_unit 매출단가,
+					t2.sales_mm * 100 청구율,
+					t2.sales_unit * t2.sales_mm 청구금액,
+					t2.purchase_unit 원가단가,
+					t2.purchase_unit * t2.purchase_mm mm원가,
+					t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm 이익,
+					TRUNC(COALESCE((t2.sales_unit * t2.sales_mm - t2.purchase_unit * t2.purchase_mm) / NULLIF(t2.sales_mm * t2.sales_unit, 0)), 3) * 100 이익율,
+					TRUNC(COALESCE((t2.sales_unit * t2.sales_mm) / NULLIF(t2.purchase_unit * t2.purchase_mm, 0)), 3) 비율,
+					t2.brief 특이사항
+				FROM
+					t_sales_ledger t1
+					INNER JOIN t_emp_ledger t2 on t1.emp_id = t2.emp_id
+					INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
+				WHERE
+					t2.company = #{company}
+					AND t2.department = #{department}
+					AND (
+						t1.del != 'Y'
+						OR t1.del IS NULL
+					)
+				ORDER BY
+					t2.emp_id DESC
+			) a
 		)
 		SELECT *
 		FROM
@@ -77,6 +99,8 @@
 			-- 총합 행
 			SELECT
 			    SUM(자동계산mm) AS 자동계산mm,
+				NULL AS 근무일,
+				NULL AS 영업일,
 			    NULL AS emp_id,
 			    NULL AS 소속,
 			    NULL AS 사업부서,
@@ -113,32 +137,9 @@
 		WITH IndividualRecords AS (
 			SELECT
 				/* SalesCostStatusDao.getSalesCostStatusHistorylist */
-				(
-					SELECT
-						CASE
-							WHEN to_char(A.투입일, 'YYYYMM') > #{batch_month}
-								THEN TRUNC(0, 3)
-							WHEN to_char(A.투입일, 'YYYYMM') = #{batch_month} AND to_char(A.철수일, 'YYYYMM') = #{batch_month}
-								THEN TRUNC(
-											(EXTRACT(DAY FROM A.철수일) - (EXTRACT(DAY FROM A.투입일) - 1)) / 
-											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-										, 3)
-							WHEN to_char(A.투입일, 'YYYYMM') = #{batch_month} AND to_char(A.철수일, 'YYYYMM') != #{batch_month}
-								THEN 1 - TRUNC(
-											(EXTRACT(DAY FROM A.투입일) - 1) / 
-											EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-										, 3)
-							WHEN to_char(A.철수일, 'YYYYMM') = #{batch_month} AND to_char(A.투입일, 'YYYYMM') != #{batch_month}
-								THEN TRUNC(
-										EXTRACT(DAY FROM A.철수일) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(#{batch_month}, 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-							WHEN to_char(A.철수일, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
-								THEN TRUNC(0, 3)
-							ELSE TRUNC(1, 3)
-						END
-					
-				) 자동계산mm,
+				TRUNC(A.근무일:: decimal / A.영업일 :: decimal, 3) 자동계산mm,
+				A.근무일,
+				A.영업일,
 				A.emp_id,
 				A.emp_history_id,
 				A.소속,
@@ -167,6 +168,24 @@
 			FROM
 				(
 					SELECT
+						(
+							SELECT
+								CASE
+									WHEN to_char(t2.assign_date, 'YYYYMM') > #{batch_month}
+										THEN 0
+									WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') = #{batch_month}
+										THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd between to_char(t2.assign_date, 'DD') and to_char(t2.resign_date, 'DD'))
+									WHEN to_char(t2.assign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.resign_date, 'YYYYMM') != #{batch_month}
+										THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd >= to_char(t2.assign_date, 'DD'))
+									WHEN to_char(t2.resign_date, 'YYYYMM') = #{batch_month} AND to_char(t2.assign_date, 'YYYYMM') != #{batch_month}
+										THEN (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N' and dd <![CDATA[ <= ]]> to_char(t2.resign_date, 'DD'))
+									WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> #{batch_month} 
+										THEN 0
+									ELSE (select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N')
+								END
+		
+						) 근무일,
+						(select count(1) from t_workday where yyyy = substring(#{batch_month}, 1, 4) and mm = substring(#{batch_month}, 5, 2) and holiday = 'N') 영업일,
 						(
 							select
 								t4.emp_history_id
@@ -283,6 +302,8 @@
 			-- 총합 행
 			SELECT
 			    SUM(자동계산mm) AS 자동계산mm,
+				NULL AS 근무일,
+				NULL AS 영업일,
 			    NULL AS emp_id,
 			    NULL AS emp_history_id,
 			    NULL AS 소속,
@@ -320,32 +341,56 @@
 	<select id="getSalesCostStatus" resultType="map">
 		SELECT
 			/* SalesCostStatusDao.getSalesCostStatus */
+			TRUNC(A.근무일:: decimal / A.영업일 :: decimal, 3) auto_mm,
+			A.근무일,
+			A.영업일,
+			A.emp_id,
+			A.emp_pool_id,
+			A.progress,
+			A.company,
+			A.department,
+			A.site,
+			A.client,
+			A.project_name,
+			A.sourcing_manager,
+			A.purchase_mm,
+			A.name,
+			A.career_years,
+			A.career_field,
+			A.career_level,
+			A.assign_date,
+			A.end_date,
+			A.resign_date,
+			A.sales_unit,
+			A.sales_mm,
+			A.sales_amount,
+			A.purchase_unit,
+			A.purchase_amount,
+			A.profit,
+			A.profit_rate,
+			A.rate,
+			A.brief
+		FROM 
+		(
+			SELECT
 			(
 				SELECT
 					CASE
-						WHEN to_char(t2.assign_date, 'YYYYMM') > TO_CHAR(NOW(), 'YYYYMM')
-							THEN TRUNC(0, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM')
-							THEN TRUNC(
-									(EXTRACT(DAY FROM t2.resign_date) - (EXTRACT(DAY FROM t2.assign_date) - 1)) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-								, 3)
-						WHEN to_char(t2.assign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') != TO_CHAR(NOW(), 'YYYYMM')
-							THEN 1 - TRUNC(
-										(EXTRACT(DAY FROM t2.assign_date) - 1) / 
-										EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-									, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') = TO_CHAR(NOW(), 'YYYYMM') AND to_char(t2.assign_date, 'YYYYMM') != TO_CHAR(NOW(), 'YYYYMM')
-							THEN TRUNC(
-									EXTRACT(DAY FROM t2.resign_date) / 
-									EXTRACT(DAY FROM (DATE_TRUNC('month', TO_DATE(TO_CHAR(NOW(), 'YYYYMM'), 'YYYYMM')) + INTERVAL '1 month' - INTERVAL '1 day'))
-								, 3)
-						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> TO_CHAR(NOW(), 'YYYYMM') 
-							THEN TRUNC(0, 3)
-						ELSE TRUNC(1, 3)
+						WHEN to_char(t2.assign_date, 'YYYYMM') > to_char(now(), 'YYYYMM')
+							THEN 0
+						WHEN to_char(t2.assign_date, 'YYYYMM') = to_char(now(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') = to_char(now(), 'YYYYMM')
+							THEN (select count(1) from t_workday where yyyy = substring(to_char(now(), 'YYYYMM'), 1, 4) and mm = substring(to_char(now(), 'YYYYMM'), 5, 2) and holiday = 'N' and dd between to_char(t2.assign_date, 'DD') and to_char(t2.resign_date, 'DD'))
+						WHEN to_char(t2.assign_date, 'YYYYMM') = to_char(now(), 'YYYYMM') AND to_char(t2.resign_date, 'YYYYMM') != to_char(now(), 'YYYYMM')
+							THEN (select count(1) from t_workday where yyyy = substring(to_char(now(), 'YYYYMM'), 1, 4) and mm = substring(to_char(now(), 'YYYYMM'), 5, 2) and holiday = 'N' and dd >= to_char(t2.assign_date, 'DD'))
+						WHEN to_char(t2.resign_date, 'YYYYMM') = to_char(now(), 'YYYYMM') AND to_char(t2.assign_date, 'YYYYMM') != to_char(now(), 'YYYYMM')
+							THEN (select count(1) from t_workday where yyyy = substring(to_char(now(), 'YYYYMM'), 1, 4) and mm = substring(to_char(now(), 'YYYYMM'), 5, 2) and holiday = 'N' and dd <![CDATA[ <= ]]> to_char(t2.resign_date, 'DD'))
+						WHEN to_char(t2.resign_date, 'YYYYMM') <![CDATA[ < ]]> to_char(now(), 'YYYYMM') 
+							THEN 0
+						ELSE (select count(1) from t_workday where yyyy = substring(to_char(now(), 'YYYYMM'), 1, 4) and mm = substring(to_char(now(), 'YYYYMM'), 5, 2) and holiday = 'N')
 					END
-				
-			) auto_mm,
+		
+			) 근무일,
+			(select count(1) from t_workday where yyyy = substring(to_char(now(), 'YYYYMM'), 1, 4) and mm = substring(to_char(now(), 'YYYYMM'), 5, 2) and holiday = 'N') 영업일,
 			t2.emp_id emp_id,
 			t2.emp_pool_id emp_pool_id,
 			t2.progress progress,
@@ -378,6 +423,7 @@
 			INNER JOIN t_emp_pool t3 on t2.emp_pool_id = t3.emp_pool_id
 		WHERE
 			t2.emp_id = #{emp_id}
+		) A
 	</select>
 	
 </mapper>

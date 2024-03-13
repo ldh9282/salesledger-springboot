@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.iyf.salesledger.dao.WorkdayDao">
+	
+	<update id="insertWorkday">
+		INSERT INTO t_workday /* WorkdayDao.insertWorkDay */
+			(
+				yyyy,
+				mm,
+				dd,
+				date,
+				holiday,
+				reason,
+				system_creator,
+				system_modifier,
+				system_created_at,
+				system_modified_at
+			)
+		VALUES
+			(
+				to_char(to_date(#{date}, 'YYYY-MM-DD'), 'YYYY'), 
+				to_char(to_date(#{date}, 'YYYY-MM-DD'), 'MM'), 
+				to_char(to_date(#{date}, 'YYYY-MM-DD'), 'DD'), 
+				#{date}, 
+				#{holiday}, 
+				#{reason}, 
+				#{system_creator}, 
+				#{system_modifier}, 
+				now(), 
+				now()
+			) 
+		ON CONFLICT (date) DO
+		UPDATE
+		SET
+			holiday = #{holiday},
+			reason = #{reason},
+			system_modifier = #{system_modifier},
+			system_modified_at = now()
+	</update>
+</mapper>

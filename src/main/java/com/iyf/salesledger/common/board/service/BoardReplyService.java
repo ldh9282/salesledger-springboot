@@ -75,7 +75,7 @@ public class BoardReplyService {
 			CustomMap boardReplyPassword = boardReplyDao.getBoardReplyPassword(requsetMap);
 			
 			if ("1".equals(boardReplyPassword.getString("anonymous"))) {
-				if (requsetMap.get("password").equals(boardReplyPassword.getString("password"))) {
+				if (requsetMap.getString("password").equals(boardReplyPassword.getString("password"))) {
 					resultMap.put("valid", "1");
 				} else {
 					resultMap.put("valid", "0");

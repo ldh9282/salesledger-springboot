@@ -20,7 +20,7 @@ public class EmpResumeAjaxController {
 	private EmpResumeService empResumeService;
 	/***
 	 * @기능 empPoolRegister.jsp 페이지에서 인력 이력서 위치정보 등록
-	 * @param empPool 인력풀 단건
+	 * @param requsetMap
 	 * @return 
 	 */
 	@PostMapping("/empResume.ajax")
@@ -32,7 +32,7 @@ public class EmpResumeAjaxController {
 		requsetMap.put("emp_pool_id", Long.valueOf((String) requsetMap.get("emp_pool_id")));
 		requsetMap.put("system_creator", request.getRemoteUser());
 		requsetMap.put("system_modifier", request.getRemoteUser());
-		if (log.isInfoEnabled()) {log.info("do service ::: empPoolService.insert");}
+		if (log.isInfoEnabled()) {log.info("do service ::: EmpResumeService.insertEmpResume");}
 		empResumeService.insertEmpResume(requsetMap);
 		if (log.isInfoEnabled()) {log.info("End EmpResumeAjaxController.insertEmpResume");}
 	}
