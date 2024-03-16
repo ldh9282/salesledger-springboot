@@ -27,8 +27,8 @@ public class DateNagerScheduler {
 	@Autowired
 	private DateNagerService dateNagerService;
 	
-//	@Scheduled(cron = "0 0 5 1 * *") // 매월 1일 5시 0분 0초
-	@Scheduled(cron = "1 * * * * *") // 개발용 테스트 ::: 매분마다
+	@Scheduled(cron = "0 0 5 1 * *") // 매월 1일 5시 0분 0초
+//	@Scheduled(cron = "1 * * * * *") // 개발용 테스트 ::: 매분마다
 	public void executeInsertHolidays() throws ParseException {
 		dateNagerService.executeInsertHolidays();
 	}

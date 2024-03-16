@@ -1,11 +1,8 @@
 package com.iyf.salesledger.service;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,11 +12,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
 import com.iyf.salesledger.common.file.ExcelUtils;
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.common.utils.DateUtils;
 import com.iyf.salesledger.common.utils.ObjectUtils;
-import com.iyf.salesledger.common.utils.StringUtils;
 import com.iyf.salesledger.model.EmpLedger;
 import com.iyf.salesledger.model.EmpPool;
 
@@ -38,14 +34,14 @@ public class ExcelService {
 	private EmpLedgerService empLedgerService;
 	
 	@Transactional
-    public ResponseEntity<Map<String, Object>> empPoolExcelProcess(MultipartFile file) {
+    public ResponseEntity<CustomMap> empPoolExcelProcess(MultipartFile file) {
 		
-		Map<String, Object> resultMap = new HashMap<>();
+		CustomMap resultMap = new CustomMap();
 		
-    	Map<String, Object> excelMap = excelUtils.convertExceltoMap(file);
-    	String sheetName = (String) excelMap.get("sheetName");
-    	List<String> headers = (List<String>) excelMap.get("headerList");
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) excelMap.get("dataList");
+		CustomMap excelMap = excelUtils.convertExceltoMap(file);
+    	String sheetName = excelMap.getString("sheetName");
+    	List<String> headers = (List<String>) excelMap.getList("headerList");
+        List<CustomMap> dataList = excelMap.getCustomMapList("dataList");
         
         if (dataList == null || dataList.size() == 0) {
         	resultMap.put("message", "인력풀 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 등록하려는 데이터를 엑셀시트에 기입해주세요.");
@@ -56,20 +52,20 @@ public class ExcelService {
         int rowIndex = headerIndex + 1;
         try {
         	
-	        for (Map<String, Object> map : dataList) {
-				String name = (String) map.get("이름"); // 필수값
-				String phonenumber = (String) map.get("전화번호") == null ? null : ((String) map.get("전화번호")).replaceAll("-", ""); // 필수값
-				String sourcing_manager = (String) map.get("소싱담당자");
-				Date birthdate = DateUtils.parseObject(map.get("생년월일"));
-				String email = (String) map.get("이메일");
-				String address = (String) map.get("주소");
-				String education = StringUtils.defaultIfNullOrEmpty((String) map.get("학력"), "미기입");
-				String school_name = (String) map.get("학교명");
-				String major = (String) map.get("학과");
-				String career_years = (String) map.get("경력");
-				String career_field = (String) map.get("분야");
-				String career_level = StringUtils.defaultIfNullOrEmpty((String) map.get("등급"), "미기입");
-				int hope_purchase_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("희망단가"), 0.0)).intValue();
+	        for (CustomMap map : dataList) {
+				String name = map.getString("이름"); // 필수값
+				String phonenumber = map.getString("전화번호").replaceAll("-", ""); // 필수값
+				String sourcing_manager = map.getString("소싱담당자");
+				Date birthdate = DateUtils.parseObject(map.getString("생년월일"));
+				String email = map.getString("이메일");
+				String address = map.getString("주소");
+				String education = map.getString("학력", "미기입");
+				String school_name = map.getString("학교명");
+				String major = map.getString("학과");
+				String career_years = map.getString("경력");
+				String career_field = map.getString("분야");
+				String career_level = map.getString("등급", "미기입");
+				int hope_purchase_unit = map.getInt("희망단가", 0);
 				
 				// 1. 필수값 체크
 				if (ObjectUtils.isAnyValueNullOrEmptyOrZero(name, phonenumber)) {
@@ -135,14 +131,14 @@ public class ExcelService {
     }
 
 	@Transactional
-	public ResponseEntity<Map<String, Object>> empLedgerExcelProcess(MultipartFile file) {
+	public ResponseEntity<CustomMap> empLedgerExcelProcess(MultipartFile file) {
 		
-		Map<String, Object> resultMap = new HashMap<>();
+		CustomMap resultMap = new CustomMap();
 		
-    	Map<String, Object> excelMap = excelUtils.convertExceltoMap(file);
-    	String sheetName = (String) excelMap.get("sheetName");
-    	List<String> headers = (List<String>) excelMap.get("headerList");
-        List<Map<String, Object>> dataList = (List<Map<String, Object>>) excelMap.get("dataList");
+		CustomMap excelMap = excelUtils.convertExceltoMap(file);
+    	String sheetName = excelMap.getString("sheetName");
+    	List<String> headers = (List<String>) excelMap.getList("headerList");
+        List<CustomMap> dataList = excelMap.getCustomMapList("dataList");
         
         if (dataList == null || dataList.size() == 0) {
         	resultMap.put("message", "인력원장 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 등록하려는 데이터를 엑셀시트에 기입해주세요.");
@@ -153,30 +149,30 @@ public class ExcelService {
         int rowIndex = headerIndex + 1;
         
 	    try {
-	        for (Map<String, Object> map : dataList) {
+	        for (CustomMap map : dataList) {
 	        	// ****** 인력풀 ******
-	        	String name = (String) map.get("이름"); // 필수값
-				String phonenumber = (String) map.get("전화번호") == null ? null : ((String) map.get("전화번호")).replaceAll("-", ""); // 필수값
+	        	String name = map.getString("이름"); // 필수값
+				String phonenumber = map.getString("전화번호").replaceAll("-", ""); // 필수값
 				
 				// ****** 인력원장 ******
-				String progress = (String) map.get("진행"); // 필수값
-				String progress_reason = (String) map.get("진행사유");
-				String company = (String) map.get("소속"); // 필수값
-				String department = "컨버전스".equals((String) map.get("사업부서")) ? "CONVERSION" : (String) map.get("사업부서"); // 필수값
-				String site = (String) map.get("사이트"); // 필수값
-				String client = (String) map.get("진행업체"); // 필수값
-				String project_name = (String) map.get("프로젝트명"); // 필수값
-				String brief = (String) map.get("적요란");
-				Date assign_date = DateUtils.parseObject(map.get("투입일")); // 필수값
-				Date end_date = DateUtils.parseObject(map.get("종료일")); // 필수값
-				Date resign_date = DateUtils.parseObject(map.get("철수날짜")); // 필수값
-				double sales_mm = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매출MM"), 0.0)).doubleValue(); // 필수값
-				double purchase_mm = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매입MM"), 0.0)).doubleValue(); // 필수값
-				long sales_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매출단가"), 0.0)).longValue(); // 필수값
-				long purchase_unit = ((Double) ObjectUtils.defaultIfNullOrEmptyOrZero(map.get("매입단가"), 0.0)).longValue(); // 필수값
-				Date resume_submit_date = DateUtils.parseObject(map.get("이력서제출"));
-				Date i_contract_date = DateUtils.parseObject(map.get("개인계약일"));
-				Date c_contract_date = DateUtils.parseObject(map.get("업체계약일"));
+				String progress = map.getString("진행"); // 필수값
+				String progress_reason = map.getString("진행사유");
+				String company = map.getString("소속"); // 필수값
+				String department = "컨버전스".equals(map.getString("사업부서")) ? "CONVERSION" : map.getString("사업부서"); // 필수값
+				String site = map.getString("사이트"); // 필수값
+				String client = map.getString("진행업체"); // 필수값
+				String project_name = map.getString("프로젝트명"); // 필수값
+				String brief = map.getString("적요란");
+				Date assign_date = DateUtils.parseObject(map.getString("투입일")); // 필수값
+				Date end_date = DateUtils.parseObject(map.getString("종료일")); // 필수값
+				Date resign_date = DateUtils.parseObject(map.getString("철수날짜")); // 필수값
+				double sales_mm = map.getDouble("매출MM", 0); // 필수값
+				double purchase_mm = map.getDouble("매입MM", 0); // 필수값
+				long sales_unit = map.getLong("매출단가", 0); // 필수값
+				long purchase_unit = map.getLong("매입단가", 0); // 필수값
+				Date resume_submit_date = DateUtils.parseObject(map.getString("이력서제출"));
+				Date i_contract_date = DateUtils.parseObject(map.getString("개인계약일"));
+				Date c_contract_date = DateUtils.parseObject(map.getString("업체계약일"));
 				
 				// 1. 필수값 체크
 				if (ObjectUtils.isAnyValueNullOrEmptyOrZero(

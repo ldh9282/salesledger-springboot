@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.service.ExcelService;
 
 import lombok.extern.log4j.Log4j2;
@@ -28,9 +29,9 @@ public class ExcelUploadAjaxController {
 	 * @return ResponseEntity<String>
 	 */
 	@PostMapping("/excel/empPoolExcelUpload.ajax")
-	public ResponseEntity<Map<String, Object>> empPoolExcelProcess(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<CustomMap> empPoolExcelProcess(@RequestParam("file") MultipartFile file) {
 		if (log.isInfoEnabled()) {log.info("Start ExcelUploadAjaxController.empPoolExcelProcess");}
-		ResponseEntity<Map<String, Object>> uploadResult = excelService.empPoolExcelProcess(file);
+		ResponseEntity<CustomMap> uploadResult = excelService.empPoolExcelProcess(file);
         if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
         if (log.isInfoEnabled()) {log.info("End ExcelUploadAjaxController.empPoolExcelProcess");}
 		return uploadResult;
@@ -43,9 +44,9 @@ public class ExcelUploadAjaxController {
 	 * @return ResponseEntity<String>
 	 */
 	@PostMapping("/excel/empLedgerExcelUpload.ajax")
-	public ResponseEntity<Map<String, Object>> empLedgerExcelProcess(@RequestParam("file") MultipartFile file) {
+	public ResponseEntity<CustomMap> empLedgerExcelProcess(@RequestParam("file") MultipartFile file) {
 		if (log.isInfoEnabled()) {log.info("Start ExcelUploadAjaxController.empLedgerExcelProcess");}
-		ResponseEntity<Map<String, Object>> uploadResult = excelService.empLedgerExcelProcess(file);
+		ResponseEntity<CustomMap> uploadResult = excelService.empLedgerExcelProcess(file);
 		if (log.isInfoEnabled()) {log.info("uploadResult ::: " + uploadResult);}
 		if (log.isInfoEnabled()) {log.info("End ExcelUploadAjaxController.empLedgerExcelProcess");}
 		return uploadResult;

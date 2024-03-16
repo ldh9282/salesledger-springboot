@@ -4,12 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.apache.ibatis.util.MapUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DateUtil;
@@ -19,10 +16,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.iyf.salesledger.common.model.CustomMap;
+import com.iyf.salesledger.common.utils.DateUtils;
 import com.iyf.salesledger.common.utils.MapUtils;
 
 import lombok.extern.log4j.Log4j2;
@@ -38,11 +35,11 @@ public class ExcelUtils {
      * @param file
      * @return
      */
-    public Map<String, Object> convertExceltoMap(MultipartFile file) {
+    public CustomMap convertExceltoMap(MultipartFile file) {
     	if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: uploadDir ::: " + uploadDir);}
     	if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: file.getOriginalFilename ::: " + file.getOriginalFilename());}
     	
-    	Map<String, Object> returnMap = new HashMap<>();
+    	CustomMap returnMap = new CustomMap();
     	
         if (file.isEmpty()) {
         	if (log.isInfoEnabled()) {log.info("ExcelUtils.convertExceltoMap ::: file.isEmpty");}
@@ -54,13 +51,13 @@ public class ExcelUtils {
 
             Iterator<Row> rowIterator = sheet.iterator();
             List<String> headers = new ArrayList<>();
-            List<Map<String, Object>> dataList = new ArrayList<>();
+            List<CustomMap> dataList = new ArrayList<>();
 
             while (rowIterator.hasNext()) {
                 Row row = rowIterator.next();
                 Iterator<Cell> cellIterator = row.cellIterator();
 
-                Map<String, Object> rowData = new HashMap<>();
+                CustomMap rowData = new CustomMap();
 
                 while (cellIterator.hasNext()) {
                     Cell cell = cellIterator.next();
@@ -70,18 +67,20 @@ public class ExcelUtils {
                         headers.add(cell.toString());
                     } else {
                         // Data rows
-                    	if (cell.getCellType() == CellType.NUMERIC) {// Numeric cell type (whole numbers, fractional numbers, dates)
+                    	String key = headers.get(cell.getColumnIndex());
+						if (cell.getCellType() == CellType.NUMERIC) {// Numeric cell type (whole numbers, fractional numbers, dates)
                     		if (DateUtil.isCellDateFormatted(cell)) {
                     			Date cellValue = cell.getDateCellValue();
-                            	rowData.put(headers.get(cell.getColumnIndex()), cellValue);
+                    			String value = DateUtils.formatObject(cellValue, "yyyy-MM-dd");
+                            	rowData.put(key, value);
 
                     		} else {
-                    			double cellValue = cell.getNumericCellValue();
-                    			rowData.put(headers.get(cell.getColumnIndex()), cellValue);
+                    			double value = cell.getNumericCellValue();
+								rowData.put(key, value);
                     		}
                     	} else {
                     		String cellValue = cell.getStringCellValue();
-                    		rowData.put(headers.get(cell.getColumnIndex()), cellValue);
+                    		rowData.put(key, cellValue);
                     	}
                     }
                 }
