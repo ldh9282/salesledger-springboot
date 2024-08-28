@@ -16,6 +16,9 @@ import com.iyf.salesledger.common.file.ExcelUtils;
 import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.common.utils.DateUtils;
 import com.iyf.salesledger.common.utils.ObjectUtils;
+import com.iyf.salesledger.dao.EmpLedgerDao;
+import com.iyf.salesledger.dao.EmpPoolDao;
+import com.iyf.salesledger.dao.SalesLedgerDao;
 import com.iyf.salesledger.model.EmpLedger;
 import com.iyf.salesledger.model.EmpPool;
 
@@ -32,6 +35,15 @@ public class ExcelService {
 	
 	@Autowired
 	private EmpLedgerService empLedgerService;
+	
+	@Autowired
+	private EmpPoolDao empPoolDao;
+	
+	@Autowired
+	private EmpLedgerDao empLedgerDao;
+	
+	@Autowired
+	private SalesLedgerDao salesLedgerDao;
 	
 	@Transactional
     public ResponseEntity<CustomMap> empPoolExcelProcess(MultipartFile file) {
@@ -250,5 +262,49 @@ public class ExcelService {
         
 	    resultMap.put("message", "인력원장 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
     	return ResponseEntity.status(HttpStatus.OK).body(resultMap);
+	}
+	
+	@Transactional
+	public ResponseEntity<CustomMap> salesCostStatusExcelProcess(MultipartFile file) {
+		
+		CustomMap resultMap = new CustomMap();
+		
+		CustomMap excelMap = excelUtils.convertExceltoMap(file);
+    	String sheetName = excelMap.getString("sheetName");
+    	List<String> headers = (List<String>) excelMap.getList("headerList");
+        List<CustomMap> dataList = excelMap.getCustomMapList("dataList");
+        
+        if (dataList == null || dataList.size() == 0) {
+        	resultMap.put("message", "매출원가현황 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: 등록하려는 데이터를 엑셀시트에 기입해주세요.");
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
+		}
+        
+        try {
+        	
+	        for (CustomMap map : dataList) {
+	        	map.getString("");
+	        	CustomMap empPoolMap = new CustomMap();
+	        	
+	        	
+	        	// to do : mapper merge문
+	        	empPoolDao.insertEmpPool(empPoolMap);
+	        	
+	        	CustomMap empLedgerMap = new CustomMap();
+	        	empLedgerDao.insertEmpLedger(empLedgerMap);
+	        	
+	        	CustomMap salesLedgerMap = new CustomMap();
+	        	salesLedgerDao.insertSalesLedger(salesLedgerMap);
+			}
+        } catch (Exception e) {
+        	if (log.isInfoEnabled()) {log.info("ExcelService.salesCostStatusExcelProcess ::: TransactionAspectSupport.currentTransactionStatus.setRollbackOnly");}
+        	TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+        	e.printStackTrace();
+        	// to do : throw new CustomException(customErrorCode) CustomErrorCode(errorCode, errorMsg)
+        	resultMap.put("message", "매출원가현황 엑셀 데이터 추가가 실패하였습니다.\n\n에러원인: " + e.getMessage());
+        	return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(resultMap);
+        }
+        
+        resultMap.put("message", "매출원가현황 엑셀 데이터 추가가 성공적으로 수행되었습니다.");
+		return ResponseEntity.status(HttpStatus.OK).body(resultMap);
 	}
 }

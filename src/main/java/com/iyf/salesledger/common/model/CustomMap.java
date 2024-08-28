@@ -381,7 +381,27 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 		}
 		return get(key);
 	}
-	public List<?> getList(String key) {
+	public List<?> getObjectList(String key) {
+		if (key == null) {
+			throw new RuntimeException("CustomMap.getObjectList ::: key is null");
+		}
+		
+		Object value = get(key);
+		
+		if (value == null) {
+			throw new RuntimeException("CustomMap.getObjectList ::: value is null");
+		}
+		if (!(value instanceof List<?>)) {
+			throw new RuntimeException("CustomMap.getObjectList ::: value is not list");
+		}
+		
+		List<?> objectList = (List<?>) value;
+		
+		
+		return objectList;
+	}
+	
+	public List<String> getList(String key) {
 		if (key == null) {
 			throw new RuntimeException("CustomMap.getList ::: key is null");
 		}
@@ -395,10 +415,27 @@ public class CustomMap extends LinkedHashMap<String, Object> {
 			throw new RuntimeException("CustomMap.getList ::: value is not list");
 		}
 		
-		List<?> listObject = (List<?>) value;
+		List<?> objectList = (List<?>) value;
+		
+		List<String> stringList = new ArrayList<>();
+		
+		for (Object object : objectList) {
+			String str = "";
+			if (object == null) {
+				str = "";
+			} else if (object instanceof String) {
+				str = (String) object;
+			} else if (object instanceof Number) {
+				Number number = (Number) object;
+				str = number.toString();
+			} else {
+				str = object.toString();
+			}
+			stringList.add(str);
+		}
 		
 		
-		return listObject;
+		return stringList;
 	}
 	
 	public HashMap<String, Object> toHashMap() {

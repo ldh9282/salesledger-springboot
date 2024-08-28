@@ -223,7 +223,7 @@
 		SELECT
 			/* EmpLedgerDao.getMonthlyMM */
 			A.emp_id,
-			TRUNC(A.근무일/A.영업일, 3) 자동계산mm,
+			TRUNC(A.근무일 :: decimal/A.영업일 :: decimal, 3) 자동계산mm,
 			A.근무일,
 			A.영업일
 		FROM

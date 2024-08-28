@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.model.SalesLedger;
 
 public interface SalesLedgerDao {
@@ -24,6 +25,8 @@ public interface SalesLedgerDao {
 	SalesLedger findByEmpId(long emp_id);
 
 	Map<String, Object> getCountByEmpId(Long emp_pool_id);
+
+	int insertSalesLedger(CustomMap salesLedgerMap);
 	
 
 	

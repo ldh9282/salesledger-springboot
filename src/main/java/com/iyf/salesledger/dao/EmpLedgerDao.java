@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.model.EmpLedger;
 
 public interface EmpLedgerDao {
@@ -30,4 +31,6 @@ public interface EmpLedgerDao {
 	void updateMonthlyMM(Map<String, Object> paramMap);
 
 	void updateEmpLedger(Map<String, Object> requestMap);
+
+	int insertEmpLedger(CustomMap empLedgerMap);
 }

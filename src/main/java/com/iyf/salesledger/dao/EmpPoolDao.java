@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.iyf.salesledger.common.model.CustomMap;
 import com.iyf.salesledger.model.EmpPool;
 
 public interface EmpPoolDao {
@@ -30,4 +31,6 @@ public interface EmpPoolDao {
 	long getEmpPoolSeq();
 	
 	void updateEmpPool(Map<String, Object> paramMap);
+	
+	int insertEmpPool(CustomMap paramMap);
 }
